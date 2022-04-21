@@ -8,12 +8,12 @@ export default function Header() {
 
   return (
     <Nav>
-      <LogoLink onClick={() => navigate("/")}>
-        <Logo src="/logo.png" />
-      </LogoLink>
-      <Link onClick={() => navigate("/login")}>프롤로그</Link>
-      <Link onClick={() => navigate("/login")}>회원가입</Link>
-      <Link onClick={() => navigate("/login")}>로그인</Link>
+      <Logo onClick={() => navigate("/")} src="/logo.png" />
+      <Menu>
+        <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
+        <Link onClick={() => navigate("/register")}>회원가입</Link>
+        <Link onClick={() => navigate("/login")}>로그인</Link>
+      </Menu>
     </Nav>
   );
 }
@@ -21,24 +21,32 @@ export default function Header() {
 const Nav = styled.div`
   display: flex;
   align-items: center;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 10vh;
-`;
-
-const LogoLink = styled.div`
-  color: ${theme.brown.dark};
-  cursor: pointer;
-  margin-right: 50%;
+  padding: 1rem;
+  height: 4vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: ${theme.brown.light};
+  z-index: 2;
 `;
 
 const Logo = styled.img`
-  width: 21vh;
-  height: 7vh;
+  width: 15vh;
+  height: 5vh;
+  cursor: pointer;
+  flex-shrink: 0;
 `;
 
 const Link = styled.div`
   color: ${theme.brown.dark};
   cursor: pointer;
+  margin: 0 10px;
+`;
+
+const Menu = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
 `;

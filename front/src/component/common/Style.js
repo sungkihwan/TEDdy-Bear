@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { brown } from "@mui/material/colors";
+import styled from "styled-components";
 
 export const theme = createTheme({
   brown: {
@@ -8,3 +9,11 @@ export const theme = createTheme({
     dark: brown[900],
   },
 });
+
+/**
+ * Main 페이지 글씨 스타일입니다.
+ */
+export const MainText = styled.p`
+  font-size: 30px;
+  color: ${theme.brown.main};
+`;
