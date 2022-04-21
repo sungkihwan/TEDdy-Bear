@@ -1,16 +1,39 @@
-require("dotenv").config()
-const express = require('express')
+import 'dotenv/config';
+import cors from 'cors';
+import express from 'express';
+import { userAuthRouter } from './src/routers/userRouter';
+import { errorMiddleware } from './src/middlewares/errorMiddleware';
 const { swaggerUi, specs } = require('./modules/swagger');
 
-const app = express()
-const port = process.env.PORT || 5000 
+const app = express();
+const port = process.env.PORT || 5000;
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true }));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 
-app.get('/', (req, res) => { 
-  res.send('Hello World!') 
-})
+// CORS 에러 방지
+app.use(cors());
+
+// express 기본 제공 middleware
+// express.json(): POST 등의 요청과 함께 오는 json형태의 데이터를 인식하고 핸들링할 수 있게 함.
+// express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+//기본 페이지
+app.get('/', (req, res) => {
+  res.send('TeDdy Bear 서비스입니다!');
+});
 
 app.listen(port, () => {
-  console.log(`Server is listening on http://localhost:${port}`)
-}) 
+  console.log(`Server is listening on http://localhost:${port}`);
+});
+
+// router, service 구현
+app.use(userAuthRouter);
+
+// 순서 중요 (router 에서 next() 시 아래의 에러 핸들링  middleware로 전달됨)
+app.use(errorMiddleware);
