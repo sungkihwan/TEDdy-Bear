@@ -13,7 +13,7 @@ export const theme = createTheme({
 /**
  * Main 페이지 글씨 스타일입니다.
  */
-export const MainText = styled.p`
+export const MainText = styled.div`
   font-size: 30px;
   color: ${theme.brown.main};
 `;
