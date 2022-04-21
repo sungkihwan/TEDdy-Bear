@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -11,39 +10,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
+import { useState } from "react";
 
 // import { useNavigate } from "react-router-dom";
-// import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
 // import * as Api from "../../api";
 // import { DispatchContext } from "../../App";
 
 function LoginForm() {
   //   const navigate = useNavigate();
   //   const dispatch = useContext(DispatchContext);
-
-  //   //useState로 email 상태를 생성함.
-  //   const [email, setEmail] = useState("");
-  //   //useState로 password 상태를 생성함.
-  //   const [password, setPassword] = useState("");
-
-  //   //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
-  //   const validateEmail = (email) => {
-  //     return email
-  //       .toLowerCase()
-  //       .match(
-  //         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  //       );
-  //   };
-
-  //   //위 validateEmail 함수를 통해 이메일 형태 적합 여부를 확인함.
-  //   const isEmailValid = validateEmail(email);
-  //   // 비밀번호가 4글자 이상인지 여부를 확인함.
-  //   const isPasswordValid = password.length >= 4;
-  //   //
-  //   // 이메일과 비밀번호 조건이 동시에 만족되는지 확인함.
-  //   const isFormValid = isEmailValid && isPasswordValid;
-
   //   const handleSubmit = async (e) => {
   //     e.preventDefault();
 
@@ -72,23 +47,19 @@ function LoginForm() {
   //     }
   //   };
 
-  function Copyright(props) {
-    return (
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        {...props}
-      >
-        {"Copyright © "}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validateEmail = (email) => {
+    return email
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+  const isEmailValid = validateEmail(email);
+  const isPasswordValid = password.length >= 4;
+  const isFormValid = isEmailValid && isPasswordValid;
 
   const theme = createTheme();
 
@@ -103,7 +74,7 @@ function LoginForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 4 }}>
+      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 8 }}>
         <Box sx={{ marginTop: "auto", marginBottom: "auto" }}>
           <Card sx={{ alignItems: "center" }}>
             <img
@@ -133,7 +104,7 @@ function LoginForm() {
                 onSubmit={handleSubmit}
                 sx={{ mt: 3 }}
               >
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ alignItems: "center" }}>
                   <Grid item xs={12}>
                     <TextField
                       required
@@ -142,7 +113,17 @@ function LoginForm() {
                       label="이메일"
                       name="email"
                       autoComplete="email"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
+                    {!isEmailValid && (
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        이메일 형식이 올바르지 않습니다.
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -153,7 +134,18 @@ function LoginForm() {
                       type="password"
                       id="password"
                       autoComplete="new-password"
+                      onChange={(e) => setPassword(e.target.value)}
                     />
+                    {!isPasswordValid && (
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        margin="normal"
+                      >
+                        비밀번호는 4글자 이상입니다.
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
                 <Button
@@ -161,6 +153,7 @@ function LoginForm() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
+                  disabled={!isFormValid}
                 >
                   로그인
                 </Button>
@@ -178,62 +171,6 @@ function LoginForm() {
       </Grid>
     </ThemeProvider>
   );
-
-  //   return (
-  //     <Container>
-  //       <Row className="justify-content-md-center mt-5">
-  //         <Col lg={8}>
-  //           <Form onSubmit={handleSubmit}>
-  //             <Form.Group controlId="loginEmail">
-  //               <Form.Label>이메일 주소</Form.Label>
-  //               <Form.Control
-  //                 type="email"
-  //                 autoComplete="on"
-  //                 value={email}
-  //                 onChange={(e) => setEmail(e.target.value)}
-  //               />
-  //               {!isEmailValid && (
-  //                 <Form.Text className="text-success">
-  //                   이메일 형식이 올바르지 않습니다.
-  //                 </Form.Text>
-  //               )}
-  //             </Form.Group>
-
-  //             <Form.Group controlId="loginPassword" className="mt-3">
-  //               <Form.Label>비밀번호</Form.Label>
-  //               <Form.Control
-  //                 type="password"
-  //                 autoComplete="on"
-  //                 value={password}
-  //                 onChange={(e) => setPassword(e.target.value)}
-  //               />
-  //               {!isPasswordValid && (
-  //                 <Form.Text className="text-success">
-  //                   비밀번호는 4글자 이상입니다.
-  //                 </Form.Text>
-  //               )}
-  //             </Form.Group>
-
-  //             <Form.Group as={Row} className="mt-3 text-center">
-  //               <Col sm={{ span: 20 }}>
-  //                 <Button variant="primary" type="submit" disabled={!isFormValid}>
-  //                   로그인
-  //                 </Button>
-  //               </Col>
-  //             </Form.Group>
-
-  //             <Form.Group as={Row} className="mt-3 text-center">
-  //               <Col sm={{ span: 20 }}>
-  //                 <Button variant="light" onClick={() => navigate("/register")}>
-  //                   회원가입하기
-  //                 </Button>
-  //               </Col>
-  //             </Form.Group>
-  //           </Form>
-  //         </Col>
-  //       </Row>
-  //     </Container>
-  //   );
 }
 
 export default LoginForm;
