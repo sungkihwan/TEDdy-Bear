@@ -33,6 +33,12 @@ class User {
     );
     return updatedUser;
   }
+
+  //user 컬렉션에서 user_id와 매칭되는 user 정보를 삭제하는 함수
+  static async deleteOneUser({ user_id }) {
+    const user = await UserModel.deleteOne({ id: user_id });
+    return user;
+  }
 }
 
 export { User };

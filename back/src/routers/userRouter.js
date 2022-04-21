@@ -5,6 +5,7 @@ import { userAuthService } from '../services/userService';
 
 const userAuthRouter = Router();
 
+// 회원가입
 userAuthRouter.post('/user/register', async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
@@ -35,6 +36,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
   }
 });
 
+// 로그인
 userAuthRouter.post('/user/login', async function (req, res, next) {
   try {
     // req (request) 에서 데이터 가져오기
@@ -54,6 +56,7 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
   }
 });
 
+//userlist 반환
 userAuthRouter.get(
   '/userlist',
   login_required,
@@ -68,6 +71,7 @@ userAuthRouter.get(
   }
 );
 
+//사용자 정보 반환
 userAuthRouter.get(
   '/user/current',
   login_required,
@@ -90,6 +94,7 @@ userAuthRouter.get(
   }
 );
 
+//user 정보 수정
 userAuthRouter.put(
   '/users/:id',
   login_required,
@@ -119,6 +124,7 @@ userAuthRouter.put(
   }
 );
 
+//user 정보 반환
 userAuthRouter.get(
   '/users/:id',
   login_required,
@@ -132,6 +138,23 @@ userAuthRouter.get(
       }
 
       res.status(200).send(currentUserInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+//user 삭제 컴포넌트
+userAuthRouter.delete(
+  '/users/:id',
+  //login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.id;
+      //유저 삭제하는 메소드 호출
+      await userAuthService.deleteUser({ user_id });
+
+      res.status(200).send();
     } catch (error) {
       next(error);
     }
