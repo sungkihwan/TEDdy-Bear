@@ -11,15 +11,19 @@ import { theme } from "../common/Style";
 
 const textColor = { color: theme.brown.dark };
 
+/** Bear component
+ *
+ * @returns {component} My bear information
+ */
 export default function Bear() {
   const [level, setLevel] = useState(1);
   const [exp, setExp] = useState(0);
-  const [cotton, setCotton] = useState(1000);
+  const [cotton, setCotton] = useState(11);
   let maxExp = level * 10;
   const [progress, setProgress] = useState(exp / maxExp);
 
+  //if exp full, execute a function
   useEffect(() => {
-    setProgress((exp / maxExp) * 100);
     if (exp === maxExp) {
       setExp(0);
       setProgress(0);
@@ -28,9 +32,15 @@ export default function Bear() {
     }
   }, [exp]);
 
+  //click button, execute a function
   const click = () => {
+    if (cotton === 0) {
+      alert("솜이 부족합니다!");
+      return;
+    }
     setExp((cur) => cur + 1);
     setCotton((cur) => cur - 1);
+    setProgress((exp / maxExp) * 100);
   };
   return (
     <div style={{ marginTop: "10vh" }}>
@@ -58,6 +68,7 @@ export default function Bear() {
   );
 }
 
+//exp bar component
 function ExpBar(props) {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -73,6 +84,7 @@ function ExpBar(props) {
   );
 }
 
+//button style
 const ExpButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(brown[500]),
   backgroundColor: brown[500],
@@ -82,6 +94,7 @@ const ExpButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+//bar style
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {

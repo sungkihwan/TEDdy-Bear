@@ -4,7 +4,11 @@ import Page2 from "./Page2";
 import Page3 from "./Page3";
 import Page4 from "./Page4";
 
-function Main() {
+/** Main pages component
+ *
+ * @returns {component} Main page
+ */
+export default function Main() {
   return (
     <>
       <Header />
@@ -17,5 +21,3 @@ function Main() {
     </>
   );
 }
-
-export default Main;
