@@ -130,116 +130,24 @@ function RegisterForm() {
       return "space-between";
     }
   };
-
-  const Page1 = () => {
-    return (
-      <Grid
-        container
-        spacing={2}
-        sx={{ alignItems: "center" }}
-        justifyContent="center"
-      >
-        <Grid item sx={{ mb: 2 }}>
-          <Typography component="h1" variant="h5">
-            테디 곰의 가족이 되어주세요!
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            id="email"
-            label="이메일"
-            name="email"
-            autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {!isEmailValid && (
-            <Typography variant="caption" display="block" gutterBottom>
-              이메일 형식이 올바르지 않습니다.
-            </Typography>
-          )}
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="비밀번호"
-            type="password"
-            id="password"
-            autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {!isPasswordValid && (
-            <Typography
-              variant="caption"
-              display="block"
-              gutterBottom
-              margin="normal"
-            >
-              비밀번호는 4글자 이상입니다.
-            </Typography>
-          )}
-        </Grid>
-      </Grid>
-    );
-  };
-
+  const topTopics = [
+    "기술",
+    "과학",
+    "문화",
+    "글로벌 이슈",
+    "사회",
+    "디자인",
+    "사회변화",
+    "비즈니스",
+    "애니메이션",
+    "건강",
+  ];
   function InputForm() {
     switch (tempPage) {
       case 1:
-        return <Page1 />;
+        return;
       case 2:
-        const topTopics = [
-          "기술",
-          "과학",
-          "문화",
-          "글로벌 이슈",
-          "사회",
-          "디자인",
-          "사회변화",
-          "비즈니스",
-          "애니메이션",
-          "건강",
-        ];
-        return (
-          <Grid
-            container
-            spacing={2}
-            sx={{ alignItems: "center" }}
-            justifyContent="center"
-          >
-            <Grid item sx={{ mb: 2 }}>
-              <Typography component="h1" variant="h5">
-                좋아하는 주제가 있나요?
-              </Typography>
-            </Grid>
-            <Autocomplete
-              multiple
-              id="tags-filled"
-              options={topTopics}
-              freeSolo
-              renderTags={(values, getTagProps) =>
-                values.map((option, index) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="filled"
-                  label="freeSolo"
-                  placeholder="Favorites"
-                />
-              )}
-            />
-          </Grid>
-        );
+        return;
       case 3:
       default:
         return <div>에?러</div>;
@@ -275,7 +183,99 @@ function RegisterForm() {
                 onSubmit={handleSubmit}
                 sx={{ mt: 3 }}
               >
-                <Page1 />
+                {tempPage === 1 && (
+                  <Grid
+                    container
+                    spacing={2}
+                    sx={{ alignItems: "center" }}
+                    justifyContent="center"
+                  >
+                    <Grid item sx={{ mb: 2 }}>
+                      <Typography component="h1" variant="h5">
+                        테디 곰의 가족이 되어주세요!
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="email"
+                        label="이메일"
+                        name="email"
+                        autoComplete="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      {!isEmailValid && (
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                        >
+                          이메일 형식이 올바르지 않습니다.
+                        </Typography>
+                      )}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="password"
+                        label="비밀번호"
+                        type="password"
+                        id="password"
+                        autoComplete="new-password"
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      {!isPasswordValid && (
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          margin="normal"
+                        >
+                          비밀번호는 4글자 이상입니다.
+                        </Typography>
+                      )}
+                    </Grid>
+                  </Grid>
+                )}
+                {tempPage === 2 && (
+                  <Grid
+                    container
+                    spacing={2}
+                    sx={{ alignItems: "center" }}
+                    justifyContent="center"
+                  >
+                    <Grid item sx={{ mb: 2 }}>
+                      <Typography component="h1" variant="h5">
+                        좋아하는 주제가 있나요?
+                      </Typography>
+                    </Grid>
+                    <Autocomplete
+                      multiple
+                      id="tags-filled"
+                      options={topTopics}
+                      freeSolo
+                      renderTags={(values, getTagProps) =>
+                        values.map((option, index) => (
+                          <Chip
+                            variant="outlined"
+                            label={option}
+                            {...getTagProps({ index })}
+                          />
+                        ))
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="filled"
+                          label="freeSolo"
+                          placeholder="Favorites"
+                        />
+                      )}
+                    />
+                  </Grid>
+                )}
                 <Grid container spacing={4} justifyContent={pageChecker}>
                   <PrevButton />
                   <NextButton />
