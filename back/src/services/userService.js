@@ -55,14 +55,12 @@ class userAuthService {
     // 반환할 loginuser 객체를 위한 변수 설정
     const id = user.id;
     const name = user.name;
-    const description = user.description;
 
     const loginUser = {
       token,
       id,
       email,
       name,
-      description,
       errorMessage: null,
     };
 
@@ -100,12 +98,6 @@ class userAuthService {
     if (toUpdate.password) {
       const fieldToUpdate = 'password';
       const newValue = toUpdate.password;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
-    }
-
-    if (toUpdate.description) {
-      const fieldToUpdate = 'description';
-      const newValue = toUpdate.description;
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
 
