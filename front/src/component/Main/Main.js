@@ -7,7 +7,6 @@ import Page4 from "./Page4";
 function Main() {
   return (
     <>
-      <Header />
       <div style={{ position: "relative", marginTop: "10vh" }}>
         <Page1 />
         <Page2 />
