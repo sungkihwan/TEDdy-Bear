@@ -52,6 +52,8 @@ function RegisterForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [tName, setTName] = useState("테디");
 
   const validateEmail = (email) => {
     return email
@@ -130,7 +132,9 @@ function RegisterForm() {
       return "space-between";
     }
   };
+
   const topTopics = [
+    "테디곰!",
     "기술",
     "과학",
     "문화",
@@ -142,17 +146,6 @@ function RegisterForm() {
     "애니메이션",
     "건강",
   ];
-  function InputForm() {
-    switch (tempPage) {
-      case 1:
-        return;
-      case 2:
-        return;
-      case 3:
-      default:
-        return <div>에?러</div>;
-    }
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -202,6 +195,7 @@ function RegisterForm() {
                         id="email"
                         label="이메일"
                         name="email"
+                        value={email}
                         autoComplete="email"
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -223,6 +217,7 @@ function RegisterForm() {
                         label="비밀번호"
                         type="password"
                         id="password"
+                        value={password}
                         autoComplete="new-password"
                         onChange={(e) => setPassword(e.target.value)}
                       />
@@ -251,29 +246,69 @@ function RegisterForm() {
                         좋아하는 주제가 있나요?
                       </Typography>
                     </Grid>
-                    <Autocomplete
-                      multiple
-                      id="tags-filled"
-                      options={topTopics}
-                      freeSolo
-                      renderTags={(values, getTagProps) =>
-                        values.map((option, index) => (
-                          <Chip
-                            variant="outlined"
-                            label={option}
-                            {...getTagProps({ index })}
+                    <Grid item xs={12}>
+                      <Autocomplete
+                        multiple
+                        id="tags-outlined"
+                        options={topTopics}
+                        defaultValue={[topTopics[0]]}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="주제"
+                            placeholder="고르지 않으셔도 돼요 :)"
                           />
-                        ))
-                      }
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="filled"
-                          label="freeSolo"
-                          placeholder="Favorites"
-                        />
-                      )}
-                    />
+                        )}
+                      />
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        margin="normal"
+                        sx={{ mt: 2 }}
+                      >
+                        (좋아할만한 주제를 미리 골라뒀어요!)
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                )}
+                {tempPage === 3 && (
+                  <Grid
+                    container
+                    spacing={2}
+                    sx={{ alignItems: "center" }}
+                    justifyContent="center"
+                  >
+                    <Grid item sx={{ mb: 2 }}>
+                      <Typography component="h1" variant="h5">
+                        당신과 테디 곰의 이름을 알려주세요
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="name"
+                        label="당신의 이름"
+                        name="name"
+                        value={name}
+                        autoComplete="name"
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="tName"
+                        label="테디 곰의 이름"
+                        type="name"
+                        id="tName"
+                        value={tName}
+                        autoComplete="name"
+                        onChange={(e) => setTName(e.target.value)}
+                      />
+                    </Grid>
                   </Grid>
                 )}
                 <Grid container spacing={4} justifyContent={pageChecker}>
