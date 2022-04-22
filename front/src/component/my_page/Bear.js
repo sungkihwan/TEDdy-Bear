@@ -44,6 +44,7 @@ export default function Bear() {
   };
   return (
     <div style={{ marginTop: "10vh" }}>
+      <div style={{ textAlign: "center" }}>곰 이름</div>
       <img src="/main2.png" alt="bear" style={{ height: "40vh" }} />
       <div
         style={{
