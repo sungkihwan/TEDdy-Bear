@@ -10,7 +10,7 @@ from pymongo import MongoClient
 # 본인의 몽고 db url을 설정해주세요.
 client = MongoClient("")
 db = client['ted']
-collection = db['data']
+collection = db['datas']
 
 ######################################### 메인페이지 스튜던트 스터디 아워 #############################
 student = pd.read_csv('./student.csv')
