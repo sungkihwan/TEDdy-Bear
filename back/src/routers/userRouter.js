@@ -5,7 +5,70 @@ import { userAuthService } from '../services/userService';
 
 const userAuthRouter = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: 유저 추가 수정 삭제 조회
+ */
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    User:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *        email:
+ *          type: string
+ *        name:
+ *          type: string
+ *        password:
+ *          type: string
+ */
+
+/**
+ * @swagger
+ * components:
+ *    User_req:
+ *      type: object
+ *      properties:
+ *        email:
+ *          type: string
+ *        name:
+ *          type: string
+ *        password:
+ *          type: string
+ *
+ */
+
 // 회원가입
+
+/**
+ * @swagger
+ *
+ * /user/register:
+ *  post:
+ *    summary: "유저 등록"
+ *    description: "POST 방식으로 유저를 등록한다."
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                  type: string
+ *              name:
+ *                  type: string
+ *              password:
+ *                  type: string
+ */
+
 userAuthRouter.post('/user/register', async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
@@ -36,6 +99,28 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
   }
 });
 
+/**
+ * @swagger
+ *
+ * /user/login:
+ *  post:
+ *    summary: "유저 로그인"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                  type: string
+ *              name:
+ *                  type: string
+ *              password:
+ *                  type: string
+ */
+
 // 로그인
 userAuthRouter.post('/user/login', async function (req, res, next) {
   try {
@@ -55,6 +140,25 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
     next(error);
   }
 });
+
+/**
+ * @swagger
+ * paths:
+ *  /userlist:
+ *    get:
+ *      summary: "유저 데이터 전체조회"
+ *      description: "서버에 데이터를 보내지 않고 Get방식으로 요청"
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: 전체 유저 정보
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  $ref: '#components/schemas/User'
+ */
 
 //userlist 반환
 userAuthRouter.get(
@@ -94,6 +198,42 @@ userAuthRouter.get(
   }
 );
 
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *    summary: "유저 수정"
+ *    description: "PUT 방식을 통해 유저 수정(전체 데이터를 수정할 때 사용함)"
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: 유저 수정
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                  type: string
+ *              name:
+ *                  type: string
+ *              password:
+ *                  type: string
+ *    responses:
+ *      "200":
+ *        description: user 수정 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *                $ref: '#components/schemas/User'
+ */
+
 //user 정보 수정
 userAuthRouter.put(
   '/users/:id',
@@ -106,9 +246,8 @@ userAuthRouter.put(
       const name = req.body.name ?? null;
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
-      const description = req.body.description ?? null;
 
-      const toUpdate = { name, email, password, description };
+      const toUpdate = { name, email, password };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({ user_id, toUpdate });
@@ -123,6 +262,29 @@ userAuthRouter.put(
     }
   }
 );
+
+/**
+ * @swagger
+ * /users/{id}:
+ *  get:
+ *    summary: "특정 유저조회 Path 방식"
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: 유저 아이디
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 유저 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/User'
+ */
 
 //user 정보 반환
 userAuthRouter.get(
@@ -143,6 +305,34 @@ userAuthRouter.get(
     }
   }
 );
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *    summary: "유저 삭제"
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: 유저 수정
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *              $ref: '#components/schemas/User'
+ *    responses:
+ *      "200":
+ *        description: user 삭제 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *                $ref: '#components/schemas/User'
+ */
 
 //user 삭제 컴포넌트
 userAuthRouter.delete(
