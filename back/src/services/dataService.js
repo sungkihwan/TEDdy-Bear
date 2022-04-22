@@ -6,7 +6,7 @@ class dataService {
     }
 
     static async findAll() {
-        return await Data.findAll();
+        return await Data.findAll()
     }
 }
   

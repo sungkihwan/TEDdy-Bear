@@ -1,6 +1,17 @@
 import { Schema, model } from 'mongoose';
 
-const DataSchema = new Schema({ any: Schema.Types.Mixed });
+const DataSchema = new Schema(
+    {
+      id: {
+        type: String,
+        required: true,
+      },
+      keys: [String],
+      data: {
+        type: Map
+      }
+    }
+  );
 
 const DataModel = model('Data', DataSchema);
 
