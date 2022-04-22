@@ -30,21 +30,25 @@ export default function Bear() {
       setLevel((cur) => cur + 1);
       maxExp = level * 10;
     }
+    setProgress((exp / maxExp) * 100);
   }, [exp]);
 
   //click button, execute a function
   const click = () => {
+    if (cotton !== 0) {
+      setExp((cur) => cur + 1);
+      setCotton((cur) => cur - 1);
+      console.log(exp);
+    }
+
     if (cotton === 0) {
       alert("솜이 부족합니다!");
+      setCotton(0);
       return;
     }
-    setExp((cur) => cur + 1);
-    setCotton((cur) => cur - 1);
-    setProgress((exp / maxExp) * 100);
   };
   return (
     <div style={{ marginTop: "10vh" }}>
-      <div style={{ textAlign: "center" }}>곰 이름</div>
       <img src="/main2.png" alt="bear" style={{ height: "40vh" }} />
       <div
         style={{
