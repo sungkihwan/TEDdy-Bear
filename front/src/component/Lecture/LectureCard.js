@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   height:300
 }));
 
-function LectureCard({lectureData, setVideoData}) {
+function LectureCard({lectureData, setLectureData}) {
   
   let lectureInfo = [...lectureData];
   const defaultOptions = {
@@ -38,6 +38,7 @@ function LectureCard({lectureData, setVideoData}) {
       for (let i = 0; i < lectureData.length; i++) {
         if (lectureData[i].url === url) {
           json.metadata.title = lectureData[i].title + ' - ' + lectureData[i].speaker;
+          // 두 번째 방법 (수정 후)
           lectureInfo[i]['videoimg'] = json.metadata.image;
           break;
         }

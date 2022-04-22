@@ -1,79 +1,33 @@
-import Header from "../Header";
-import React from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
+import React from "react";
+import SpeakerChart from './SpeakerChart';
+import TopicChart from './TopicChart';
+import TopicLikeChart from './TopicLikeChart';
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import { brown } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 function Prologue() {
-  const data = [
-    {
-      "name": "Page A",
-      "uv": 4000,
-      "pv": 2400
-    },
-    {
-      "name": "Page B",
-      "uv": 3000,
-      "pv": 1398
-    },
-    {
-      "name": "Page C",
-      "uv": 2000,
-      "pv": 9800
-    },
-    {
-      "name": "Page D",
-      "uv": 2780,
-      "pv": 3908
-    },
-    {
-      "name": "Page E",
-      "uv": 1890,
-      "pv": 4800
-    },
-    {
-      "name": "Page F",
-      "uv": 2390,
-      "pv": 3800
-    },
-    {
-      "name": "Page G",
-      "uv": 3490,
-      "pv": 4300
-    }
-  ]
-  
+  const navigate = useNavigate();
   return (
-    <>
-      <div style={{marginTop:100}}>
-        <BarChart
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5
-        }}
-            >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
-      </div>
-    </>
+    <div style={{width:'100%', height:'100%', border: '2px solid red', marginTop: 100}}>
+      <SpeakerChart></SpeakerChart>
+      <TopicChart></TopicChart>
+      <TopicLikeChart></TopicLikeChart>
+      <GoButton onClick={() => navigate("/media")}>영상 추천받으러 가기</GoButton>
+    </div>
   );
 }
+
+const GoButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(brown[500]),
+  backgroundColor: brown[500],
+  width: "10vw",
+  marginTop:20,
+  marginLeft:'50%',
+  "&:hover": {
+    backgroundColor: brown[700],
+  },
+}));
 
 export default Prologue;

@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 from pymongo import MongoClient
 
 
-# client = MongoClient("mongodb+srv://elice:1234@cluster0.usvux.mongodb.net/")
+client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.hxrzu.mongodb.net/ted?retryWrites=true&w=majority")
 # 본인의 몽고 db url을 설정해주세요.
-client = MongoClient("")
+# client = MongoClient("")
 db = client['ted']
 collection = db['data']
 
