@@ -2,7 +2,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,9 +12,6 @@ import Card from "@mui/material/Card";
 import { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
-import Stack from "@mui/material/Stack";
-
-import { useNavigate } from "react-router-dom";
 
 // import * as Api from "../../api";
 // import { DispatchContext } from "../../App";
@@ -69,7 +65,6 @@ function RegisterForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
     console.log({
       email: email,
       password: password,
