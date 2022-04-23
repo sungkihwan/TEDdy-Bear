@@ -6,7 +6,7 @@
 
 // 언제 시청 기록이 생성되나?
 // 동영상 링크를 클릭했을 때!
-// 기록하는 정보는 user_id, viewDate, talk_id
+// 기록하는 정보는 user_id, talkId, url, title
 // 일단 클릭할 때마다 view history를 남겨놓고 나중에 viewDate가 같은 것끼리 묶어서 날짜별로 관리를 한다.
 // 그러면?
 // 생성, 조회만 필요

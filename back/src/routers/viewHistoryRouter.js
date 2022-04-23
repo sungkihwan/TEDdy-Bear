@@ -11,7 +11,7 @@ const viewHistoryRouter = Router();
 viewHistoryRouter.use(login_required);
 
 // viewHistory를 만드는 router api (링크 클릭시 호출)
-viewHistoryRouter.post('/viewhistory/create', async function (res, req, next) {
+viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
   try {
     // const { user_id, talkId, url, title } = req.body;
     const user_id = req.body.user_id;
