@@ -112,6 +112,18 @@ class userAuthService {
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
 
+    if (toUpdate.bear_name) {
+      const fieldToUpdate = 'bear_name';
+      const newValue = toUpdate.bear_name;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
+    if (toUpdate.myTopics) {
+      const fieldToUpdate = 'myTopics';
+      const newValue = toUpdate.myTopics;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
     return user;
   }
 

@@ -23,7 +23,7 @@ const UserSchema = new Schema(
       required: true,
     },
     myTopics: {
-      type: String,
+      type: Array,
       required: true,
     },
   },
