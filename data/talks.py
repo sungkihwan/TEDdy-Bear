@@ -7,10 +7,10 @@ from pymongo import MongoClient
 
 # client = MongoClient("mongodb+srv://elice:1234@cluster0.usvux.mongodb.net/")
 # 본인의 몽고 db url을 설정해주세요.
-client = MongoClient("mongodb://127.0.0.1:27017/")
-db = client['teddy-bear']
-collection_talk = db['talk']
-collection_topic = db['topic']
+client = MongoClient("")
+db = client['ted']
+collection_talk = db['talks']
+collection_topic = db['topics']
 
 ######################################### talk, topic #############################
 tedUltimate = pd.read_csv('./ted_talks_ko.csv', encoding='utf-8')
