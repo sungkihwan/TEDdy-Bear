@@ -5,19 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 
-
 client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.hxrzu.mongodb.net/ted?retryWrites=true&w=majority")
+# client = MongoClient("mongodb+srv://elice:1234@cluster0.usvux.mongodb.net/")
 # 본인의 몽고 db url을 설정해주세요.
 # client = MongoClient("")
 db = client['ted']
-collection = db['data']
+collection = db['datas']
 
 ######################################### 메인페이지 스튜던트 스터디 아워 #############################
 student = pd.read_csv('./student.csv')
-
-student['Hours'] = student.apply(lambda x: x['Scores'], axis=1)
-
-print(student)
 
 student = student.sort_values(by='Hours').values # Hours, Scores
 
@@ -90,9 +86,9 @@ sortedByDate.drop(['talk_id', 'speaker_1', 'all_speakers', 'occupations', 'about
 # ax.scatter(sortedByDate['published_date'], sortedByDate['likes'])
 #####################################################################################
 
-
 ############################ x: topic y: likes ###################################
 hashmap = {}
+topicCount = {}
 
 for i in sortedByDuration.values:
   for j in ast.literal_eval(i[11]):
@@ -100,6 +96,11 @@ for i in sortedByDuration.values:
       hashmap[j] += int(i[-2])
     else:
       hashmap[j] = int(i[-2])
+
+    if j in topicCount:
+      topicCount[j] += 1
+    else:
+      topicCount[j] = 1
 
 sortedByTopicLikes = pd.DataFrame(list(hashmap.items()), columns=['topic', 'likes']).sort_values(by='likes', ascending=False)
 
@@ -112,23 +113,32 @@ for i in sortedByTopicLikes.values:
 for i in sortedByTopicLikes.head(20).values:
   topic20List.append(i[0])
 
-topic20List = {'id': 'topic20List', 'data': topic20List}
+topicSum = sum(topicCount.values())
+topicCountList = [topicCount[i] for i in topic20List]
+
+topic20talksCount = {'total': topicSum, 'topic': topic20List, 'talkcount': topicCountList}
+topic20talksCount = {'id': 'top20topicCount', 'keys': ['total', 'topic', 'talks'], 'data': topic20talksCount}
+
+topic20List = {'id': 'top20topicList', 'data': topic20List}
 topicAllList = {'id': 'topicAllList', 'data': topicAllList}
 print(topic20List)
 print(topicAllList)
 
+print(topic20talksCount)
+
 # 오늘의 영상 -> 토픽 리스트 455 -> 토픽리스트를 data 컬렉션에 넣어놓고
 # 추천을 위한 토픽 -> 상위토픽 20개 -> 토픽 리스트 만들기
+likecount = int(sortedByTopicLikes['likes'].sum())
 
-sortedByTopicLikes = sortedByTopicLikes.head(10)
+sortedByTopicLikes = sortedByTopicLikes.head(50)
 
-topicLikes = {'topic': [], 'likes': []}
+topicLikes = {'total': likecount, 'topic': [], 'likes': []}
 
 for i in sortedByTopicLikes.values:
   topicLikes['topic'].append(i[0])
   topicLikes['likes'].append(i[1])
 
-topicLikes = {'id': 'topicLikes', 'keys': ['topic', 'likes'], 'data': topicLikes}
+topicLikes = {'id': 'topicLikes', 'keys': ['total', 'topic', 'likes'], 'data': topicLikes}
 
 print(topicLikes) # topic, likes
 
@@ -200,7 +210,7 @@ for i in range(14):
   for i in df.values:
     topics[i[0]].append(i[1])
 
-topics = {'id': 'topics', 'keys': keys, 'data': topics}
+topics = {'id': 'top5topicTrend', 'keys': keys, 'data': topics}
 print(topics)
 
 
@@ -209,6 +219,7 @@ collection.insert_one(students)
 collection.insert_one(topicLikes)
 collection.insert_one(occupationsLikes)
 collection.insert_one(topics)
+collection.insert_one(topic20talksCount)
 collection.insert_one(topic20List)
 collection.insert_one(topicAllList)
 
