@@ -63,7 +63,12 @@ function LoginForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 8 }}>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        sx={{ marginTop: 12 }}
+      >
         <Box sx={{ marginTop: "auto", marginBottom: "auto" }}>
           <Card sx={{ alignItems: "center" }}>
             <img
@@ -78,7 +83,7 @@ function LoginForm() {
             <CssBaseline />
             <Box
               sx={{
-                marginTop: 8,
+                marginTop: 4,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

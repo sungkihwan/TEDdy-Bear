@@ -81,7 +81,7 @@ function RegisterForm() {
         <Grid item>
           <Button
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 1, mb: 2 }}
             disabled={!isFormValid}
             onClick={() => {
               setTempPage(tempPage + 1);
@@ -96,7 +96,7 @@ function RegisterForm() {
         <Grid item>
           <Button
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 1, mb: 2 }}
             disabled={!isFormValid}
             onClick={handleSubmit}
           >
@@ -136,6 +136,7 @@ function RegisterForm() {
         justifyContent="center"
         spacing={2}
         sx={{ marginTop: 12 }}
+        alignItems="stretch"
       >
         <Box sx={{ marginTop: "auto", marginBottom: "auto" }}>
           <Card sx={{ alignItems: "center" }}>
@@ -151,7 +152,7 @@ function RegisterForm() {
             <CssBaseline />
             <Box
               sx={{
-                marginTop: 6,
+                marginTop: 4,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -303,18 +304,22 @@ function RegisterForm() {
                     </Grid>
                   </Grid>
                 )}
-                <Grid container spacing={4} justifyContent={pageChecker}>
-                  <PrevButton />
-                  <NextButton />
-                </Grid>
-                <Grid item>
-                  <Chip label={`${tempPage} / 3`} color="primary" />
-                </Grid>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link variant="body2" onClick={() => navigate("/Login")}>
-                      이미 계정이 있나요?
-                    </Link>
+                <Grid container item alignItems="flex-end">
+                  <Grid container item spacing={4} justifyContent={pageChecker}>
+                    <PrevButton />
+                    <NextButton />
+                  </Grid>
+                  <Grid container justifyContent="center">
+                    <Grid item>
+                      <Chip label={`${tempPage} / 3`} color="primary" />
+                    </Grid>
+                  </Grid>
+                  <Grid container justifyContent="flex-end">
+                    <Grid item>
+                      <Link variant="body2" onClick={() => navigate("/Login")}>
+                        이미 계정이 있나요?
+                      </Link>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Box>

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
 import Main from "./components/main/Main";
 import MyPage from "./components/my_page/MyPage";
 import Prologue from "./components/prologue/Prologue";
@@ -56,6 +57,7 @@ function App() {
     <DispatchContext.Provider value={dispatch}>
       <UserStateContext.Provider value={userState}>
         <Router>
+          <Header />
           <Routes>
             <Route path="/" exact element={<Main />} />
             <Route path="/prologue" exact element={<Prologue />} />
