@@ -1,128 +1,42 @@
 import {LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line} from "recharts"
+import React, {useEffect, useState} from "react";
+import * as Api from '../../api';
 
 function TopicChange() {
-    let data = [
-        {
-            "name": "2006년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2007년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2008년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2009년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2010년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2011년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2012년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2013년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2014년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2015년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2016년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2017년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2018년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-        {
-            "name": "2019년",
-            "science": 0,
-            "culture": 0,
-            "technology": 0,
-            "animation": 0,
-            "business":0,
-        },
-    ];
+    const [topicTrend, setTopicTrend] = useState([]);
 
-    for (let i = 0; i < data.length; i++) {
-        data[i]['science'] = Math.floor(Math.random() * 10000) + 1;
-        data[i]['culture'] = Math.floor(Math.random() * 10000) + 1;
-        data[i]['technology'] = Math.floor(Math.random() * 10000) + 1;
-        data[i]['animation'] = Math.floor(Math.random() * 10000) + 1;
-        data[i]['business'] = Math.floor(Math.random() * 10000) + 1;
-    }
+    useEffect(() => {
+        Api.get('data', 'top5topicTrend')
+          .then(res => setTopicTrend(() => {
+              const newData = [];
+              const str0 = res.data.keys[0];
+              const str1 = res.data.keys[1];
+              const str2 = res.data.keys[2];
+              const str3 = res.data.keys[3];
+              const str4 = res.data.keys[4];
+              let year = ''
+              
+              for (let i = 0; i < res.data.data[str0].length; i++) {
+                  year = '';
+                  if (6 + i < 10) {
+                    year = `200${6 + i}년`;
+                  }
+                  else {
+                    year = `20${6 + i}년`;
+                  }
+                  newData.push({
+                      name : year,
+                      [str0] : res.data.data[str0][i],
+                      [str1] : res.data.data[str1][i],
+                      [str2] : res.data.data[str2][i],
+                      [str3] : res.data.data[str3][i],
+                      [str4] : res.data.data[str4][i],
+                  })
+              }
+            return newData;
+          }))
+    }, []);
+
 
     return (
       <div
@@ -132,11 +46,14 @@ function TopicChange() {
           justifyContent: "space-around",
         }}
       >
+        <div>
+            <h2>현재 Top 5 주제의 변화율</h2>
+        </div>
         <div style={{ border: "2px solid black" }}>
           <LineChart
-            width={730}
-            height={250}
-            data={data}
+            width={800}
+            height={400}
+            data={topicTrend}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -150,9 +67,6 @@ function TopicChange() {
             <Line type="monotone" dataKey="animation" stroke="#212121" />
             <Line type="monotone" dataKey="business" stroke="#795548" />
           </LineChart>
-        </div>
-        <div>
-            <h2>현재 Top 5 주제의 변화율</h2>
         </div>
       </div>
     );

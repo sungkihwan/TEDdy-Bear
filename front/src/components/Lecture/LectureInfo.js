@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -19,7 +19,7 @@ const style = {
   };
 
 function LectureInfo({videoInfo}) {
-    React.useEffect(() => {
+    useEffect(() => {
         const node = loadCSS(
           'https://use.fontawesome.com/releases/v5.14.0/css/all.css',
           // Inject before JSS
@@ -30,13 +30,13 @@ function LectureInfo({videoInfo}) {
         };
     }, []);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <>
-        <div style={{display:'flex', justifyContent: 'flex-end', alignItems: 'center'}} onClick={handleOpen}>
+        <div style={{display:'flex', justifyContent: 'flex-end', alignItems: 'center', cursor:'pointer'}} onClick={handleOpen}>
             <h3>자세히 보기</h3>
             <Icon baseClassName="fas" className="fa-plus-circle" sx={{ fontSize: 30 }} />
         </div>
@@ -53,12 +53,12 @@ function LectureInfo({videoInfo}) {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     강연 주제 : {videoInfo.title}
                     <br></br>
-                    연사 : {videoInfo.speaker}
+                    연사 : {videoInfo.speakers.join(', ')}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     요약 : {videoInfo.description}
                     </Typography>
-                    <PlayCircleIcon color="primary" sx={{ fontSize: 30 }}></PlayCircleIcon>
+                    <PlayCircleIcon color="primary" sx={{ fontSize: 30 }} style={{cursor:'pointer'}} onClick={() => window.open(videoInfo.url , '_blank')}></PlayCircleIcon>
                 </Box>
                 </Modal>
             </div>

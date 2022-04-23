@@ -1,21 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-
+import * as Api from '../../api';
 
 function TopicLikeChart() {
-    const data = [
-        { name: 'science', value: 375 },
-        { name: 'culture', value: 302 },
-        { name: 'technology', value: 298 },
-        { name: 'animation', value: 275 },
-        { name: 'business', value: 211 },
-        { name: 'health', value: 190 },
-        { name: 'society', value: 188 },
-        { name: 'brain', value: 173 },
-        { name: 'social change', value: 152 },
-        { name: 'psychology', value: 80 },
-        { name: 'others', value: 1238 },
-    ];
+    const [topciLecture, setTopicLecture] = useState([]);
+
+    useEffect(() => {
+        Api.get('data', 'top20topicCount')
+            .then(res => setTopicLecture(() => {
+                const newData = [];
+                for (let i = 0; i < 20; i++) {
+                    newData.push({
+                        name : res.data.data['topic'][i],
+                        value : res.data.data['talkcount'][i]
+                    })
+                }
+                return newData;
+            }))
+    }, [])
     
     const COLORS = ['#f44336', '#9c27b0', '#2196f3', '#009688', '#cddc39', '#ffeb3b', '#ff9800', '#795548', '#607d8b', '#00bcd4', '#9e9e9e'];
     
@@ -48,9 +50,9 @@ function TopicLikeChart() {
         <div style={{marginTop: 10, display:'flex', justifyContent: 'space-around'}}>
             <div>
             <PieChart width={800} height={800}>
-                <Pie data={data} color="#000000" dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={300} fill="#8884d8" label={renderCustomizedLabel}>
+                <Pie data={topciLecture} color="#000000" dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={300} fill="#8884d8" label={renderCustomizedLabel}>
                     {
-                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                        topciLecture.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
                     }
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />

@@ -15,8 +15,10 @@ collection_topic = db['topics']
 ######################################### talk, topic #############################
 tedUltimate = pd.read_csv('./ted_talks_ko.csv', encoding='utf-8')
 tedUltimate['link'] = tedUltimate['url'].str.slice(start=26, stop=-1)
-tedUltimate.drop(['transcript', 'event', 'views', 'title'], axis=1, inplace=True)
+tedUltimate.drop(['transcript', 'event', 'views'], axis=1, inplace=True)
+
 ted = pd.read_csv('./data.csv')
+ted.drop(['title'], axis=1, inplace=True)
 ted['link'] = ted['link'].str.slice(start=22)
 
 newData = pd.merge(tedUltimate, ted, how='inner', on='link')
@@ -66,4 +68,3 @@ for key, value in teddy_topics.items():
 
 collection_talk.insert_many(teddy_talks)
 collection_topic.insert_many(teddy_topics_list)
-

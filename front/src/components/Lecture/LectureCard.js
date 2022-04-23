@@ -22,8 +22,6 @@ const Item = styled(Paper)(({ theme }) => ({
 function LectureCard({lectureData, setLectureData}) {
   
   let lectureInfo = [...lectureData];
-  console.log(lectureData)
-  console.log(lectureInfo)
 
   const defaultOptions = {
     loop: true,
@@ -42,7 +40,6 @@ function LectureCard({lectureData, setLectureData}) {
         if (lectureData[i].url === url) {
           // json.metadata.title = lectureData[i].title + ' - ' + lectureData[i].speaker;
           json.metadata.title = lectureData[i].title + ' - ';
-          console.log(json.metadata.title);
           for (let j = 0; j < lectureData[i].speakers.length; j++) {
             json.metadata.title += lectureData[i].speakers[j];
             if (lectureData[i].speakers.length >= 2) {
@@ -107,7 +104,7 @@ function LectureCard({lectureData, setLectureData}) {
                           <div>
                             <LinkPreview url={data.url} fetcher={customFetcher} width='300px' height='250px' fallback={<div>Fallback</div>} />
                           </div>
-                          <LectureInfo ></LectureInfo>
+                          <LectureInfo videoInfo={lectureInfo[index]}></LectureInfo>
                         </Item>
                       </Grid>
                     ))}

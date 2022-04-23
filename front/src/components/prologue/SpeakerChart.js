@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { useEffect, useState } from "react";
+import * as Api from '../../api';
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -11,51 +11,22 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-const data = [
-  {
-    name: "Amy Cuddy \n (social psychologist)",
-    likes: 1900000,
-  },
-  {
-    name: "Tim Urban \n (blogger)",
-    likes: 1800000,
-  },
-  {
-    name: "Sam Berns \n (activist)",
-    likes: 1300000,
-  },
-  {
-    name: "Robert Waldinger \n (psychiatrist)",
-    likes: 1200000,
-  },
-  {
-    name: "Brené Brown \n (vulnerability researcher)",
-    likes: 1102000,
-  },
-  {
-    name: "Cameron Russell \n (model)",
-    likes: 1100000,
-  },
-  {
-    name: "Mary Roach \n (writer)",
-    likes: 1100000,
-  },
-  {
-    name: "Simon Sinek \n (leadership expert)",
-    likes: 1095000,
-  },
-  {
-    name: "Tom Thum \n (beatboxer)",
-    likes: 1000000,
-  },
-  {
-    name: "Pamela Meyer \n (lie detector)",
-    likes: 953000,
-  },
-  
-];
-
 function SpeakerChart() {
+  const [speakerData, setSpeakerData] = useState([]);
+
+  useEffect(() => {
+    Api.get('data', 'occupationsLikes')
+      .then(res => setSpeakerData(() => {
+        const newData = []
+        for (let i = 0; i < res.data.data['name'].length; i++) {
+          newData.push({
+            name : `${res.data.data['name'][i]} (${res.data.data['topic'][i]})`,
+            likes : res.data.data['likes'][i]
+          });
+        }
+        return newData;
+      }))
+  }, []);
     return (
       <div
         style={{
@@ -73,7 +44,7 @@ function SpeakerChart() {
         >
           <ResponsiveContainer width="100%" height="90%">
             <BarChart
-              data={data}
+              data={speakerData}
               width={700}
               height={700}
               layout="vertical"
