@@ -13,13 +13,13 @@ viewHistoryRouter.use(login_required);
 // viewHistory를 만드는 router api (링크 클릭시 호출)
 viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
   try {
-    const { user_id, talkId, url, title } = req.body;
+    const { user_id, talkId } = req.body;
 
     const newViewHistory = await ViewHistoryService.addViewHistory({
       user_id,
       talkId,
-      url,
-      title,
+      // url,
+      // title,
     });
     if (newViewHistory.errorMessage) {
       throw new Error(newViewHistory.errorMessage);
@@ -59,6 +59,27 @@ viewHistoryRouter.get(
         user_id,
       });
       res.status(200).send(viewHistorylist);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+viewHistoryRouter.get(
+  '/viewHistoryDatelist/:user_id/:date',
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.user_id;
+      const date = req.params.date;
+      const currentUserId = req.currentUserId;
+
+      const viewHistoryDatelist = await ViewHistoryService.getViewHistoryDate({
+        currentUserId,
+        user_id,
+        date,
+      });
+
+      res.status(200).send(viewHistoryDatelist);
     } catch (error) {
       next(error);
     }

@@ -7,19 +7,22 @@
 import { ViewHistory } from '../db';
 // import { V4 as uuidv4 } from 'uuid';
 const { uuid } = require('uuidv4');
+import { utile } from './utile';
+
 class ViewHistoryService {
   // addViewHistory()
-  // user_id, viewDate, talkId를 받아서 새로운 award 데이터 생성
-  static async addViewHistory({ user_id, talkId, url, title }) {
+  // user_id, talkId, url, title를 받아서 새로운 viewHistory 추가
+  static async addViewHistory({ user_id, talkId }) {
     const id = uuid();
-    const newViewHistory = { user_id, id, talkId, url, title };
+    const newViewHistory = { user_id, id, talkId };
 
     //db에 저장
     const createdNewHistory = await ViewHistory.create({ newViewHistory });
     return createdNewHistory;
   }
+
   // getViewHistory()
-  //   findOneById를 통해 해당 awardId와 같은 Id를 찾아서 데이터 반환
+  // viewHistoryId로 viewHistory 찾기
   static async getViewHistory({ viewHistoryId }) {
     const viewHistory = await ViewHistory.findOneById({ viewHistoryId });
     if (!viewHistory) {
@@ -37,6 +40,31 @@ class ViewHistoryService {
       user_id,
     });
     return viewHistorylist;
+  }
+
+  //getViewHistoryDate()
+  // 날짜별로 동영상 기록 조회
+  static async getViewHistoryDate({ currentUserId, user_id, date }) {
+    // date랑 createdAt이랑 비교해서 날짜가 같으면 list로 return
+    // 해당 유저의 전체 리스트
+    const viewhistorylist = await ViewHistory.findManyByUserId({
+      currentUserId,
+      user_id,
+    });
+
+    let formatDate = 0;
+    let viewhistoryDatelist = [];
+
+    for (var i in viewhistorylist) {
+      const createdAt =
+        viewhistorylist[Object.keys(viewhistorylist)[i]].createdAt;
+      formatDate = utile.makeDateToString(createdAt);
+
+      if (formatDate == date) {
+        viewhistoryDatelist.push(viewhistorylist[i]);
+      }
+    }
+    return viewhistoryDatelist;
   }
 }
 
