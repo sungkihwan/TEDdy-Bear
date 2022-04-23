@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import SpeakerChart from './SpeakerChart';
 import TopicChart from './TopicChart';
 import TopicLikeChart from './TopicLikeChart';
@@ -8,9 +8,16 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import * as Api from '../../api';
 
 function Prologue() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    Api.get('data', 'student')
+      .then(res => console.log(res.data));
+  }, []);
+
   return (
     <div style={{width:'100%', height:'100%', marginTop: 100}}>
       <TopicChange></TopicChange>
