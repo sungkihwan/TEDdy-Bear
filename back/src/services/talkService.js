@@ -22,7 +22,6 @@ class talkService {
         }
 
         const randomTalks = await Talk.findManyRandom(topics, size)
-
         return randomTalks
     }
     

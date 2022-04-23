@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
@@ -69,7 +68,7 @@ function LoginForm() {
         spacing={2}
         sx={{ marginTop: 12 }}
       >
-        <Box sx={{ marginTop: "auto", marginBottom: "auto" }}>
+        <Box sx={{ marginTop: "auto", marginBottom: "auto"}}>
           <Card sx={{ alignItems: "center" }}>
             <img
               src="https://image.shutterstock.com/image-photo/cute-teddy-bear-isolated-on-600w-2022108608.jpg"
@@ -80,7 +79,6 @@ function LoginForm() {
         </Box>
         <Card>
           <Container component="main" maxWidth="xs">
-            <CssBaseline />
             <Box
               sx={{
                 marginTop: 4,

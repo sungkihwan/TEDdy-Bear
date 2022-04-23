@@ -22,6 +22,9 @@ const Item = styled(Paper)(({ theme }) => ({
 function LectureCard({lectureData, setLectureData}) {
   
   let lectureInfo = [...lectureData];
+  console.log(lectureData)
+  console.log(lectureInfo)
+
   const defaultOptions = {
     loop: true,
     autoplay: true, 
@@ -37,7 +40,16 @@ function LectureCard({lectureData, setLectureData}) {
       
       for (let i = 0; i < lectureData.length; i++) {
         if (lectureData[i].url === url) {
-          json.metadata.title = lectureData[i].title + ' - ' + lectureData[i].speaker;
+          // json.metadata.title = lectureData[i].title + ' - ' + lectureData[i].speaker;
+          json.metadata.title = lectureData[i].title + ' - ';
+          console.log(json.metadata.title);
+          for (let j = 0; j < lectureData[i].speakers.length; j++) {
+            json.metadata.title += lectureData[i].speakers[j];
+            if (lectureData[i].speakers.length >= 2) {
+              json.metadata.title += ', ';
+            }
+          }
+
           // 두 번째 방법 (수정 후)
           lectureInfo[i]['videoimg'] = json.metadata.image;
           break;
@@ -54,11 +66,11 @@ function LectureCard({lectureData, setLectureData}) {
       <div style={{display: 'flex'}}>
         <div>
           <Lottie options={defaultOptions}
-                height={400}
-                width={400}/>
+                height={350}
+                width={350}/>
         </div>
         <div>
-          <div style={{border:'2px solid black', width:'1400px', marginLeft:'60px', height:'410px'}}>
+          <div style={{border:'2px solid black', width:'1100px', marginLeft:'60px', height:'410px'}}>
             <h1 style={{marginLeft:'25px'}}>추천된 영상</h1>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid
@@ -80,7 +92,7 @@ function LectureCard({lectureData, setLectureData}) {
                 </Grid>
             </Box>
           </div>
-          <div style={{border:'2px solid black', width:'1400px', marginLeft:'60px', height:'410px'}}>
+          <div style={{border:'2px solid black', width:'1100px', marginLeft:'60px', height:'410px'}}>
             <h1 style={{marginLeft:'25px'}}>오늘의 영상</h1>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid

@@ -24,9 +24,7 @@ const talkRouter = Router();
 talkRouter.get("/talks/today", async (req, res, next) => {
   try {
     const size = Number(req.query.size);
-
     const talk = await talkService.getTodayTalk({ size });
-
     res.status(200).send(talk);
   } catch (e) {
     next(e);

@@ -27,7 +27,8 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem;
-  height: 4vh;
+  /* height: 4vh; */
+  height: 40px;
   position: fixed;
   top: 0;
   left: 0;
@@ -38,8 +39,10 @@ const Nav = styled.div`
 
 //logo style
 const Logo = styled.img`
-  width: 15vh;
-  height: 5vh;
+  /* width: 15vh; */
+  width:50;
+  /* height: 5vh; */
+  height: 80%;
   cursor: pointer;
   flex-shrink: 0;
 `;
@@ -50,6 +53,8 @@ const Menu = styled.div`
   align-items: center;
   justify-content: flex-end;
   flex-grow: 1;
+  width: 100%;
+  height: 100%;
 `;
 
 const Link = styled.div`
