@@ -84,47 +84,18 @@ class userAuthService {
   }
 
   static async setUser({ user_id, toUpdate }) {
-    // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
     let user = await User.findById({ user_id });
-
-    // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
       const errorMessage = '가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
     }
+    if (!toUpdate.name) delete toUpdate.name;
+    if (!toUpdate.email) delete toUpdate.email;
+    if (!toUpdate.password) delete toUpdate.password;
+    if (!toUpdate.bear_name) delete toUpdate.bear_name;
+    if (!toUpdate.myTopics) delete toUpdate.myTopics;
 
-    // 업데이트 대상에 name이 있다면, 즉 name 값이 null 이 아니라면 업데이트 진행
-    if (toUpdate.name) {
-      const fieldToUpdate = 'name';
-      const newValue = toUpdate.name;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
-    }
-
-    if (toUpdate.email) {
-      const fieldToUpdate = 'email';
-      const newValue = toUpdate.email;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
-    }
-
-    if (toUpdate.password) {
-      const fieldToUpdate = 'password';
-      const newValue = toUpdate.password;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
-    }
-
-    if (toUpdate.bear_name) {
-      const fieldToUpdate = 'bear_name';
-      const newValue = toUpdate.bear_name;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
-    }
-
-    if (toUpdate.myTopics) {
-      const fieldToUpdate = 'myTopics';
-      const newValue = toUpdate.myTopics;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
-    }
-
-    return user;
+    return await User.updateById({ user_id, toUpdate });
   }
 
   static async getUserInfo({ user_id }) {
