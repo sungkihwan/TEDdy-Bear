@@ -1,10 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Main from "./components/main/Main";
 import MyPage from "./components/my_page/MyPage";
 import Prologue from "./components/prologue/Prologue";
-import Lecture from './components/Lecture/Lecture';
+import Lecture from "./components/Lecture/Lecture";
 import React, { useState, useEffect, useReducer, createContext } from "react";
 
 import * as Api from "./api";
@@ -58,17 +58,15 @@ function App() {
   return (
     <DispatchContext.Provider value={dispatch}>
       <UserStateContext.Provider value={userState}>
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/" exact element={<Main />} />
-            <Route path="/prologue" exact element={<Prologue />} />
-            <Route path="/mypage" exact element={<MyPage />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/media" exact element={<Lecture />} />
-          </Routes>
-        </Router>
+        <Header />
+        <Routes>
+          <Route path="/" exact element={<Main />} />
+          <Route path="/prologue" element={<Prologue />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/media" element={<Lecture />} />
+        </Routes>
       </UserStateContext.Provider>
     </DispatchContext.Provider>
   );
