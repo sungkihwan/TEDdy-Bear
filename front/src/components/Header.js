@@ -29,6 +29,7 @@ export default function Header() {
       <Logo onClick={() => navigate("/")} src="/logo.png" />
       <Menu>
         <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
+        <Link onClick={() => navigate("/media")}>TEDdyTV📺</Link>
         {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
         {isLogin && (
           <>
@@ -46,8 +47,7 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem;
-  /* height: 4vh; */
-  height: 40px;
+  height: 4vh;
   position: fixed;
   top: 0;
   left: 0;
@@ -58,10 +58,8 @@ const Nav = styled.div`
 
 //logo style
 const Logo = styled.img`
-  /* width: 15vh; */
-  width:50;
-  /* height: 5vh; */
-  height: 80%;
+  width: 12vh;
+  height: 4vh;
   cursor: pointer;
   flex-shrink: 0;
 `;
