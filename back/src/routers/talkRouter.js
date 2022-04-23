@@ -51,7 +51,7 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  */
 talkRouter.post("/talks/my", /*login_required,*/ async (req, res, next) => {
     try {
-      const size = Number(req.query.size);
+      const size = Number(req.body.size);
       const user_id = req.currentUserId;
 
       const talks = await talkService.getMyTalk({ size, user_id });

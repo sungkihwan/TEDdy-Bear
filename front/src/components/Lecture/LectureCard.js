@@ -19,9 +19,10 @@ const Item = styled(Paper)(({ theme }) => ({
   height:300
 }));
 
-function LectureCard({lectureData, setLectureData}) {
+function LectureCard({lectureData, setLectureData, myLectureData}) {
   
   let lectureInfo = [...lectureData];
+  let myLectureInfo = [...myLectureData];
 
   const defaultOptions = {
     loop: true,
@@ -49,6 +50,30 @@ function LectureCard({lectureData, setLectureData}) {
 
           // 두 번째 방법 (수정 후)
           lectureInfo[i]['videoimg'] = json.metadata.image;
+          break;
+        }
+      }
+
+      json.metadata.description = ''
+      return json.metadata;
+    };
+
+    const myCustomFetcher = async (url) => {
+      const response = await fetch(`https://rlp-proxy.herokuapp.com/v2?url=${url}`);
+      const json = await response.json();
+      
+      for (let i = 0; i < myLectureData.length; i++) {
+        if (myLectureData[i].url === url) {
+          json.metadata.title = myLectureData[i].title + ' - ';
+          for (let j = 0; j < myLectureData[i].speakers.length; j++) {
+            json.metadata.title += myLectureData[i].speakers[j];
+            if (myLectureData[i].speakers.length >= 2) {
+              json.metadata.title += ', ';
+            }
+          }
+
+          // 두 번째 방법 (수정 후)
+          myLectureInfo[i]['videoimg'] = json.metadata.image;
           break;
         }
       }
@@ -98,13 +123,13 @@ function LectureCard({lectureData, setLectureData}) {
                     justifyContent="center"
                     alignItems="center"
                     >
-                    {lectureData.map((data, index) => (
+                    {myLectureData.map((data, index) => (
                       <Grid item xs="auto"  key={index}>
                         <Item>
                           <div>
-                            <LinkPreview url={data.url} fetcher={customFetcher} width='300px' height='250px' fallback={<div>Fallback</div>} />
+                            <LinkPreview url={data.url} fetcher={myCustomFetcher} width='300px' height='250px' fallback={<div>Fallback</div>} />
                           </div>
-                          <LectureInfo videoInfo={lectureInfo[index]}></LectureInfo>
+                          <LectureInfo videoInfo={myLectureInfo[index]}></LectureInfo>
                         </Item>
                       </Grid>
                     ))}
