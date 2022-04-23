@@ -104,7 +104,7 @@ const TalkSchema = new Schema(
     //   required: true,
     // },
   },
-  { timestamps: true, collection: "talk" }
+  { timestamps: true }
 );
 
 const TalkModel = model("Talk", TalkSchema);

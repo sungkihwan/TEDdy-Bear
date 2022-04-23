@@ -12,7 +12,7 @@ const TopicSchema = new Schema(
       ref: 'Talk',
     },
   },
-  { timestamps: true, collection: "topic" }
+  { timestamps: true }
 );
 
 const TopicModel = model("Topic", TopicSchema);
