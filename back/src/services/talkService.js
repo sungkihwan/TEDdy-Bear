@@ -26,11 +26,9 @@ class talkService {
         return randomTalks
     }
     
-    static async getMyTalk({ size, user_id }) {
-        const talkSize = 4
-        
+    static async getMyTalk({ size, user_id }) {        
         const myTopics = ['technology', 'computers'] // 임시 데이터: 사용자 관심 주제
-        const myTalk = await Talk.findManyRandom(myTopics, talkSize)
+        const myTalk = await Talk.findManyRandom(myTopics, size)
 
         return myTalk
     }

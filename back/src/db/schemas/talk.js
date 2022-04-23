@@ -10,38 +10,43 @@ import { Schema, model } from "mongoose";
  * @swagger
  * components:
  *  schemas:
- *    User:
+ *    Talk:
  *      type: object
  *      properties:
  *        talk_id:
- *          type: Number
+ *          type: number
  *        title:
  *          type: string
  *        speakers:
- *          type: string
- *        password:
- *          type: string
+ *          type: array
+ *          items:
+ *            type: string
  *        author:
  *          type: string
  *        description:
  *          type: string
  *        topics:
- *          type: string
+ *          type: array
+ *          items:
+ *            type: string
  *        teddy_views:
- *          type: string
+ *          type: number
  *        teddy_likes:
- *          type: string
+ *          type: number
  *        url:
  *          type: string
  *        native_lang:
- *          type: string
+  *          type: array
+ *          items:
+ *            type: string
  *        available_lang:
- *          type: string
+  *          type: array
+ *          items:
+ *            type: string
  *        published_date:
  *          type: string
  *        duration:
  *          type: string
- * 
  */
 
 const TalkSchema = new Schema(
