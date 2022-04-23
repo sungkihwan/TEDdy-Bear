@@ -5,17 +5,17 @@ class Talk {
     return TalkModel.findOne({ talk_id: talk_id });
   }
 
-  static findAll({ perPage, page }) {
-    return TalkModel.find({})
-      .skip(perPage * (page - 1))
-      .limit(perPage);
-  }
+  // static findAll({ perPage, page }) {
+  //   return TalkModel.find({})
+  //     .skip(perPage * (page - 1))
+  //     .limit(perPage);
+  // }
 
-  static findManyRandom(myTopics, size) {
+  static findManyRandom(topics, size) {
     return TalkModel.aggregate([
       {
         $match: {
-          topics: { $in: myTopics },
+          topics: { $in: topics },
         },
       },
       { $sample: { size: size } },
