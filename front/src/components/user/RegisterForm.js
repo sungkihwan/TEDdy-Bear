@@ -129,16 +129,6 @@ function RegisterForm() {
     "건강",
   ];
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setUserTopics(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 4 }}>
@@ -238,12 +228,16 @@ function RegisterForm() {
                         좋아하는 주제가 있나요?
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} justifyContent="center">
                       <Autocomplete
                         multiple
                         id="tags-outlined"
                         options={topTopics}
                         defaultValue={[topTopics[0]]}
+                        value={userTopics}
+                        onChange={(event, newValue) => {
+                          setUserTopics(newValue);
+                        }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -252,15 +246,16 @@ function RegisterForm() {
                           />
                         )}
                       />
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                        margin="normal"
-                        sx={{ mt: 2 }}
-                      >
-                        (좋아할만한 주제를 미리 골라뒀어요!)
-                      </Typography>
+                      <Grid item>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          sx={{ mt: 2 }}
+                        >
+                          (혹시 몰라 좋아할만한 주제를 미리 골라뒀어요!)
+                        </Typography>
+                      </Grid>
                     </Grid>
                   </Grid>
                 )}
@@ -324,32 +319,5 @@ function RegisterForm() {
       </Grid>
     </ThemeProvider>
   );
-  // import React, { useState } from "react";
-  // import { useNavigate } from "react-router-dom";
-  // import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
-  // import * as Api from "../../api";
-
-  // function RegisterForm() {
-  //   const navigate = useNavigate();
-  //   // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
-
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-
-  //     try {
-  //       // "user/register" 엔드포인트로 post요청함.
-  //       await Api.post("user/register", {
-  //         email,
-  //         password,
-  //         name,
-  //       });
-
-  //       // 로그인 페이지로 이동함.
-  //       navigate("/login");
-  //     } catch (err) {
-  //       console.log("회원가입에 실패하였습니다.", err);
-  //     }
-  //   };
 }
 export default RegisterForm;
