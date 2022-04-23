@@ -33,6 +33,8 @@ function RegisterForm() {
         email,
         password,
         name,
+        bear_name: tName,
+        myTopic: userTopics.slice(1),
       });
       console.log("회원가입에 성공했습니다.");
       // 로그인 페이지로 이동함.
