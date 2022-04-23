@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Prologue() {
   const navigate = useNavigate();
   return (
-    <div style={{width:'100%', height:'100%', border: '2px solid red', marginTop: 100}}>
+    <div style={{width:'100%', height:'100%', marginTop: 100}}>
       <SpeakerChart></SpeakerChart>
       <TopicChart></TopicChart>
       <TopicLikeChart></TopicLikeChart>

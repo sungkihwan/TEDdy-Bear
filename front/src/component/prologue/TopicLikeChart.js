@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 
@@ -45,8 +45,8 @@ function TopicLikeChart() {
         return null;
     };
     return (
-        <div style={{border: '2px solid gray', marginTop: 10, display:'flex', justifyContent: 'space-around'}}>
-            <div style={{border: '2px solid black'}}>
+        <div style={{marginTop: 10, display:'flex', justifyContent: 'space-around'}}>
+            <div>
             <PieChart width={800} height={800}>
                 <Pie data={data} color="#000000" dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={300} fill="#8884d8" label={renderCustomizedLabel}>
                     {

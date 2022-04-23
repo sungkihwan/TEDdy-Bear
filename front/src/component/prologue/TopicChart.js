@@ -190,13 +190,13 @@ function TopicChart() {
     }
 
     return (
-        <div style={{border: '2px solid orange', marginTop: 10, display:'flex', justifyContent: 'space-around'}}>
+        <div style={{marginTop: 10, display:'flex', justifyContent: 'space-around'}}>
             <div>
                 <h2>다양한 주제의 강연들이 있습니다.</h2>
                 <h4>다양한 주제 속에서 관심 있는 주제의 강연들을 찾아보세요</h4>
                 <h4>다양한 주제로 이루어진 강연을 통해 교양 지식을 얻을 수 있습니다.</h4>
             </div>
-            <div style={{ height: 600, width: 1000, border: '2px solid purple'}}>
+            <div style={{ height: 600, width: 1000}}>
                 <ReactWordcloud options={options} words={words} />
             </div>
         </div>

@@ -59,7 +59,6 @@ function SpeakerChart() {
     return (
       <div
         style={{
-          border: "solid 2px black",
           width: "100%",
           height: 630,
           display: "flex",
@@ -70,7 +69,6 @@ function SpeakerChart() {
           style={{
             width: "60%",
             height: "100%",
-            border: "solid 2px blue",
           }}
         >
           <ResponsiveContainer width="100%" height="90%">
@@ -107,7 +105,7 @@ function SpeakerChart() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div style={{ border: "2px solid green" }}>
+        <div>
           <h2>다양한 직업의 연사들이 강연을 합니다.</h2>
           <h4>
             다양한 직업을 가진 연사들이 TED에서 강연 활동을 하고 있습니다.
