@@ -3,11 +3,54 @@
  *
  * 클라이언트로부터 넘어온 정보들을 viewHistoryService에 넘겨주고, 해당 작업에 맞는 return을 받아서 클라이언트로 보내준다.
  */
+
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { ViewHistoryService } from '../services/viewHistoryService';
 
 const viewHistoryRouter = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: view history
+ *   description: 시청목록 조회
+ */
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    ViewHistory:
+ *      type: object
+ *      properties:
+ *        user_id:
+ *          type: string
+ *        talkId:
+ *          type: string
+ *        createdAt: 
+ *          type: date
+ *        updatedAt: 
+ *          type: date
+
+ */
+
+/**
+ * @swagger
+ *
+ * /viewhistory/create:
+ *  post:
+ *    summary: "시청기록 추가"
+ *    description: "POST 방식으로 시청기록을 추가, 동영상 링크를 누르면 호출"
+ *    tags: [viewhistory]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#components/schemas/ViewHistory'
+ */
+
 viewHistoryRouter.use(login_required);
 
 // viewHistory를 만드는 router api (링크 클릭시 호출)
@@ -31,6 +74,29 @@ viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
   }
 });
 
+/**
+ * @swagger
+ * /viewhistories/{id}:
+ *  get:
+ *    summary: "시청기록 id를 통한 시청기록 조회"
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [viewhistory]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: 시청목록 id
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#components/schemas/ViewHistory'
+ */
+
 // 해당 viewHistoryId에 맞는 viewhistory 조회
 viewHistoryRouter.get('/viewhistories/:id', async function (req, res, next) {
   try {
@@ -45,9 +111,34 @@ viewHistoryRouter.get('/viewhistories/:id', async function (req, res, next) {
   }
 });
 
+/**
+ * @swagger
+ * /viewhistorylist/{user_id}:
+ *  get:
+ *    summary: "유저 아이디를 통한 전체 시청목록 조회 "
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [viewhistory]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: 시청목록 id
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/ViewHistory'
+ */
+
 // user_id에 알맞는 사용자의 viewhistory 리스트를 조회
 viewHistoryRouter.get(
-  '/viewHistorylist/:user_id',
+  '/viewhistorylist/:user_id',
   async function (req, res, next) {
     try {
       const currentUserId = req.currentUserId;
@@ -65,8 +156,37 @@ viewHistoryRouter.get(
   }
 );
 
+/**
+ * @swagger
+ * /viewhistorydatelist/{user_id}/{date}:
+ *  get:
+ *    summary: "유저 아이디와 날짜를 통한 날짜별 유저목록 조회 "
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [viewhistory]
+ *    parameters:
+ *      - in: path
+ *        name: user_id
+ *        required: true
+ *        description: 유저 아이디
+ *      - in: path
+ *        name: date
+ *        required: true
+ *        description: yyyymmdd
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/ViewHistory'
+ */
+
 viewHistoryRouter.get(
-  '/viewHistoryDatelist/:user_id/:date',
+  '/viewhistorydatelist/:user_id/:date',
   async function (req, res, next) {
     try {
       const user_id = req.params.user_id;
