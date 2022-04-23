@@ -12,44 +12,38 @@ import Card from "@mui/material/Card";
 import { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
-
-// import * as Api from "../../api";
-// import { DispatchContext } from "../../App";
+import { useNavigate } from "react-router-dom";
+import * as Api from "../../api";
 
 function RegisterForm() {
-  //   const navigate = useNavigate();
-  //   const dispatch = useContext(DispatchContext);
-
-  //     try {
-  //       // "user/login" 엔드포인트로 post요청함.
-  //       const res = await Api.post("user/login", {
-  //         email,
-  //         password,
-  //       });
-  //       // 유저 정보는 response의 data임.
-  //       const user = res.data;
-  //       // JWT 토큰은 유저 정보의 token임.
-  //       const jwtToken = user.token;
-  //       // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
-  //       sessionStorage.setItem("userToken", jwtToken);
-  //       // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
-  //       dispatch({
-  //         type: "LOGIN_SUCCESS",
-  //         payload: user,
-  //       });
-
-  //       // 기본 페이지로 이동함.
-  //       navigate("/", { replace: true });
-  //     } catch (err) {
-  //       console.log("로그인에 실패하였습니다.\n", err);
-  //     }
-  //   };
-  const theme = createTheme();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [tName, setTName] = useState("테디");
+  const [tempPage, setTempPage] = useState(1);
+  const [userTopics, setUserTopics] = useState(["테디 곰!"]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // "user/register" 엔드포인트로 post요청함.
+      await Api.post("user/register", {
+        email,
+        password,
+        name,
+      });
+      console.log("회원가입에 성공했습니다.");
+      // 로그인 페이지로 이동함.
+      navigate("/login");
+    } catch (err) {
+      console.log("회원가입에 실패하였습니다.", err);
+    }
+  };
+
+  const theme = createTheme();
 
   const validateEmail = (email) => {
     return email
@@ -58,18 +52,10 @@ function RegisterForm() {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
+
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
-  const [tempPage, setTempPage] = useState(1);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log({
-      email: email,
-      password: password,
-    });
-  };
 
   const PrevButton = () => {
     if (tempPage !== 1) {
@@ -112,6 +98,7 @@ function RegisterForm() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             disabled={!isFormValid}
+            onClick={handleSubmit}
           >
             회원가입
           </Button>
@@ -144,7 +131,12 @@ function RegisterForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 4 }}>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        sx={{ marginTop: 12 }}
+      >
         <Box sx={{ marginTop: "auto", marginBottom: "auto" }}>
           <Card sx={{ alignItems: "center" }}>
             <img
@@ -241,12 +233,16 @@ function RegisterForm() {
                         좋아하는 주제가 있나요?
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} justifyContent="center">
                       <Autocomplete
                         multiple
                         id="tags-outlined"
                         options={topTopics}
                         defaultValue={[topTopics[0]]}
+                        value={userTopics}
+                        onChange={(event, newValue) => {
+                          setUserTopics(newValue);
+                        }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -255,15 +251,16 @@ function RegisterForm() {
                           />
                         )}
                       />
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                        margin="normal"
-                        sx={{ mt: 2 }}
-                      >
-                        (좋아할만한 주제를 미리 골라뒀어요!)
-                      </Typography>
+                      <Grid item>
+                        <Typography
+                          variant="caption"
+                          display="block"
+                          gutterBottom
+                          sx={{ mt: 2 }}
+                        >
+                          (혹시 몰라 좋아할만한 주제를 미리 골라뒀어요!)
+                        </Typography>
+                      </Grid>
                     </Grid>
                   </Grid>
                 )}
@@ -315,7 +312,7 @@ function RegisterForm() {
                 </Grid>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="/Login" variant="body2">
+                    <Link variant="body2" onClick={() => navigate("/Login")}>
                       이미 계정이 있나요?
                     </Link>
                   </Grid>
@@ -327,32 +324,5 @@ function RegisterForm() {
       </Grid>
     </ThemeProvider>
   );
-  // import React, { useState } from "react";
-  // import { useNavigate } from "react-router-dom";
-  // import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
-  // import * as Api from "../../api";
-
-  // function RegisterForm() {
-  //   const navigate = useNavigate();
-  //   // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
-
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-
-  //     try {
-  //       // "user/register" 엔드포인트로 post요청함.
-  //       await Api.post("user/register", {
-  //         email,
-  //         password,
-  //         name,
-  //       });
-
-  //       // 로그인 페이지로 이동함.
-  //       navigate("/login");
-  //     } catch (err) {
-  //       console.log("회원가입에 실패하였습니다.", err);
-  //     }
-  //   };
 }
 export default RegisterForm;
