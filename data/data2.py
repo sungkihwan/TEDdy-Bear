@@ -15,10 +15,6 @@ collection = db['datas']
 ######################################### 메인페이지 스튜던트 스터디 아워 #############################
 student = pd.read_csv('./student.csv')
 
-student['Hours'] = student.apply(lambda x: x['Scores'], axis=1)
-
-print(student)
-
 student = student.sort_values(by='Hours').values # Hours, Scores
 
 students = {'hours':[], 'scores': []}
