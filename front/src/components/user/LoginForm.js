@@ -158,7 +158,7 @@ function LoginForm() {
                 </Button>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="/Register" variant="body2">
+                    <Link href="/register" variant="body2">
                       테디곰과 함께 공부할래요?
                     </Link>
                   </Grid>
