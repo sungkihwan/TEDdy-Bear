@@ -1,6 +1,5 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -23,7 +22,7 @@ function RegisterForm() {
   const [name, setName] = useState("");
   const [tName, setTName] = useState("테디");
   const [tempPage, setTempPage] = useState(1);
-  const [userTopics, setUserTopics] = useState(["테디 곰!"]);
+  const [userTopics, setUserTopics] = useState(["테디곰!"]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +33,8 @@ function RegisterForm() {
         email,
         password,
         name,
+        bear_name: tName,
+        myTopic: userTopics.slice(1),
       });
       console.log("회원가입에 성공했습니다.");
       // 로그인 페이지로 이동함.
@@ -56,55 +57,65 @@ function RegisterForm() {
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
+  const isNameValid = name.length >= 4 && tName.length >= 4;
 
-  const PrevButton = () => {
-    if (tempPage !== 1) {
-      return (
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={() => {
-              setTempPage(tempPage - 1);
-            }}
-          >
-            이전
-          </Button>
-        </Grid>
-      );
-    }
-  };
+  const Buttons = () => {
+    const PrevButton = () => {
+      if (tempPage !== 1) {
+        return (
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{ mt: 1, mb: 2 }}
+              onClick={() => {
+                setTempPage(tempPage - 1);
+              }}
+            >
+              이전
+            </Button>
+          </Grid>
+        );
+      }
+    };
 
-  const NextButton = () => {
-    if (tempPage < 3) {
-      return (
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{ mt: 1, mb: 2 }}
-            disabled={!isFormValid}
-            onClick={() => {
-              setTempPage(tempPage + 1);
-            }}
-          >
-            다음
-          </Button>
-        </Grid>
-      );
-    } else if (tempPage <= 3) {
-      return (
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{ mt: 1, mb: 2 }}
-            disabled={!isFormValid}
-            onClick={handleSubmit}
-          >
-            회원가입
-          </Button>
-        </Grid>
-      );
-    }
+    const NextButton = () => {
+      if (tempPage < 3) {
+        return (
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{ mt: 1, mb: 2 }}
+              disabled={!isFormValid}
+              onClick={() => {
+                setTempPage(tempPage + 1);
+              }}
+            >
+              다음
+            </Button>
+          </Grid>
+        );
+      } else if (tempPage <= 3) {
+        return (
+          <Grid item>
+            <Button
+              variant="contained"
+              sx={{ mt: 1, mb: 2 }}
+              disabled={!isNameValid}
+              onClick={handleSubmit}
+            >
+              회원가입
+            </Button>
+          </Grid>
+        );
+      }
+    };
+
+    return (
+      <Grid container item spacing={4} justifyContent={pageChecker}>
+        <PrevButton />
+        <NextButton />
+      </Grid>
+    );
   };
 
   const pageChecker = () => {
@@ -256,7 +267,7 @@ function RegisterForm() {
                           variant="caption"
                           display="block"
                           gutterBottom
-                          sx={{ mt: 2 }}
+                          sx={{ mt: 1 }}
                         >
                           (혹시 몰라 좋아할만한 주제를 미리 골라뒀어요!)
                         </Typography>
@@ -301,13 +312,19 @@ function RegisterForm() {
                         onChange={(e) => setTName(e.target.value)}
                       />
                     </Grid>
+                    {!isNameValid && (
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        이름은 공백일 수 없습니다.
+                      </Typography>
+                    )}
                   </Grid>
                 )}
                 <Grid container item alignItems="flex-end">
-                  <Grid container item spacing={4} justifyContent={pageChecker}>
-                    <PrevButton />
-                    <NextButton />
-                  </Grid>
+                  <Buttons />
                   <Grid container justifyContent="center">
                     <Grid item>
                       <Chip label={`${tempPage} / 3`} color="primary" />

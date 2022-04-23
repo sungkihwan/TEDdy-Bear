@@ -5,7 +5,11 @@ import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 
-function Page4() {
+/** Fourth page component
+ *
+ * @returns {component} Fourth page
+ */
+export default function Page4() {
   const navigate = useNavigate();
   return (
     <Page>
@@ -26,8 +30,7 @@ function Page4() {
   );
 }
 
-export default Page4;
-
+//page style
 const Page = Styled.div`
   width: 98vw;
   height: 80vh;
@@ -36,6 +39,7 @@ const Page = Styled.div`
   align-items: center;
 `;
 
+//button style
 const GoButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(brown[500]),
   backgroundColor: brown[500],

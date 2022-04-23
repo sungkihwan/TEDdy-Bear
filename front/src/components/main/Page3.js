@@ -1,7 +1,11 @@
 import { MainText } from "../common/Style";
 import styled from "styled-components";
 
-function Page3() {
+/** Third page component
+ *
+ * @returns {component} Third page
+ */
+export default function Page3() {
   return (
     <Page>
       <div>대충 잔디밭 이미지</div>
@@ -15,8 +19,7 @@ function Page3() {
   );
 }
 
-export default Page3;
-
+//page style
 const Page = styled.div`
   width: 98vw;
   height: 80vh;

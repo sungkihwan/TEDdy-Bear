@@ -1,9 +1,14 @@
 import styled from "styled-components";
 
+/** Lawn component
+ *
+ * @returns {component} My lawn information
+ */
 export default function Lawn() {
   return <Page>잔디밭</Page>;
 }
 
+//page style
 const Page = styled.div`
   width: 98vw;
   height: 100vh;

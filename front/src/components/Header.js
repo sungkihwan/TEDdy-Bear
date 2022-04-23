@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { theme } from "./common/Style";
 import { useNavigate } from "react-router-dom";
+import { DispatchContext, UserStateContext } from "../App";
 
 /** header component
  *
@@ -9,14 +10,32 @@ import { useNavigate } from "react-router-dom";
  */
 export default function Header() {
   const navigate = useNavigate();
+  const userState = useContext(UserStateContext);
+  const dispatch = useContext(DispatchContext);
+
+  const isLogin = !!userState.user;
+
+  const logout = () => {
+    // delete sessionStorage JWT token
+    sessionStorage.removeItem("userToken");
+    // use dispatch, logout
+    dispatch({ type: "LOGOUT" });
+    // go to main page
+    navigate("/");
+  };
 
   return (
     <Nav>
       <Logo onClick={() => navigate("/")} src="/logo.png" />
       <Menu>
         <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
-        <Link onClick={() => navigate("/register")}>회원가입</Link>
-        <Link onClick={() => navigate("/login")}>로그인</Link>
+        {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
+        {isLogin && (
+          <>
+            <Link onClick={() => navigate("/mypage")}>내 정보</Link>
+            <Link onClick={logout}>로그아웃</Link>
+          </>
+        )}
       </Menu>
     </Nav>
   );
