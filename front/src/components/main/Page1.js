@@ -5,7 +5,6 @@ function Page1() {
   return (
     <Page>
       <img src="/book.gif" alt="book"></img>
-
       <MainText>
         <img src="/bear.png" alt="book" style={{ width: "10vw" }}></img>
         <p>TEDdy 곰이</p>

@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { theme } from "./common/Style";
 import { useNavigate } from "react-router-dom";
 
+/** header component
+ *
+ * @returns {component} header
+ */
 export default function Header() {
   const navigate = useNavigate();
 
@@ -18,6 +22,7 @@ export default function Header() {
   );
 }
 
+//nav style
 const Nav = styled.div`
   display: flex;
   align-items: center;
@@ -31,6 +36,7 @@ const Nav = styled.div`
   z-index: 2;
 `;
 
+//logo style
 const Logo = styled.img`
   width: 15vh;
   height: 5vh;
@@ -38,15 +44,16 @@ const Logo = styled.img`
   flex-shrink: 0;
 `;
 
-const Link = styled.div`
-  color: ${theme.brown.dark};
-  cursor: pointer;
-  margin: 0 10px;
-`;
-
+//menu style
 const Menu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-grow: 1;
+`;
+
+const Link = styled.div`
+  color: ${theme.brown.dark};
+  cursor: pointer;
+  margin: 0 10px;
 `;
