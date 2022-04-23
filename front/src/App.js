@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Main from "./component/main/Main";
-import MyPage from "./component/my_page/MyPage";
-import Prologue from "./component/prologue/Prologue";
-import LoginForm from "./component/user/LoginForm";
-import RegisterForm from "./component/user/RegisterForm";
+import Main from "./components/main/Main";
+import MyPage from "./components/my_page/MyPage";
+import Prologue from "./components/prologue/Prologue";
+import LoginForm from "./components/user/LoginForm";
+import RegisterForm from "./components/user/RegisterForm";
 
 function App() {
   return (
