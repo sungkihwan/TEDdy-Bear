@@ -1,7 +1,11 @@
 import { MainText } from "../common/Style";
 import styled from "styled-components";
 
-function Page1() {
+/** First page component
+ *
+ * @returns {component} First page
+ */
+export default function Page1() {
   return (
     <Page>
       <img src="/book.gif" alt="book"></img>
@@ -17,8 +21,7 @@ function Page1() {
   );
 }
 
-export default Page1;
-
+//page style
 const Page = styled.div`
   width: 98vw;
   height: 80vh;

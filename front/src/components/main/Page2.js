@@ -1,7 +1,11 @@
 import { MainText } from "../common/Style";
 import styled from "styled-components";
 
-function Page2() {
+/** Second page component
+ *
+ * @returns {component} Second page
+ */
+export default function Page2() {
   return (
     <Page>
       <MainText>
@@ -19,8 +23,7 @@ function Page2() {
   );
 }
 
-export default Page2;
-
+//page style
 const Page = styled.div`
   width: 98vw;
   height: 80vh;

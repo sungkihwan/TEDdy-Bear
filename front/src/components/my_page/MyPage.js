@@ -3,7 +3,11 @@ import styled from "styled-components";
 import Bear from "./Bear";
 import Lawn from "./Lawn";
 
-function MyPage() {
+/** My page component
+ *
+ * @returns {component} My page
+ */
+export default function MyPage() {
   return (
     <>
       <Page>
@@ -15,8 +19,7 @@ function MyPage() {
   );
 }
 
-export default MyPage;
-
+//page style
 const Page = styled.div`
   width: 98vw;
   display: flex;
