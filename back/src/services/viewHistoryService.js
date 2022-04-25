@@ -5,15 +5,15 @@
  */
 
 import { ViewHistory } from '../db';
-// import { V4 as uuidv4 } from 'uuid';
-const { uuid } = require('uuidv4');
+import { v4 as uuidv4 } from 'uuid';
+// const { uuid } = require('uuidv4');
 import { utile } from './utile';
 
 class ViewHistoryService {
   // addViewHistory()
   // user_id, talkId, url, title를 받아서 새로운 viewHistory 추가
   static async addViewHistory({ user_id, talkId }) {
-    const id = uuid();
+    const id = uuidv4();
     const newViewHistory = { user_id, id, talkId };
 
     //db에 저장
