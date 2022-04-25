@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { brown } from "@mui/material/colors";
-import { theme } from "../common/Style";
+import { theme } from "../../style/Style";
 
 const textColor = { color: theme.brown.dark };
 
@@ -35,17 +35,14 @@ export default function Bear() {
 
   //click button, execute a function
   const click = () => {
-    if (cotton !== 0) {
-      setExp((cur) => cur + 1);
-      setCotton((cur) => cur - 1);
-      console.log(exp);
-    }
-
     if (cotton === 0) {
       alert("솜이 부족합니다!");
       setCotton(0);
-      return;
+    } else {
+      setExp((cur) => cur + 1);
+      setCotton((cur) => cur - 1);
     }
+    return;
   };
   return (
     <div style={{ marginTop: "10vh" }}>

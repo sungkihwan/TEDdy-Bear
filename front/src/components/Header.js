@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { theme } from "./common/Style";
+import { theme } from "../style/Style";
 import { useNavigate } from "react-router-dom";
 import { DispatchContext, UserStateContext } from "../App";
 
@@ -33,7 +33,9 @@ export default function Header() {
         {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
         {isLogin && (
           <>
-            <Link onClick={() => navigate("/mypage")}>내 정보</Link>
+            <Link onClick={() => navigate("/users/" + userState.user.id)}>
+              내 정보
+            </Link>
             <Link onClick={logout}>로그아웃</Link>
           </>
         )}
