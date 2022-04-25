@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 
 class userAuthService {
-  static async addUser({ name, email, password, bear_name, myTopics }) {
+  static async addUser({ name, email, password, bearName, myTopics }) {
     // 이메일 중복 확인
     const user = await User.findByEmail({ email });
     if (user) {
@@ -23,7 +23,7 @@ class userAuthService {
       name,
       email,
       password: hashedPassword,
-      bear_name,
+      bearName,
       myTopics,
     };
 
@@ -62,7 +62,7 @@ class userAuthService {
     // 반환할 loginuser 객체를 위한 변수 설정
     const id = user.id;
     const name = user.name;
-    const bear_name = user.bear_name;
+    const bearName = user.bearName;
     const myTopics = user.myTopics;
 
     const loginUser = {
@@ -70,7 +70,7 @@ class userAuthService {
       id,
       email,
       name,
-      bear_name,
+      bearName,
       myTopics,
       errorMessage: null,
     };
@@ -92,7 +92,7 @@ class userAuthService {
     if (!toUpdate.name) delete toUpdate.name;
     if (!toUpdate.email) delete toUpdate.email;
     if (!toUpdate.password) delete toUpdate.password;
-    if (!toUpdate.bear_name) delete toUpdate.bear_name;
+    if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
 
     return await User.updateById({ user_id, toUpdate });

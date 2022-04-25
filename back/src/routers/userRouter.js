@@ -27,7 +27,7 @@ const userAuthRouter = Router();
  *          type: string
  *        password:
  *          type: string
- *        bear_name:
+ *        bearName:
  *          type: string
  *        myTopics:
  *          type: array
@@ -81,7 +81,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const bear_name = req.body.bear_name;
+    const bearName = req.body.bearName;
     const myTopics = req.body.myTopics;
 
     // 위 데이터를 유저 db에 추가하기
@@ -89,7 +89,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
       name,
       email,
       password,
-      bear_name,
+      bearName,
       myTopics,
     });
 
@@ -241,10 +241,10 @@ userAuthRouter.put(
       const name = req.body.name ?? null;
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
-      const bear_name = req.body.bear_name ?? null;
+      const bearName = req.body.bearName ?? null;
       const myTopics = req.body.myTopics ?? null;
 
-      const toUpdate = { name, email, password, bear_name, myTopics };
+      const toUpdate = { name, email, password, bearName, myTopics };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({
