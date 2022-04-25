@@ -13,6 +13,9 @@ import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
+import Account from "./Account";
+import TeddyImage from "./TeddyImage";
+import UserTopics from "./UserTopics";
 
 function RegisterForm() {
   const navigate = useNavigate();
@@ -47,17 +50,19 @@ function RegisterForm() {
   const theme = createTheme();
 
   const validateEmail = (email) => {
-    return email
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
+    if (email !== "") {
+      return email
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    }
+    return false;
   };
-
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
-  const isNameValid = name.length >= 4 && tName.length >= 4;
+  const isNameValid = name.length >= 0 && tName.length >= 0;
 
   const Buttons = () => {
     const PrevButton = () => {
@@ -97,12 +102,7 @@ function RegisterForm() {
       } else if (tempPage <= 3) {
         return (
           <Grid item>
-            <Button
-              variant="contained"
-              sx={{ mt: 1, mb: 2 }}
-              disabled={!isNameValid}
-              onClick={handleSubmit}
-            >
+            <Button variant="contained" sx={{ mt: 1, mb: 2 }} disabled={!isNameValid} onClick={handleSubmit}>
               회원가입
             </Button>
           </Grid>
@@ -126,38 +126,10 @@ function RegisterForm() {
     }
   };
 
-  const topTopics = [
-    "테디곰!",
-    "기술",
-    "과학",
-    "문화",
-    "글로벌 이슈",
-    "사회",
-    "디자인",
-    "사회변화",
-    "비즈니스",
-    "애니메이션",
-    "건강",
-  ];
-
   return (
     <ThemeProvider theme={theme}>
-      <Grid
-        container
-        justifyContent="center"
-        spacing={2}
-        sx={{ marginTop: 12 }}
-        alignItems="stretch"
-      >
-        <Box sx={{ marginTop: "auto", marginBottom: "auto" }}>
-          <Card sx={{ alignItems: "center" }}>
-            <img
-              src="https://image.shutterstock.com/image-photo/cute-teddy-bear-isolated-on-600w-2022108608.jpg"
-              alt="Teddy Bear"
-              loading="lazy"
-            />
-          </Card>
-        </Box>
+      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 12 }} alignItems="stretch">
+        <TeddyImage />
         <Card>
           <Container component="main" maxWidth="xs">
             <Box
@@ -168,120 +140,20 @@ function RegisterForm() {
                 alignItems: "center",
               }}
             >
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 3 }}
-              >
+              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 {tempPage === 1 && (
-                  <Grid
-                    container
-                    spacing={2}
-                    sx={{ alignItems: "center" }}
-                    justifyContent="center"
-                  >
+                  <Grid container spacing={2} sx={{ alignItems: "center" }} justifyContent="center">
                     <Grid item sx={{ mb: 2 }}>
                       <Typography component="h1" variant="h5">
                         테디 곰의 가족이 되어주세요!
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        label="이메일"
-                        name="email"
-                        value={email}
-                        autoComplete="email"
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      {!isEmailValid && (
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                        >
-                          이메일 형식이 올바르지 않습니다.
-                        </Typography>
-                      )}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="비밀번호"
-                        type="password"
-                        id="password"
-                        value={password}
-                        autoComplete="new-password"
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                      {!isPasswordValid && (
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          margin="normal"
-                        >
-                          비밀번호는 4글자 이상입니다.
-                        </Typography>
-                      )}
-                    </Grid>
+                    <Account email={email} setEmail={setEmail} password={password} setPassword={setPassword} />
                   </Grid>
                 )}
-                {tempPage === 2 && (
-                  <Grid
-                    container
-                    spacing={2}
-                    sx={{ alignItems: "center" }}
-                    justifyContent="center"
-                  >
-                    <Grid item sx={{ mb: 2 }}>
-                      <Typography component="h1" variant="h5">
-                        좋아하는 주제가 있나요?
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} justifyContent="center">
-                      <Autocomplete
-                        multiple
-                        id="tags-outlined"
-                        options={topTopics}
-                        defaultValue={[topTopics[0]]}
-                        value={userTopics}
-                        onChange={(event, newValue) => {
-                          setUserTopics(newValue);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="주제"
-                            placeholder="고르지 않으셔도 돼요 :)"
-                          />
-                        )}
-                      />
-                      <Grid item>
-                        <Typography
-                          variant="caption"
-                          display="block"
-                          gutterBottom
-                          sx={{ mt: 1 }}
-                        >
-                          (혹시 몰라 좋아할만한 주제를 미리 골라뒀어요!)
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                )}
+                {tempPage === 2 && <UserTopics />}
                 {tempPage === 3 && (
-                  <Grid
-                    container
-                    spacing={2}
-                    sx={{ alignItems: "center" }}
-                    justifyContent="center"
-                  >
+                  <Grid container spacing={2} sx={{ alignItems: "center" }} justifyContent="center">
                     <Grid item sx={{ mb: 2 }}>
                       <Typography component="h1" variant="h5">
                         당신과 테디 곰의 이름을 알려주세요
@@ -313,11 +185,7 @@ function RegisterForm() {
                       />
                     </Grid>
                     {!isNameValid && (
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
+                      <Typography variant="caption" display="block" gutterBottom>
                         이름은 공백일 수 없습니다.
                       </Typography>
                     )}
