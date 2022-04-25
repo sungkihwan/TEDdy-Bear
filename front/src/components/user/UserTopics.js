@@ -5,7 +5,19 @@ import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 
 function UserTopics({ userTopics, setUserTopics }) {
-  const topTopics = ["테디곰!", "기술", "과학", "문화", "글로벌 이슈", "사회", "디자인", "사회변화", "비즈니스", "애니메이션", "건강"];
+  const topTopics = [
+    ["테디곰!", "TEDdy Bear"],
+    ["기술", "technology"],
+    ["과학", "science"],
+    ["문화", "culture"],
+    ["글로벌이슈", "globalissues"],
+    ["사회", "society"],
+    ["디자인", "design"],
+    ["사회변화", "socialchange"],
+    ["비즈니스", "business"],
+    ["애니메이션", "animation"],
+    ["건강", "health"],
+  ];
 
   return (
     <Grid container spacing={2} sx={{ alignItems: "center" }} justifyContent="center">
@@ -18,7 +30,7 @@ function UserTopics({ userTopics, setUserTopics }) {
         <Autocomplete
           multiple
           id="tags-outlined"
-          options={topTopics}
+          options={topTopics.map((topic) => topic[0])}
           defaultValue={[topTopics[0]]}
           value={userTopics}
           onChange={(event, newValue) => {

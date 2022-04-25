@@ -29,6 +29,19 @@ function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const topicDict = {
+      기술: "technology",
+      과학: "science",
+      문화: "culture",
+      글로벌이슈: "globalissues",
+      사회: "society",
+      디자인: "design",
+      사회변화: "socialchange",
+      비즈니스: "business",
+      애니메이션: "animation",
+      건강: "health",
+    };
+
     try {
       // "user/register" 엔드포인트로 post요청함.
       await Api.post("user/register", {
@@ -36,7 +49,7 @@ function RegisterForm() {
         password,
         name,
         bear_name: tName,
-        myTopic: userTopics.slice(1),
+        myTopic: userTopics.slice(1).map((topic) => topicDict[topic]),
       });
       console.log("회원가입에 성공했습니다.");
       // 로그인 페이지로 이동함.
