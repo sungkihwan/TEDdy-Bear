@@ -81,7 +81,14 @@ function LoginForm() {
                 오늘도 와주셨군요!
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                <Account email={email} setEmail={setEmail} password={password} setPassword={setPassword} />
+                <Account
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  isEmailValid={isEmailValid}
+                  isPasswordValid={isPasswordValid}
+                />
                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={!isFormValid}>
                   로그인
                 </Button>

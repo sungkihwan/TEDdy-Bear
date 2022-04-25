@@ -2,26 +2,11 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-function Account({ email, setEmail, password, setPassword }) {
-  const validateEmail = (email) => {
-    if (email !== "") {
-      return email
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-    }
-    return false;
-  };
-
-  const isEmailValid = validateEmail(email);
-  const isPasswordValid = password.length >= 4;
-  const isFormValid = isEmailValid && isPasswordValid;
-
+function Account({ email, setEmail, password, setPassword, isEmailValid, isPasswordValid }) {
   return (
     <Grid container spacing={2} sx={{ alignItems: "center" }}>
       <Grid item xs={12}>
-        <TextField required fullWidth id="email" label="이메일" name="email" autoComplete="email" onChange={(e) => setEmail(e.target.value)} />
+        <TextField required fullWidth id="email" label="이메일" name="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         {!isEmailValid && (
           <Typography variant="caption" display="block" gutterBottom>
             이메일 형식이 올바르지 않습니다.
@@ -34,6 +19,7 @@ function Account({ email, setEmail, password, setPassword }) {
           fullWidth
           name="password"
           label="비밀번호"
+          value={password}
           type="password"
           id="password"
           autoComplete="new-password"
