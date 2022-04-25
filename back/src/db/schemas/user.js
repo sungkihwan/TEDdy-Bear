@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const UserSchema = new Schema(
   {
@@ -18,12 +18,20 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    bear_name: {
+      type: String,
+      required: true,
+    },
+    myTopics: {
+      type: Array,
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const UserModel = model('User', UserSchema);
+const UserModel = model("User", UserSchema);
 
 export { UserModel };
