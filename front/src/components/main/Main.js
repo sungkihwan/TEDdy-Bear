@@ -1,7 +1,7 @@
-import Page1 from "./Page1";
-import Page2 from "./Page2";
-import Page3 from "./Page3";
-import Page4 from "./Page4";
+import Description1 from "./Description1";
+import Description2 from "./Description2";
+import Description3 from "./Description3";
+import Description4 from "./Description4";
 
 /** Main pages component
  *
@@ -11,10 +11,10 @@ export default function Main() {
   return (
     <>
       <div style={{ position: "relative", marginTop: "10vh" }}>
-        <Page1 />
-        <Page2 />
-        <Page3 />
-        <Page4 />
+        <Description1 />
+        <Description2 />
+        <Description3 />
+        <Description4 />
       </div>
     </>
   );
