@@ -6,7 +6,6 @@
 
 import { ViewHistory } from '../db';
 import { v4 as uuidv4 } from 'uuid';
-// const { uuid } = require('uuidv4');
 import { utile } from './utile';
 
 class ViewHistoryService {
