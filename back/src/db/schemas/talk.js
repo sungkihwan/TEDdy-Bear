@@ -13,7 +13,7 @@ import { Schema, model } from "mongoose";
  *    Talk:
  *      type: object
  *      properties:
- *        talk_id:
+ *        id:
  *          type: number
  *        title:
  *          type: string
@@ -29,17 +29,17 @@ import { Schema, model } from "mongoose";
  *          type: array
  *          items:
  *            type: string
- *        teddy_views:
+ *        teddy_view_count:
  *          type: number
- *        teddy_likes:
+ *        teddy_like_count:
  *          type: number
  *        url:
  *          type: string
- *        native_lang:
+ *        native_languages:
   *          type: array
  *          items:
  *            type: string
- *        available_lang:
+ *        available_languages:
   *          type: array
  *          items:
  *            type: string
@@ -51,7 +51,7 @@ import { Schema, model } from "mongoose";
 
 const TalkSchema = new Schema(
   {
-    talk_id: {
+    id: {
       type: Number,
       required: true,
       unique: true,
@@ -76,11 +76,11 @@ const TalkSchema = new Schema(
       type: Array,
       required: true,
     },
-    teddy_views: {
+    teddy_view_count: {
       type: Number,
       required: true,
     },
-    teddy_likes: {
+    teddy_like_count: {
       type: Number,
       required: true,
     },
@@ -88,11 +88,11 @@ const TalkSchema = new Schema(
       type: String,
       required: true,
     },
-    native_lang: {
+    native_languages: {
       type: Array,
       required: true,
     },
-    available_lang: {
+    available_languages: {
       type: Array,
       required: true,
     },
