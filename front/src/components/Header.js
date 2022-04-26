@@ -30,7 +30,6 @@ export default function Header() {
       <Menu>
         <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
         <Link onClick={() => navigate("/media")}>TEDdyTV📺</Link>
-
         {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
         {isLogin && (
           <>

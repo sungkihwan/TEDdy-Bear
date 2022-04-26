@@ -13,6 +13,7 @@ import { loginReducer } from "./reducer";
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import Community from "./components/user/Community";
+import Loading from "./components/common/Loading";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -53,7 +54,7 @@ function App() {
   }, []);
 
   if (!isFetchCompleted) {
-    return "loading...";
+    return <Loading />;
   }
 
   return (

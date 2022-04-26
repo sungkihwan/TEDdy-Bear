@@ -5,6 +5,7 @@ import Styled from "styled-components";
 import Box from "@mui/material/Box";
 import { brown } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import Loading from "../common/Loading";
 
 export default function Community() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
@@ -16,7 +17,6 @@ export default function Community() {
       // 이전에 발급받은 토큰이 있다면, 이를 가지고 유저 정보를 받아옴.
       const res = await Api.get("userlist");
       setUserList(res.data);
-      console.log(userList);
     } catch {
       console.log("유저리스트를 받을 수 없습니다.");
     }
@@ -30,7 +30,7 @@ export default function Community() {
   }, []);
 
   if (!isFetchCompleted) {
-    return "loading...";
+    return <Loading />;
   }
   return (
     <Page>

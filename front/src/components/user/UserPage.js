@@ -5,6 +5,7 @@ import * as Api from "../../api";
 import { useContext, useEffect, useState } from "react";
 import { UserStateContext } from "../../App";
 import { useParams } from "react-router-dom";
+import Loading from "../common/Loading";
 
 /** My page component
  *
@@ -22,6 +23,7 @@ export default function MyPage() {
     const res = await Api.get("users", ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
+    console.log(ownerData);
     setUser(ownerData);
     setIsFetchCompleted(true);
   };
@@ -41,7 +43,7 @@ export default function MyPage() {
   }, [params, userState]);
 
   if (!isFetchCompleted) {
-    return "loading...";
+    return <Loading />;
   }
 
   return (
