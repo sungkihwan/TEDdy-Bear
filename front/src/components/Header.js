@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { theme } from "./common/Style";
+import { theme } from "../style/Style";
 import { useNavigate } from "react-router-dom";
 import { DispatchContext, UserStateContext } from "../App";
 
@@ -30,10 +30,14 @@ export default function Header() {
       <Menu>
         <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
         {isLogin && <Link onClick={() => navigate("/profile")}>프로필</Link>}
+        <Link onClick={() => navigate("/media")}>TEDdyTV📺</Link>
+        <Link onClick={() => navigate("/gommunity")}>곰뮤니티</Link>
         {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
         {isLogin && (
           <>
-            <Link onClick={() => navigate("/mypage")}>내 정보</Link>
+            <Link onClick={() => navigate("/users/" + userState.user.id)}>
+              내 정보
+            </Link>
             <Link onClick={logout}>로그아웃</Link>
           </>
         )}
@@ -47,8 +51,7 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem;
-  /* height: 4vh; */
-  height: 40px;
+  height: 4vh;
   position: fixed;
   top: 0;
   left: 0;
@@ -59,10 +62,8 @@ const Nav = styled.div`
 
 //logo style
 const Logo = styled.img`
-  /* width: 15vh; */
-  width:50;
-  /* height: 5vh; */
-  height: 80%;
+  width: 12vh;
+  height: 4vh;
   cursor: pointer;
   flex-shrink: 0;
 `;

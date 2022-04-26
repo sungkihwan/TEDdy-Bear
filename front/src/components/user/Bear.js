@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { brown } from "@mui/material/colors";
-import { theme } from "../common/Style";
+import { theme } from "../../style/Style";
 
 const textColor = { color: theme.brown.dark };
 
@@ -15,7 +15,7 @@ const textColor = { color: theme.brown.dark };
  *
  * @returns {component} My bear information
  */
-export default function Bear() {
+export default function Bear({ isEditable }) {
   const [level, setLevel] = useState(1);
   const [exp, setExp] = useState(0);
   const [cotton, setCotton] = useState(11);
@@ -35,40 +35,42 @@ export default function Bear() {
 
   //click button, execute a function
   const click = () => {
-    if (cotton !== 0) {
-      setExp((cur) => cur + 1);
-      setCotton((cur) => cur - 1);
-      console.log(exp);
-    }
-
     if (cotton === 0) {
       alert("솜이 부족합니다!");
       setCotton(0);
-      return;
+    } else {
+      setExp((cur) => cur + 1);
+      setCotton((cur) => cur - 1);
     }
+    return;
   };
   return (
-    <div style={{ marginTop: "10vh" }}>
+    <div>
       <img src="/main2.png" alt="bear" style={{ height: "40vh" }} />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
-        }}
-      >
-        <div style={{ width: "50%" }}>
-          <p style={textColor}>LEVEL {level}</p>
-          <p style={textColor}>
-            {exp} / {maxExp}
-          </p>
-          <ExpBar value={progress} />
+      {isEditable && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <div style={{ width: "50%" }}>
+            <p style={textColor}>LEVEL {level}</p>
+            <p style={textColor}>
+              {exp} / {maxExp}
+            </p>
+            <ExpBar value={progress} />
+          </div>
+          <div>
+            <p style={textColor}>남은 솜 : {cotton}</p>
+            <ExpButton onClick={click}>솜 주기</ExpButton>
+          </div>
         </div>
-        <div>
-          <p style={textColor}>남은 솜 : {cotton}</p>
-          <ExpButton onClick={click}>솜 주기</ExpButton>
-        </div>
-      </div>
+      )}
+      {!isEditable && (
+        <p style={(textColor, { textAlign: "center" })}>LEVEL {level}</p>
+      )}
     </div>
   );
 }

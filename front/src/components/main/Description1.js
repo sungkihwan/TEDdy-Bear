@@ -1,4 +1,4 @@
-import { MainText } from "../common/Style";
+import { MainText } from "../../style/Style";
 import styled from "styled-components";
 
 /** First page component

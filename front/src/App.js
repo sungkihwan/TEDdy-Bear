@@ -1,11 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Main from "./components/main/Main";
-import MyPage from "./components/my_page/MyPage";
-import Prologue from "./components/Prologue/Prologue";
-import Lecture from './components/Lecture/Lecture';
-import Profile from './components/Profile/Profile'
+import UserPage from "./components/user/UserPage";
+import Prologue from "./components/prologue/Prologue";
+import Lecture from "./components/Lecture/Lecture";
 import React, { useState, useEffect, useReducer, createContext } from "react";
 
 import * as Api from "./api";
@@ -13,6 +12,7 @@ import { loginReducer } from "./reducer";
 
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
+import Community from "./components/user/Community";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -59,18 +59,16 @@ function App() {
   return (
     <DispatchContext.Provider value={dispatch}>
       <UserStateContext.Provider value={userState}>
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/" exact element={<Main />} />
-            <Route path="/prologue" exact element={<Prologue />} />
-            <Route path="/mypage" exact element={<MyPage />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/media" exact element={<Lecture />} />
-            <Route path="/profile" exact element={<Profile />} />
-          </Routes>
-        </Router>
+        <Header />
+        <Routes>
+          <Route path="/" exact element={<Main />} />
+          <Route path="/prologue" element={<Prologue />} />
+          <Route path="/users/:userId" element={<UserPage />} />
+          <Route path="/gommunity" element={<Community />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/media" element={<Lecture />} />
+        </Routes>
       </UserStateContext.Provider>
     </DispatchContext.Provider>
   );
