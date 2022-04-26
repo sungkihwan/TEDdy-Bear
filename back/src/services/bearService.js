@@ -1,10 +1,12 @@
 import { Bear } from '../db';
 
-//곰
-
 class bearService {
-  static async findByUserId(userId) {
+  static async getBear({ userId }) {
     return await Bear.findByUserId(userId);
+  }
+
+  static async findAll() {
+    return await Bear.findAll();
   }
 }
 

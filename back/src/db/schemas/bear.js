@@ -7,8 +7,6 @@ import { Schema, model } from 'mongoose';
 // cotton ->  level -> height
 // 영상을 보면 cotton
 const BearSchema = new Schema({
-  _id: Schema.Types.ObjectId,
-
   bearName: {
     type: String,
     required: true,
@@ -16,10 +14,17 @@ const BearSchema = new Schema({
   level: {
     type: Number,
     required: true,
+    default: 1,
   },
   cotton: {
     type: Number,
     required: true,
+    default: 1,
+  },
+  height: {
+    type: Number,
+    required: true,
+    default: 1,
   },
 });
 

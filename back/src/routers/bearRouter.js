@@ -3,11 +3,15 @@ import { login_required } from '../middlewares/login_required';
 import { bearService } from '../services/bearService';
 
 const bearRouter = Router();
+bearRouter.use(login_required);
 
-bearRouter.get('bear/:userId', async (req, res, next) => {
+// bear get 요청
+bearRouter.get('bear/:userId', async function (req, res, next) {
   try {
-    const userId = await bearService.findByUserId(req.params.userId);
-    res.staus(200).send(data);
+    const userId = req.params;
+
+    const bear = await bearService.getBear({ userId });
+    res.status(200).send(bear);
   } catch (error) {
     next(error);
   }
