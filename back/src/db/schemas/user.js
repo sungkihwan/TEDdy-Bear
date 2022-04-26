@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const UserSchema = new Schema(
   {
@@ -16,15 +16,24 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function() {
+        return this.infoProvider === "User";
+      }
     },
     bearName: {
       type: String,
-      required: true,
+      default: "Teddy",
     },
     myTopics: {
       type: Array,
-      required: true,
+      default: []
+    },
+    infoProvider: {
+      type: String,
+      enum: {
+        values: ["User", "Google"],
+        message: "{VALUE} is not supported",
+      },
     },
   },
   {
@@ -32,6 +41,6 @@ const UserSchema = new Schema(
   }
 );
 
-const UserModel = model('User', UserSchema);
+const UserModel = model("User", UserSchema);
 
 export { UserModel };
