@@ -4,11 +4,13 @@ import { Schema, model } from 'mongoose';
 // 뭐가 필요할까?
 // 곰 이름, 곰 레벨, 경험치
 //level, cotton, height
-// cotton ->  level -> height
-// 영상을 보면 cotton
+// cotton -> level -> height
+//
+// 영상을 보면 cotton +1 ? 이건 좀 더 생각
 const BearSchema = new Schema({
-  bearName: {
-    type: String,
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   level: {

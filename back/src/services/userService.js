@@ -23,8 +23,8 @@ class userAuthService {
       name,
       email,
       password: hashedPassword,
-      bearName,
       myTopics,
+      bearName,
     };
 
     // db에 저장
@@ -60,18 +60,21 @@ class userAuthService {
     const token = jwt.sign({ user_id: user.id }, secretKey);
 
     // 반환할 loginuser 객체를 위한 변수 설정
-    const id = user.id;
-    const name = user.name;
-    const bearName = user.bearName;
-    const myTopics = user.myTopics;
+    // const id = user.id;
+    // const name = user.name;
+    // const bearName = user.bearName;
+    // const myTopics = user.myTopics;
+    const { id, name, myTopics, bearName, level, cotton } = user;
 
     const loginUser = {
       token,
       id,
       email,
       name,
-      bearName,
       myTopics,
+      bearName,
+      level,
+      cotton,
       errorMessage: null,
     };
 
@@ -92,8 +95,8 @@ class userAuthService {
     if (!toUpdate.name) delete toUpdate.name;
     if (!toUpdate.email) delete toUpdate.email;
     if (!toUpdate.password) delete toUpdate.password;
-    if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
+    if (!toUpdate.bearName) delete toUpdate.bearName;
 
     return await User.updateById({ user_id, toUpdate });
   }
@@ -120,6 +123,18 @@ class userAuthService {
       return { errorMessage };
     }
     return user;
+  }
+
+  // 곰 정보 찾기
+  static async getBearInfo({ user_id }) {
+    const bearInfo = await User.findBearInfoByUserId({ user_id });
+
+    if (!bearInfo) {
+      const errorMessage =
+        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해주세요';
+      return { errorMessage };
+    }
+    return bearInfo;
   }
 }
 

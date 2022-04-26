@@ -18,18 +18,23 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    bearName: {
-      type: String,
-      required: true,
-    },
     myTopics: {
       type: Array,
       required: true,
     },
-    bearId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Bear',
+    bearName: {
+      type: String,
       required: true,
+    },
+    level: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+    cotton: {
+      type: Number,
+      required: true,
+      default: 1,
     },
   },
   {

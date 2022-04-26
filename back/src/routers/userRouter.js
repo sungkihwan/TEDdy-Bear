@@ -81,16 +81,20 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const bearName = req.body.bearName;
     const myTopics = req.body.myTopics;
+    const bearName = req.body.bearName;
+    const level = req.body.level;
+    const cotton = req.body.level;
 
     // 위 데이터를 유저 db에 추가하기
     const newUser = await userAuthService.addUser({
       name,
       email,
       password,
-      bearName,
       myTopics,
+      bearName,
+      level,
+      cotton,
     });
 
     if (newUser.errorMessage) {
@@ -241,8 +245,8 @@ userAuthRouter.put(
       const name = req.body.name ?? null;
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
-      const bearName = req.body.bearName ?? null;
       const myTopics = req.body.myTopics ?? null;
+      const bearName = req.body.bearName ?? null;
 
       const toUpdate = { name, email, password, bearName, myTopics };
 
@@ -360,10 +364,22 @@ userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
     );
 });
 
+// 곰 정보 찾기
+userAuthRouter.get(
+  '/bear/:id',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.id;
+      const bearInfo = await userAuthService.getBearInfo({ user_id });
+      if (bearInfo.errorMessage) {
+        throw new Error(bearInfo.errorMessage);
+      }
+      res.status(200).send(bearInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { userAuthRouter };
-
-// if (!toUpdate.title) delete toUpdate.title
-//     if (!toUpdate.description) delete toUpdate.description
-//     if (!toUpdate.when_date) delete toUpdate.when_date
-
-//     return await Certificate.updateById({ id, toUpdate });
