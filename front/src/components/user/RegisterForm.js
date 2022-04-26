@@ -24,7 +24,7 @@ function RegisterForm() {
   const [name, setName] = useState("");
   const [tName, setTName] = useState("테디");
   const [viewPage, setViewPage] = useState(1);
-  const [userTopics, setUserTopics] = useState(["테디곰!"]);
+  const [userTopics, setUserTopics] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +49,7 @@ function RegisterForm() {
         password,
         name,
         bearName: tName,
-        myTopic: userTopics.slice(1).map((topic) => topicDict[topic]),
+        myTopic: userTopics.map((topic) => topicDict[topic]),
       });
       console.log("회원가입에 성공했습니다.");
       // 로그인 페이지로 이동함.
