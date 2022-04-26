@@ -23,11 +23,7 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [tName, setTName] = useState("테디");
-<<<<<<< HEAD
-  const [tempPage, setTempPage] = useState(1);
-=======
   const [viewPage, setViewPage] = useState(1);
->>>>>>> 9a1447d01a616638474d2a28e60b584ed0f124a5
   const [userTopics, setUserTopics] = useState([]);
 
   const handleSubmit = async (e) => {

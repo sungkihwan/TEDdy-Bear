@@ -1,14 +1,11 @@
-import { LinkPreview } from '@dhaiwat10/react-link-preview';
-// import * as React, {useState} from 'react';
 import React from 'react';
 import Lottie from 'react-lottie';
 import data from './87670-satisfied-bear.json'
 
-import LectureCard2 from './LectureCard2';
+import LectureCard from './LectureCard';
 
 
-function LectureCard({lectureData, myLectureData}) {
-    console.log(myLectureData);
+function LectureList({lectureData, myLectureData}) {
   const defaultOptions = {
     loop: true,
     autoplay: true, 
@@ -26,11 +23,11 @@ function LectureCard({lectureData, myLectureData}) {
                 width={350}/>
         </div>
         <div>
-          <LectureCard2 lectureData={lectureData}></LectureCard2>
-          <LectureCard2 lectureData={myLectureData}></LectureCard2>
+          <LectureCard lectureData={lectureData} type="오늘의 영상"></LectureCard>
+          <LectureCard lectureData={myLectureData} type="추천된 영상"></LectureCard>
         </div>
       </div>
     );
   }
 
-export default LectureCard
+export default LectureList;

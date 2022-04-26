@@ -75,10 +75,7 @@ talkRouter.post("/talks/my", login_required, async (req, res, next) => {
   try {
     const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
     const user_id = req.currentUserId;
-    console.log(user_id)
-    console.log(size)
     const talks = await talkService.getMyTalk({ size, user_id });
-    console.log(talks)
     if (talks.errorMessage) {
       throw new Error(talks.errorMessage);
     }

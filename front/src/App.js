@@ -3,8 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Main from "./components/main/Main";
 import UserPage from "./components/user/UserPage";
-import Prologue from "./components/prologue/Prologue";
+import Prologue from "./components/Prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
+import Profile from "./components/Profile/Profile";
 import React, { useState, useEffect, useReducer, createContext } from "react";
 
 import * as Api from "./api";
@@ -63,6 +64,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Main />} />
           <Route path="/prologue" element={<Prologue />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/users/:userId" element={<UserPage />} />
           <Route path="/gommunity" element={<Community />} />
           <Route path="/login" element={<LoginForm />} />

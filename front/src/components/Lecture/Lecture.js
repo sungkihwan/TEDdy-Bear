@@ -11,6 +11,9 @@ function Lecture() {
     Api.post('talks/my', {size:3})
       .then(res => setMyLectureData(res.data));
   }, []);
+
+  
+  
   return (
     <div style={{marginTop:75}}>
       <LectureList lectureData={lectureData} myLectureData={myLectureData} setLectureData={setLectureData}></LectureList>
