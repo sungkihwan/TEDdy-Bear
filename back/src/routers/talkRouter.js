@@ -14,7 +14,7 @@ const talkRouter = Router();
  *     tags: [Talk]
  *     parameters:
  *       - in: query
- *         name: size   
+ *         name: size
  *         required: true
  *         schema:
  *           type: integer
@@ -33,6 +33,9 @@ talkRouter.get("/talks/today", async (req, res, next) => {
     const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
 
     const talks = await talkService.getTodayTalk({ size });
+    if (talks.errorMessage) {
+      throw new Error(talks.errorMessage);
+    }
 
     res.status(200).send(talks);
   } catch (e) {
@@ -65,19 +68,21 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.post("/talks/my", /*login_required,*/ async (req, res, next) => {
-    try {
-      const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
-      const user_id = req.currentUserId;
+talkRouter.post("/talks/my", login_required, async (req, res, next) => {
+  try {
+    const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
+    const user_id = req.currentUserId;
 
-      const talks = await talkService.getMyTalk({ size, user_id });
-
-      res.status(200).send(talks);
-    } catch (e) {
-      next(e);
+    const talks = await talkService.getMyTalk({ size, user_id });
+    if (talks.errorMessage) {
+      throw new Error(talks.errorMessage);
     }
+
+    res.status(200).send(talks);
+  } catch (e) {
+    next(e);
   }
-);
+});
 
 // 영상 상세정보 조회
 /**
@@ -107,6 +112,9 @@ talkRouter.get("/talks/:talk_id", async (req, res, next) => {
     const talk_id = Number(req.params.talk_id);
 
     const talk = await talkService.getTalk({ talk_id });
+    if (talk.errorMessage) {
+      throw new Error(talk.errorMessage);
+    }
 
     res.status(200).send(talk);
   } catch (e) {
