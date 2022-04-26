@@ -15,7 +15,7 @@ const textColor = { color: theme.brown.dark };
  *
  * @returns {component} My bear information
  */
-export default function Bear() {
+export default function Bear({ isEditable }) {
   const [level, setLevel] = useState(1);
   const [exp, setExp] = useState(0);
   const [cotton, setCotton] = useState(11);
@@ -45,27 +45,32 @@ export default function Bear() {
     return;
   };
   return (
-    <div style={{ marginTop: "10vh" }}>
+    <div>
       <img src="/main2.png" alt="bear" style={{ height: "40vh" }} />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
-        }}
-      >
-        <div style={{ width: "50%" }}>
-          <p style={textColor}>LEVEL {level}</p>
-          <p style={textColor}>
-            {exp} / {maxExp}
-          </p>
-          <ExpBar value={progress} />
+      {isEditable && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <div style={{ width: "50%" }}>
+            <p style={textColor}>LEVEL {level}</p>
+            <p style={textColor}>
+              {exp} / {maxExp}
+            </p>
+            <ExpBar value={progress} />
+          </div>
+          <div>
+            <p style={textColor}>남은 솜 : {cotton}</p>
+            <ExpButton onClick={click}>솜 주기</ExpButton>
+          </div>
         </div>
-        <div>
-          <p style={textColor}>남은 솜 : {cotton}</p>
-          <ExpButton onClick={click}>솜 주기</ExpButton>
-        </div>
-      </div>
+      )}
+      {!isEditable && (
+        <p style={(textColor, { textAlign: "center" })}>LEVEL {level}</p>
+      )}
     </div>
   );
 }

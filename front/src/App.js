@@ -12,6 +12,7 @@ import { loginReducer } from "./reducer";
 
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
+import Community from "./components/user/Community";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -63,6 +64,7 @@ function App() {
           <Route path="/" exact element={<Main />} />
           <Route path="/prologue" element={<Prologue />} />
           <Route path="/users/:userId" element={<UserPage />} />
+          <Route path="/gommunity" element={<Community />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/media" element={<Lecture />} />
