@@ -48,7 +48,7 @@ function RegisterForm() {
         email,
         password,
         name,
-        bear_name: tName,
+        bearName: tName,
         myTopic: userTopics.slice(1).map((topic) => topicDict[topic]),
       });
       console.log("회원가입에 성공했습니다.");
