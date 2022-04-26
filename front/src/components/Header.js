@@ -29,6 +29,7 @@ export default function Header() {
       <Logo onClick={() => navigate("/")} src="/logo.png" />
       <Menu>
         <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
+        {isLogin && <Link onClick={() => navigate("/profile")}>프로필</Link>}
         {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
         {isLogin && (
           <>

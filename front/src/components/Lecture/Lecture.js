@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import LectureCard from './LectureCard'
 import * as Api from '../../api';
-
+import LectureList from './LectureList'
 function Lecture() {
   const [lectureData, setLectureData] = useState([]);
   const [myLectureData, setMyLectureData] = useState([]);
@@ -14,7 +13,7 @@ function Lecture() {
   }, []);
   return (
     <div style={{marginTop:75}}>
-      <LectureCard lectureData={lectureData} myLectureData={myLectureData} setLectureData={setLectureData}></LectureCard>
+      <LectureList lectureData={lectureData} myLectureData={myLectureData} setLectureData={setLectureData}></LectureList>
     </div>
   );
 }

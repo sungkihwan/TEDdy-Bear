@@ -53,7 +53,6 @@ class talkService {
             const errorMessage = "주제 조회에 실패하였습니다.";
             return { errorMessage };
         }
-
         const myTalk = await Talk.findManyRandom(myTopics, size)
         if (myTalk.errorMessage) {
             const errorMessage = "영상 조회에 실패하였습니다.";

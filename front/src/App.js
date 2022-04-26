@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Main from "./components/main/Main";
 import MyPage from "./components/my_page/MyPage";
-import Prologue from "./components/prologue/Prologue";
+import Prologue from "./components/Prologue/Prologue";
 import Lecture from './components/Lecture/Lecture';
+import Profile from './components/Profile/Profile'
 import React, { useState, useEffect, useReducer, createContext } from "react";
 
 import * as Api from "./api";
@@ -67,6 +68,7 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/media" exact element={<Lecture />} />
+            <Route path="/profile" exact element={<Profile />} />
           </Routes>
         </Router>
       </UserStateContext.Provider>

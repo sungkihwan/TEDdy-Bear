@@ -22,19 +22,19 @@ function RegisterForm() {
   const [name, setName] = useState("");
   const [tName, setTName] = useState("테디");
   const [tempPage, setTempPage] = useState(1);
-  const [userTopics, setUserTopics] = useState(["테디곰!"]);
+  const [userTopics, setUserTopics] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(userTopics);
     try {
       // "user/register" 엔드포인트로 post요청함.
       await Api.post("user/register", {
         email,
         password,
         name,
-        bear_name: tName,
-        myTopic: userTopics.slice(1),
+        bearName: tName,
+        myTopics: userTopics,
       });
       console.log("회원가입에 성공했습니다.");
       // 로그인 페이지로 이동함.

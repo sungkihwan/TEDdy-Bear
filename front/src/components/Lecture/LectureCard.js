@@ -39,7 +39,6 @@ function LectureCard({lectureData, setLectureData, myLectureData}) {
       
       for (let i = 0; i < lectureData.length; i++) {
         if (lectureData[i].url === url) {
-          // json.metadata.title = lectureData[i].title + ' - ' + lectureData[i].speaker;
           json.metadata.title = lectureData[i].title + ' - ';
           for (let j = 0; j < lectureData[i].speakers.length; j++) {
             json.metadata.title += lectureData[i].speakers[j];
@@ -47,8 +46,6 @@ function LectureCard({lectureData, setLectureData, myLectureData}) {
               json.metadata.title += ', ';
             }
           }
-
-          // 두 번째 방법 (수정 후)
           lectureInfo[i]['videoimg'] = json.metadata.image;
           break;
         }
