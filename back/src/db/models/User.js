@@ -21,23 +21,18 @@ class User {
     return users;
   }
 
-  static async update({ user_id, fieldToUpdate, newValue }) {
-    const filter = { id: user_id };
-    const update = { [fieldToUpdate]: newValue };
-    const option = { returnOriginal: false };
-
-    const updatedUser = await UserModel.findOneAndUpdate(
-      filter,
-      update,
-      option
-    );
-    return updatedUser;
-  }
-
   //user 컬렉션에서 user_id와 매칭되는 user 정보를 삭제하는 함수
   static async deleteOneUser({ user_id }) {
     const user = await UserModel.deleteOne({ id: user_id });
     return user;
+  }
+
+  static async updateById({ user_id, toUpdate }) {
+    const filter = { id: user_id };
+    const update = { $set: toUpdate };
+    const option = { returnOriginal: false };
+
+    return await UserModel.findOneAndUpdate(filter, update, option);
   }
 }
 

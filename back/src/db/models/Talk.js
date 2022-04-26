@@ -1,8 +1,8 @@
 import { TalkModel } from "../schemas/talk";
 
 class Talk {
-  static findOneById({ talk_id }) {
-    return TalkModel.findOne({ talk_id: talk_id });
+  static findOneById({ id }) {
+    return TalkModel.findOne({ id: id });
   }
 
   // static findAll({ perPage, page }) {
