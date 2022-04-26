@@ -18,7 +18,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    bear_name: {
+    bearName: {
       type: String,
       required: true,
     },

@@ -7,7 +7,11 @@ from pymongo import MongoClient
 
 # client = MongoClient("mongodb+srv://elice:1234@cluster0.usvux.mongodb.net/")
 # 본인의 몽고 db url을 설정해주세요.
+<<<<<<< HEAD
 client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.hxrzu.mongodb.net/ted?retryWrites=true&w=majority")
+=======
+client = MongoClient("")
+>>>>>>> edab0d192df19220bb105c481f0e3420ae38f778
 db = client['ted']
 collection_talk = db['talks']
 collection_topic = db['topics']

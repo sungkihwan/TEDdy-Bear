@@ -10,43 +10,48 @@ import { Schema, model } from "mongoose";
  * @swagger
  * components:
  *  schemas:
- *    User:
+ *    Talk:
  *      type: object
  *      properties:
- *        talk_id:
- *          type: Number
+ *        id:
+ *          type: number
  *        title:
  *          type: string
  *        speakers:
- *          type: string
- *        password:
- *          type: string
+ *          type: array
+ *          items:
+ *            type: string
  *        author:
  *          type: string
  *        description:
  *          type: string
  *        topics:
- *          type: string
- *        teddy_views:
- *          type: string
- *        teddy_likes:
- *          type: string
+ *          type: array
+ *          items:
+ *            type: string
+ *        teddy_view_count:
+ *          type: number
+ *        teddy_like_count:
+ *          type: number
  *        url:
  *          type: string
- *        native_lang:
- *          type: string
- *        available_lang:
- *          type: string
+ *        native_languages:
+  *          type: array
+ *          items:
+ *            type: string
+ *        available_languages:
+  *          type: array
+ *          items:
+ *            type: string
  *        published_date:
  *          type: string
  *        duration:
  *          type: string
- * 
  */
 
 const TalkSchema = new Schema(
   {
-    talk_id: {
+    id: {
       type: Number,
       required: true,
       unique: true,
@@ -71,11 +76,11 @@ const TalkSchema = new Schema(
       type: Array,
       required: true,
     },
-    teddy_views: {
+    teddy_view_count: {
       type: Number,
       required: true,
     },
-    teddy_likes: {
+    teddy_like_count: {
       type: Number,
       required: true,
     },
@@ -83,11 +88,11 @@ const TalkSchema = new Schema(
       type: String,
       required: true,
     },
-    native_lang: {
+    native_languages: {
       type: Array,
       required: true,
     },
-    available_lang: {
+    available_languages: {
       type: Array,
       required: true,
     },
