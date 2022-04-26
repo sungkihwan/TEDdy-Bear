@@ -3,7 +3,8 @@ import { swaggerUi, specs } from './modules/swagger';
 import cors from 'cors';
 import { userAuthRouter } from './routers/userRouter';
 import { dataRouter } from './routers/dataRouter';
-import { talkRouter } from "./routers/talkRouter";
+import { talkRouter } from './routers/talkRouter';
+import { viewHistoryRouter } from './routers/viewHistoryRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
 
 const app = express();
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 app.use(userAuthRouter);
 app.use(dataRouter);
 app.use(talkRouter);
+app.use(viewHistoryRouter);
 
 app.use(errorMiddleware);
 
