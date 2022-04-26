@@ -26,6 +26,11 @@ const UserSchema = new Schema(
       type: Array,
       required: true,
     },
+    bearId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Bear',
+      required: true,
+    },
   },
   {
     timestamps: true,
