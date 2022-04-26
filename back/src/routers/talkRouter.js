@@ -109,9 +109,9 @@ talkRouter.post("/talks/my", login_required, async (req, res, next) => {
  */
 talkRouter.get("/talks/:talk_id", async (req, res, next) => {
   try {
-    const talk_id = Number(req.params.talk_id);
+    const id = Number(req.params.talk_id);
 
-    const talk = await talkService.getTalk({ talk_id });
+    const talk = await talkService.getTalk({ id });
     if (talk.errorMessage) {
       throw new Error(talk.errorMessage);
     }
