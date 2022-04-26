@@ -47,7 +47,7 @@ function LoginForm() {
 
   const handleGoogleData = async (googleData) => {
     try {
-      const user = await Api.post("login/google", {
+      const user = await Api.post("user/google-login", {
         token: googleData.tokenId,
       }).then((response) => response.data);
 
