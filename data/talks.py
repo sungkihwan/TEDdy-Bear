@@ -38,17 +38,17 @@ teddy_topics = {}
 
 for idx, row in newData.iterrows():
     new_talk = {
-        'talk_id': row.talk_id,
+        'id': row.talk_id,
         'title': row.title, 
         'speakers': row.speakers, 
         'published_date': row.published_date, 
-        'native_lang': row.native_lang, 
-        'available_lang': row.available_lang, 
+        'native_languages': row.native_lang, 
+        'available_languages': row.available_lang, 
         'duration': '약 ' + str(row.duration // 60) + '분',
         'description': row.description,
         'topics': row.topics,
-        'teddy_views': 0,
-        'teddy_likes': 0,
+        'teddy_view_count': 0,
+        'teddy_like_count': 0,
         'url': row.url
     }
     teddy_talks.append(new_talk)
