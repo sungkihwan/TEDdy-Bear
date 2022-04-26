@@ -65,6 +65,10 @@ class ViewHistoryService {
     }
     return viewhistoryDatelist;
   }
+
+  static async rankingBoard({}) {
+    return await ViewHistory.rankingBoard({});
+  }
 }
 
 export { ViewHistoryService };

@@ -206,4 +206,17 @@ viewHistoryRouter.get(
   }
 );
 
+viewHistoryRouter.get(
+  '/viewhistory/rankingBoard',
+  async function (req, res, next) {
+    try {
+      const rankingBoard = await ViewHistoryService.rankingBoard({});
+
+      res.status(200).send(rankingBoard);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { viewHistoryRouter };

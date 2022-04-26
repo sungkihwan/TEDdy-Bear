@@ -29,6 +29,35 @@ class ViewHistory {
   static async findManyByUserId({ user_id }) {
     return ViewHistoryModel.find({ user_id });
   }
+
+  // 랭킹보드 쿼리로 조회
+  static async rankingBoard({}) {
+
+    const aggregatorOpts = [
+      {
+        $group: {
+            _id: "$user_id",
+            count: { $sum: 1 }
+        }
+      },
+      {
+        $sort:{'count':-1}
+      }
+    ]
+
+    return await ViewHistoryModel.aggregate(aggregatorOpts).limit(5).exec()
+  }
+
+  static async streamRankingBoard({}) {
+
+    const cursor = ViewHistoryModel.find({}).cursor().addCursorFlag('noCursorTimeout', true);
+
+    // local cache의 sorted Set, 혹은 redis global cache의 sorted Set에 상태변경
+    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+      // data[doc[user_id]] += 1
+      console.log(doc); // Prints documents one at a time
+    }
+  }
 }
 
 export { ViewHistory };
