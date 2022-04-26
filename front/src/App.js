@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Main from "./components/main/Main";
-import MyPage from "./components/my_page/MyPage";
+import UserPage from "./components/user/UserPage";
 import Prologue from "./components/prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
 import React, { useState, useEffect, useReducer, createContext } from "react";
@@ -62,7 +62,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Main />} />
           <Route path="/prologue" element={<Prologue />} />
-          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/users/:userId" element={<UserPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/media" element={<Lecture />} />
