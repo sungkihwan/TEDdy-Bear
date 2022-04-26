@@ -30,8 +30,7 @@ import StaticDatePicker from "@mui/lab/StaticDatePicker";
 function Lawn() {
   const [value, setValue] = React.useState(new Date());
   return (
-    <Grid>
-      <Page>잔디밭</Page>
+    <Card>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <StaticDatePicker
           orientation="landscape"
@@ -44,7 +43,7 @@ function Lawn() {
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>
-    </Grid>
+    </Card>
   );
 }
 
