@@ -69,17 +69,12 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-<<<<<<< HEAD
-talkRouter.post("/talks/my", /*login_required,*/ async (req, res, next) => {
-    try {
-      const size = Number(req.body.size);
-      const user_id = req.currentUserId;
-=======
+
+
 talkRouter.post("/talks/my", login_required, async (req, res, next) => {
   try {
     const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
     const user_id = req.currentUserId;
->>>>>>> edab0d192df19220bb105c481f0e3420ae38f778
 
     const talks = await talkService.getMyTalk({ size, user_id });
     if (talks.errorMessage) {
