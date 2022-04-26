@@ -247,8 +247,18 @@ userAuthRouter.put(
       const password = req.body.password ?? null;
       const myTopics = req.body.myTopics ?? null;
       const bearName = req.body.bearName ?? null;
+      const level = req.body.level ?? null;
+      const cotton = req.body.cotton ?? null;
 
-      const toUpdate = { name, email, password, bearName, myTopics };
+      const toUpdate = {
+        name,
+        email,
+        password,
+        myTopics,
+        bearName,
+        level,
+        cotton,
+      };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({

@@ -97,6 +97,8 @@ class userAuthService {
     if (!toUpdate.password) delete toUpdate.password;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
     if (!toUpdate.bearName) delete toUpdate.bearName;
+    if (!toUpdate.level) delete toUpdate.level;
+    if (!toUpdate.cotton) delete toUpdate.cotton;
 
     return await User.updateById({ user_id, toUpdate });
   }
