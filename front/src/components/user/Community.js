@@ -5,7 +5,6 @@ import Styled from "styled-components";
 import Box from "@mui/material/Box";
 import { brown } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import Bear from "./Bear";
 
 export default function Community() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
