@@ -1,4 +1,3 @@
-import Header from "../Header";
 import styled from "styled-components";
 import Bear from "./Bear";
 import Lawn from "./Lawn";
@@ -14,6 +13,8 @@ import { useParams } from "react-router-dom";
 export default function MyPage() {
   const params = useParams();
   const userState = useContext(UserStateContext);
+  const [isEditable, setIsEditable] = useState(false);
+  const [user, setUser] = useState([]);
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
 
   const fetchUserOwner = async (ownerId) => {
@@ -21,14 +22,14 @@ export default function MyPage() {
     const res = await Api.get("users", ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
-    console.log(ownerData);
+    setUser(ownerData);
     setIsFetchCompleted(true);
   };
   useEffect(() => {
-    console.log(userState);
     if (params.userId) {
       // 만약 현재 URL이 "/users/:userId" 라면, 이 userId를 유저 id로 설정함.
       const ownerId = params.userId;
+      setIsEditable(ownerId === userState.user.id);
       // 해당 유저 id로 fetchUserOwner 함수를 실행함.
       fetchUserOwner(ownerId);
     } else {
@@ -44,13 +45,15 @@ export default function MyPage() {
   }
 
   return (
-    <>
+    <div style={{ marginTop: "10vh" }}>
       <Page>
-        <Header />
-        <Bear />
+        <p>
+          {user.name}님의 {user.bearName}
+        </p>
+        <Bear isEditable={isEditable} />
+        <Lawn />
       </Page>
-      <Lawn />
-    </>
+    </div>
   );
 }
 
@@ -58,7 +61,8 @@ export default function MyPage() {
 const Page = styled.div`
   width: 98vw;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   position: relative;
+  flex-direction: column;
 `;
