@@ -143,21 +143,6 @@ function ProfileEdit({open, handleClose}) {
                 });
               }}
             />
-            {/* <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={["남", "여"]}
-              sx={{ width: 300 }}
-              value={modifyUser.gender}
-              onChange={(event, newValue) => {
-                setModifyUser((cur) => {
-                  const newData = { ...cur };
-                  newData.gender = newValue;
-                  return newData;
-                });
-              }}
-              renderInput={(params) => <TextField {...params} label="성별" />}
-            /> */}
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">
                 성별
@@ -169,8 +154,7 @@ function ProfileEdit({open, handleClose}) {
               >
                 <FormControlLabel
                   value="남"
-                //   control={<Radio checked={modifyUser.gender === "남"}/>}
-                control={<Radio/>}
+                  control={<Radio checked={modifyUser.gender === "남"}/>}
                   label="남"
                   onClick={(e) => {
                     setModifyUser((cur) => {
@@ -182,8 +166,7 @@ function ProfileEdit({open, handleClose}) {
                 />
                 <FormControlLabel
                   value="여"
-                //   control={<Radio checked={modifyUser.gender === "여"}/>}
-                  control={<Radio/>}
+                  control={<Radio checked={modifyUser.gender === "여"}/>}
                   label="여"
                   onClick={(e) => {
                     setModifyUser((cur) => {
