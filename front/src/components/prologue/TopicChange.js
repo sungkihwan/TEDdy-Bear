@@ -4,33 +4,32 @@ import * as Api from '../../api';
 
 function TopicChange() {
     const [topicTrend, setTopicTrend] = useState([]);
+    const makeYear = (i) => {
+      if (6 + i < 10) {
+        return `200${6 + i}년`;
+      }
+      else {
+        return `20${6 + i}년`;
+      }
 
+    }
     useEffect(() => {
         Api.get('data', 'top5topicTrend')
           .then(res => setTopicTrend(() => {
               const newData = [];
-              const str0 = res.data.keys[0];
-              const str1 = res.data.keys[1];
-              const str2 = res.data.keys[2];
-              const str3 = res.data.keys[3];
-              const str4 = res.data.keys[4];
+              const {data, keys} = res.data;
+
               let year = ''
               
-              for (let i = 0; i < res.data.data[str0].length; i++) {
-                  year = '';
-                  if (6 + i < 10) {
-                    year = `200${6 + i}년`;
-                  }
-                  else {
-                    year = `20${6 + i}년`;
-                  }
+              for (let i = 0; i < data[keys[0]].length; i++) {
+                  year = makeYear(i);
                   newData.push({
                       name : year,
-                      [str0] : res.data.data[str0][i],
-                      [str1] : res.data.data[str1][i],
-                      [str2] : res.data.data[str2][i],
-                      [str3] : res.data.data[str3][i],
-                      [str4] : res.data.data[str4][i],
+                      [keys[0]] : data[keys[0]][i],
+                      [keys[1]] : data[keys[1]][i],
+                      [keys[2]] : data[keys[2]][i],
+                      [keys[3]] : data[keys[3]][i],
+                      [keys[4]] : data[keys[4]][i],
                   })
               }
             return newData;

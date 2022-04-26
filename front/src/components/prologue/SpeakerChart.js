@@ -18,10 +18,11 @@ function SpeakerChart() {
     Api.get('data', 'occupationsLikes')
       .then(res => setSpeakerData(() => {
         const newData = []
-        for (let i = 0; i < res.data.data['name'].length; i++) {
+        const {data} = res.data;
+        for (let i = 0; i < data['name'].length; i++) {
           newData.push({
-            name : `${res.data.data['name'][i]} (${res.data.data['topic'][i]})`,
-            likes : res.data.data['likes'][i]
+            name : `${data['name'][i]} (${data['topic'][i]})`,
+            likes : data['likes'][i]
           });
         }
         return newData;

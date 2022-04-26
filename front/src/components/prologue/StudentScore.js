@@ -9,8 +9,9 @@ function StudentScore() {
       Api.get('data', 'student')
         .then(res => setStudentData(() => {
           let newData = [];
-          for (let i = 0; i < res.data.data.hours.length; i++) {
-            newData.push({x:res.data.data.hours[i], y:res.data.data.scores[i]});
+          const {data} = res.data;
+          for (let i = 0; i < data.hours.length; i++) {
+            newData.push({x:data.hours[i], y:data.scores[i]});
           }
           return newData;
         }));
