@@ -199,6 +199,23 @@ class userAuthService {
     }
     return bearInfo;
   }
+
+  static async updatePassword({ user_id, password }) {
+    
+    const toUpdate = {}
+    const hashedPassword = await bcrypt.hash(password, 10);
+    toUpdate.password = hashedPassword;
+    const updatedUser = await User.updatePassword({ user_id, toUpdate });
+    
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!updatedUser) {
+      const errorMessage =
+        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    return updatedUser;
+  }
 }
 
 export { userAuthService };
