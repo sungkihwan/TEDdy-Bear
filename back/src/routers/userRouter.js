@@ -1,7 +1,7 @@
-import is from "@sindresorhus/is";
-import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
-import { userAuthService } from "../services/userService";
+import is from '@sindresorhus/is';
+import { Router } from 'express';
+import { login_required } from '../middlewares/login_required';
+import { userAuthService } from '../services/userService';
 
 const userAuthRouter = Router();
 
@@ -28,6 +28,18 @@ const userAuthRouter = Router();
  *        password:
  *          type: string
  *        bearName:
+ *          type: string
+ *        level:
+ *          type: Number
+ *        cotton:
+ *          type: Number
+ *        height:
+ *          type: Number
+ *        sex:
+ *          type: string
+ *        age:
+ *          type: Number
+ *        occupation:
  *          type: string
  *        myTopics:
  *          type: array
@@ -69,11 +81,11 @@ const userAuthRouter = Router();
  *            $ref: '#components/schemas/User'
  */
 
-userAuthRouter.post("/user/register", async function (req, res, next) {
+userAuthRouter.post('/user/register', async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
-        "headers의 Content-Type을 application/json으로 설정해주세요"
+        'headers의 Content-Type을 application/json으로 설정해주세요'
       );
     }
 
@@ -81,17 +93,23 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const bearName = req.body.bearName;
     const myTopics = req.body.myTopics;
+    const bearName = req.body.bearName;
+    const sex = req.body.sex;
+    const age = req.body.age;
+    const occupation = req.body.occupation;
 
     // 위 데이터를 유저 db에 추가하기
     const newUser = await userAuthService.addUser({
       name,
       email,
       password,
-      bearName,
       myTopics,
-      infoProvider: "User",
+      bearName,
+      sex,
+      age,
+      occupation,
+      infoProvider: 'User',
     });
 
     if (newUser.errorMessage) {
@@ -125,12 +143,12 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
  */
 
 // 로그인
-userAuthRouter.post("/user/login", async function (req, res, next) {
+userAuthRouter.post('/user/login', async function (req, res, next) {
   try {
     // req (request) 에서 데이터 가져오기
     const email = req.body.email;
     const password = req.body.password;
-    
+
     // 위 데이터를 이용하여 유저 db에서 유저 찾기
     const user = await userAuthService.getUser({ email, password });
 
@@ -161,7 +179,7 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
  *              token:
  *                  type: string
  */
-userAuthRouter.post("/user/google-login", async function (req, res, next) {
+userAuthRouter.post('/user/google-login', async function (req, res, next) {
   try {
     const { token } = req.body;
 
@@ -197,7 +215,7 @@ userAuthRouter.post("/user/google-login", async function (req, res, next) {
 
 //userlist 반환
 userAuthRouter.get(
-  "/userlist",
+  '/userlist',
   login_required,
   async function (req, res, next) {
     try {
@@ -212,7 +230,7 @@ userAuthRouter.get(
 
 //사용자 정보 반환
 userAuthRouter.get(
-  "/user/current",
+  '/user/current',
   login_required,
   async function (req, res, next) {
     try {
@@ -264,7 +282,7 @@ userAuthRouter.get(
 
 //user 정보 수정
 userAuthRouter.put(
-  "/users/:id",
+  '/users/:id',
   login_required,
   async function (req, res, next) {
     try {
@@ -274,10 +292,28 @@ userAuthRouter.put(
       const name = req.body.name ?? null;
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
-      const bearName = req.body.bearName ?? null;
       const myTopics = req.body.myTopics ?? null;
+      const bearName = req.body.bearName ?? null;
+      const level = req.body.level ?? null;
+      const cotton = req.body.cotton ?? null;
+      const height = req.body.height ?? null;
+      const sex = req.body.sex ?? null;
+      const age = req.body.age ?? null;
+      const occupation = req.body.occupation ?? null;
 
-      const toUpdate = { name, email, password, bearName, myTopics };
+      const toUpdate = {
+        name,
+        email,
+        password,
+        myTopics,
+        bearName,
+        level,
+        cotton,
+        height,
+        sex,
+        age,
+        occupation,
+      };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({
@@ -321,7 +357,7 @@ userAuthRouter.put(
 
 //user 정보 반환
 userAuthRouter.get(
-  "/users/:id",
+  '/users/:id',
   login_required,
   async function (req, res, next) {
     try {
@@ -369,7 +405,7 @@ userAuthRouter.get(
 
 //user 삭제 컴포넌트
 userAuthRouter.delete(
-  "/users/:id",
+  '/users/:id',
   //login_required,
   async function (req, res, next) {
     try {
@@ -385,7 +421,7 @@ userAuthRouter.delete(
 );
 
 // jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
+userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
   res
     .status(200)
     .send(
@@ -393,10 +429,52 @@ userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
     );
 });
 
+/**
+ * @swagger
+ * /bear/{id}:
+ *  get:
+ *    summary: "특정 유저 bear 정보 조회 Path 방식"
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: 유저 아이디
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 유저 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                bearName:
+ *                  type: string
+ *                level:
+ *                  type: Number
+ *                cotton:
+ *                  type: Number
+ *                height:
+ *                  type: Number
+ */
+// 곰 정보 찾기
+userAuthRouter.get(
+  '/bear/:id',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.id;
+      const bearInfo = await userAuthService.getBearInfo({ user_id });
+      if (bearInfo.errorMessage) {
+        throw new Error(bearInfo.errorMessage);
+      }
+      res.status(200).send(bearInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export { userAuthRouter };
-
-// if (!toUpdate.title) delete toUpdate.title
-//     if (!toUpdate.description) delete toUpdate.description
-//     if (!toUpdate.when_date) delete toUpdate.when_date
-
-//     return await Certificate.updateById({ id, toUpdate });

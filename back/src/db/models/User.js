@@ -34,6 +34,20 @@ class User {
 
     return await UserModel.findOneAndUpdate(filter, update, option);
   }
+
+  // 곰 데이터 찾기
+  static async findBearInfoByUserId({ user_id }) {
+    const user = await UserModel.findOne({ id: user_id });
+
+    const bearName = user.bearName;
+    const level = user.level;
+    const cotton = user.cotton;
+    const height = user.height;
+
+    const bearInfo = { bearName, level, cotton, height };
+
+    return bearInfo;
+  }
 }
 
 export { User };

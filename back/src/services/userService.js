@@ -2,11 +2,18 @@ import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
-import { OAuth2Client } from "google-auth-library";
+import { OAuth2Client } from 'google-auth-library';
 
 class userAuthService {
-  static async addUser({ name, email, password, bearName, myTopics, infoProvider }) {
-    console.log(name, email, password, bearName, myTopics, infoProvider)
+  static async addUser({
+    name,
+    email,
+    password,
+    bearName,
+    myTopics,
+    infoProvider,
+  }) {
+    console.log(name, email, password, bearName, myTopics, infoProvider);
     // 이메일 중복 확인
     const user = await User.findByEmail({ email });
     if (user) {
@@ -24,20 +31,20 @@ class userAuthService {
       name,
       bearName,
       myTopics,
-      infoProvider
+      infoProvider,
     };
 
-    if(infoProvider === "User") {
+    if (infoProvider === 'User') {
       // 비밀번호 해쉬화
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      newUser.password = hashedPassword
+      newUser.password = hashedPassword;
     }
 
     // db에 저장
     const createdNewUser = await User.create({ newUser });
     createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
-    
+
     return createdNewUser;
   }
 
@@ -48,10 +55,13 @@ class userAuthService {
       const errorMessage =
         '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
-    } else if(user.infoProvider === "Google") {
-      return { errorMessage: '해당 아이디는 기본 로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.' };
+    } else if (user.infoProvider === 'Google') {
+      return {
+        errorMessage:
+          '해당 아이디는 기본 로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
+      };
     }
-    
+
     // 비밀번호 일치 여부 확인
     const correctPasswordHash = user.password;
     const isPasswordCorrect = await bcrypt.compare(
@@ -59,12 +69,13 @@ class userAuthService {
       correctPasswordHash
     );
     if (!isPasswordCorrect) {
-      const errorMessage = '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.';
+      const errorMessage =
+        '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
     }
 
     // 반환할 loginuser 객체
-    const loginUser = await this.getLoginUserInfoBy(user)
+    const loginUser = await this.getLoginUserInfoBy(user);
 
     return loginUser;
   }
@@ -81,6 +92,12 @@ class userAuthService {
       email: user.email,
       name: user.name,
       bearName: user.bearName,
+      level: user.level,
+      cotton: user.cotton,
+      height: user.cotton,
+      sex: user.sex,
+      age: user.age,
+      occupation: user.occupation,
       myTopics: user.myTopics,
       infoProvider: user.infoProvider,
       errorMessage: null,
@@ -100,20 +117,27 @@ class userAuthService {
     const { name, email } = ticket.getPayload();
 
     let user = await User.findByEmail({ email });
-    if(user) {
+    if (user) {
       // 소셜로그인으로 회원가입한 사용자인 경우
-      if(user.infoProvider === "Google") {
-        return await this.getLoginUserInfoBy(user)
-      } else if(user.infoProvider === "User") {
+      if (user.infoProvider === 'Google') {
+        return await this.getLoginUserInfoBy(user);
+      } else if (user.infoProvider === 'User') {
         // 소셜로그인으로 회원가입한 사용자가 아닌 경우
-        return { errorMessage: '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.' };
+        return {
+          errorMessage:
+            '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
+        };
       }
     } else {
       // 새로운 사용자 정보 저장
-      user = await this.addUser({ name: name, email: email, infoProvider: "Google" })
+      user = await this.addUser({
+        name: name,
+        email: email,
+        infoProvider: 'Google',
+      });
     }
 
-    return user
+    return user;
   }
 
   static async getUsers() {
@@ -130,8 +154,13 @@ class userAuthService {
     if (!toUpdate.name) delete toUpdate.name;
     if (!toUpdate.email) delete toUpdate.email;
     if (!toUpdate.password) delete toUpdate.password;
-    if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
+    if (!toUpdate.bearName) delete toUpdate.bearName;
+    if (!toUpdate.level) delete toUpdate.level;
+    if (!toUpdate.cotton) delete toUpdate.cotton;
+    if (!toUpdate.height) delete toUpdate.height;
+    if (!toUpdate.sex) delete toUpdate.sex;
+    if (!toUpdate.occupation) delete toUpdate.occupation;
 
     return await User.updateById({ user_id, toUpdate });
   }
@@ -158,6 +187,18 @@ class userAuthService {
       return { errorMessage };
     }
     return user;
+  }
+
+  // 곰 정보 찾기
+  static async getBearInfo({ user_id }) {
+    const bearInfo = await User.findBearInfoByUserId({ user_id });
+
+    if (!bearInfo) {
+      const errorMessage =
+        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해주세요';
+      return { errorMessage };
+    }
+    return bearInfo;
   }
 }
 
