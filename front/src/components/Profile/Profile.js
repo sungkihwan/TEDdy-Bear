@@ -64,7 +64,7 @@ function Profile() {
               <div style={{width:'80%', height:500}}>
                 <LectureCard lectureData={recentLecture} type="최근 시청기록"></LectureCard>
               </div>
-              {open && <ProfileEdit open={open} handleClose={handleClose}></ProfileEdit>}
+              {open && <ProfileEdit open={open} handleClose={handleClose} userid={userState.id}></ProfileEdit>}
           </div>
       </>
     );

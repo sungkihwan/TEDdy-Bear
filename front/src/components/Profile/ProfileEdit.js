@@ -11,6 +11,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
+import * as Api from '../../api';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -23,9 +24,10 @@ const style = {
   p: 4,
 };
 
-function ProfileEdit({open, handleClose}) {
+function ProfileEdit({open, handleClose, userid}) {
+    console.log(userid)
     const topTopics = ["기술", "과학", "문화", "글로벌이슈", "사회", "디자인", "사회변화", "비즈니스", "애니메이션", "건강"];
-    const age = ["비밀", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대", "100이상"]
+    const ages = ["비밀", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "90대", "100이상"]
     const topicDict = {
         기술: "technology",
         과학: "science",
@@ -59,20 +61,29 @@ function ProfileEdit({open, handleClose}) {
         return newData;
       });
     }
+    const handleModify = () => {
+      const data = {
+        ...modifyUser,
+        myTopics:modifyUser.myTopics.map((topic) => topicDict[topic])
+      };
+      Api.put(`users/${modifyUser.id}`, data)
+        .then(res => {
+          dispatch({
+            payload: res.data,
+            type: "LOGIN_SUCCESS",
+          });
+        })
+      handleClose()
+    }
 
     const userState = useContext(UserStateContext);
     const dispatch = useContext(DispatchContext);
 
     const [modifyUser, setModifyUser] = useState({
-        name:userState.user.name,
-        bearName:userState.user.bearName,
-        myTopics:[...userState.user.myTopics.map((topic) => topicDict2[topic])],
-        age:"",
-        job:"",
-        sex:"남",
+      ...userState.user,
+      myTopics:userState.user.myTopics.map((topic) => topicDict2[topic]),
     });
-    console.log(userState)
-    console.log(modifyUser);
+
     return (
       <div>
         <Modal
@@ -129,7 +140,7 @@ function ProfileEdit({open, handleClose}) {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={age}
+              options={ages}
               sx={{ width: 300 }}
               value={modifyUser.age}
               onChange={(event, newValue) => {
@@ -158,21 +169,21 @@ function ProfileEdit({open, handleClose}) {
               >
                 <FormControlLabel
                   value="남"
-                  control={<Radio checked={modifyUser.gender === "남"} />}
+                  control={<Radio checked={modifyUser.sex === "남"} />}
                   label="남"
                   name='sex'
                   onClick={handleOnChangeInfo}
                 />
                 <FormControlLabel
                   value="여"
-                  control={<Radio checked={modifyUser.gender === "여"} />}
+                  control={<Radio checked={modifyUser.sex === "여"} />}
                   label="여"
                   name='sex'
                   onClick={handleOnChangeInfo}
                 />
               </RadioGroup>
             </FormControl>
-            <Button variant="contained">수정하기</Button>
+            <Button variant="contained" onClick={handleModify}>수정하기</Button>
             <Button variant="contained">취소하기</Button>
           </Box>
         </Modal>
