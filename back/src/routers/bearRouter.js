@@ -6,7 +6,7 @@ const bearRouter = Router();
 bearRouter.use(login_required);
 
 // bear get 요청
-bearRouter.get('bear/:userId', async function (req, res, next) {
+bearRouter.get('/bear/:userId', async function (req, res, next) {
   try {
     const userId = req.params;
 
