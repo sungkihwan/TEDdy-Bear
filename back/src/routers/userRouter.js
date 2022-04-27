@@ -30,15 +30,15 @@ const userAuthRouter = Router();
  *        bearName:
  *          type: string
  *        level:
- *          type: Number
+ *          type: number
  *        cotton:
- *          type: Number
+ *          type: number
  *        height:
- *          type: Number
+ *          type: number
  *        sex:
  *          type: string
  *        age:
- *          type: Number
+ *          type: number
  *        occupation:
  *          type: string
  *        myTopics:
@@ -363,7 +363,7 @@ userAuthRouter.get(
     try {
       const user_id = req.params.id;
       const currentUserInfo = await userAuthService.getUserInfo({ user_id });
-      
+
       if (currentUserInfo.errorMessage) {
         throw new Error(currentUserInfo.errorMessage);
       }
