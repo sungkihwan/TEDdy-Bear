@@ -128,8 +128,7 @@ class userAuthService {
       return { errorMessage };
     }
     if (!toUpdate.name) delete toUpdate.name;
-    if (!toUpdate.email) delete toUpdate.email;
-    if (!toUpdate.password) delete toUpdate.password;
+    if (!toUpdate.password || toUpdate.infoProvider !== "User") delete toUpdate.password;
     if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
 
