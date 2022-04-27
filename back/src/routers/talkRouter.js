@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
-import { talkService } from '../services/talkService';
+import { Router } from "express";
+import { login_required } from "../middlewares/login_required";
+import { talkService } from "../services/talkService";
 
 const talkRouter = Router();
 
@@ -28,7 +28,7 @@ const talkRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.get('/talks/today', async (req, res, next) => {
+talkRouter.get("/talks/today", async (req, res, next) => {
   try {
     const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
 
@@ -68,7 +68,7 @@ talkRouter.get('/talks/today', async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.post('/talks/my', login_required, async (req, res, next) => {
+talkRouter.post("/talks/my", login_required, async (req, res, next) => {
   try {
     const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
     const user_id = req.currentUserId;
@@ -107,7 +107,7 @@ talkRouter.post('/talks/my', login_required, async (req, res, next) => {
  *             schema:
  *               $ref: '#components/schemas/Talk'
  */
-talkRouter.get('/talks/:talk_id', async (req, res, next) => {
+talkRouter.get("/talks/:talk_id", async (req, res, next) => {
   try {
     const id = Number(req.params.talk_id);
 
