@@ -46,7 +46,7 @@ export default function Bear({ isEditable }) {
   };
   return (
     <div>
-      <img src="/main2.png" alt="bear" style={{ height: "40vh" }} />
+      <img src="/mybear.png" alt="bear" style={{ height: "40vh" }} />
       {isEditable && (
         <div
           style={{
