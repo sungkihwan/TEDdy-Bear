@@ -24,14 +24,14 @@ function Profile() {
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
-        Api.get('talks/today','?size=3')
+        Api.get('talks/today','?size=12')
           .then(res => setRecentLecture(res.data));
       }, []);
     
     return (
       <>
           <div style={{display:'flex', marginTop: 100, justifyContent: 'center'}}>
-              <div style={{ width: 500, height: "100%" }}>
+              <div style={{marginTop:10, width: 500, height: "100%" }}>
                 <Card sx={{ maxWidth: 345 }}>
                   <CardMedia
                     component="img"
@@ -61,7 +61,7 @@ function Profile() {
                   </CardActions>
                 </Card>
               </div>
-              <div>
+              <div style={{width:'80%', height:500}}>
                 <LectureCard lectureData={recentLecture} type="최근 시청기록"></LectureCard>
               </div>
               {open && <ProfileEdit open={open} handleClose={handleClose}></ProfileEdit>}

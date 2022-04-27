@@ -10,7 +10,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-
+import Button from '@mui/material/Button';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -51,6 +51,14 @@ function ProfileEdit({open, handleClose}) {
         "animation":"애니메이션",
         "health":"건강",
     };
+    const handleOnChangeInfo = (e) => {
+      setModifyUser((cur) => {
+        const newData = { ...cur };
+        newData[e.target.name] = e.target.value;
+        console.log(newData);
+        return newData;
+      });
+    }
 
     const userState = useContext(UserStateContext);
     const dispatch = useContext(DispatchContext);
@@ -58,11 +66,13 @@ function ProfileEdit({open, handleClose}) {
     const [modifyUser, setModifyUser] = useState({
         name:userState.user.name,
         bearName:userState.user.bearName,
-        myTopics:userState.user.myTopics.map((topic) => topicDict2[topic]),
+        myTopics:[...userState.user.myTopics.map((topic) => topicDict2[topic])],
         age:"",
         job:"",
-        gender:"남",
+        sex:"남",
     });
+    console.log(userState)
+    console.log(modifyUser);
     return (
       <div>
         <Modal
@@ -78,31 +88,30 @@ function ProfileEdit({open, handleClose}) {
             <TextField
               label="변경할 유저 이름"
               value={modifyUser.name}
-              onChange={(e) => {
-                setModifyUser((cur) => {
-                  const newData = { ...cur };
-                  newData.name = e.target.value;
-                  return newData;
-                });
-              }}
+              name="name"
+              onChange={handleOnChangeInfo}
             />
             <TextField
               label="변경할 곰 이름"
               value={modifyUser.bearName}
-              onChange={(e) => {
-                setModifyUser((cur) => {
-                  const newData = { ...cur };
-                  newData.bearName = e.target.value;
-                  return newData;
-                });
-              }}
+              name="bearName"
+              onChange={handleOnChangeInfo}
+            />
+            <TextField
+              id="outlined-password-input"
+              label="비밀번호"
+              type="password"
+              name="password"
+              onChange={handleOnChangeInfo}
+              autoComplete="current-password"
             />
             <Autocomplete
               multiple
               id="tags-outlined"
               options={topTopics}
               value={modifyUser.myTopics}
-              onChange={(event, newValue) => {
+              name="myTopics"
+              onChange={(e, newValue) => {
                 setModifyUser((cur) => {
                   const newData = { ...cur };
                   newData.myTopics = newValue;
@@ -135,13 +144,8 @@ function ProfileEdit({open, handleClose}) {
             <TextField
               label="직업"
               value={modifyUser.job}
-              onChange={(e) => {
-                setModifyUser((cur) => {
-                  const newData = { ...cur };
-                  newData.job = e.target.value;
-                  return newData;
-                });
-              }}
+              name='job'
+              onChange={handleOnChangeInfo}
             />
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">
@@ -154,30 +158,22 @@ function ProfileEdit({open, handleClose}) {
               >
                 <FormControlLabel
                   value="남"
-                  control={<Radio checked={modifyUser.gender === "남"}/>}
+                  control={<Radio checked={modifyUser.gender === "남"} />}
                   label="남"
-                  onClick={(e) => {
-                    setModifyUser((cur) => {
-                        const newData = {...cur};
-                        newData.gender = e.target.value;
-                        return newData;
-                    })
-                  }}
+                  name='sex'
+                  onClick={handleOnChangeInfo}
                 />
                 <FormControlLabel
                   value="여"
-                  control={<Radio checked={modifyUser.gender === "여"}/>}
+                  control={<Radio checked={modifyUser.gender === "여"} />}
                   label="여"
-                  onClick={(e) => {
-                    setModifyUser((cur) => {
-                        const newData = {...cur};
-                        newData.gender = e.target.value;
-                        return newData;
-                    })
-                  }}
+                  name='sex'
+                  onClick={handleOnChangeInfo}
                 />
               </RadioGroup>
             </FormControl>
+            <Button variant="contained">수정하기</Button>
+            <Button variant="contained">취소하기</Button>
           </Box>
         </Modal>
       </div>

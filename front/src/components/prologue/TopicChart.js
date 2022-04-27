@@ -27,10 +27,11 @@ function TopicChart() {
         Api.get('data', 'topicLikes')
           .then(res => setTopicLike(() => {
               const newData = []
+              const {data} = res.data;
               for (let i = 0; i < 50; i++) {
                   newData.push({
-                      text : res.data.data['topic'][i],
-                      value : res.data.data['likes'][i]
+                      text : data['topic'][i],
+                      value : data['likes'][i]
                   })
               }
               return newData;

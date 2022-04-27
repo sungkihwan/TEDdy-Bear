@@ -6,9 +6,9 @@ function Lecture() {
   const [myLectureData, setMyLectureData] = useState([]);
 
   useEffect(() => {
-    Api.get('talks/today','?size=3')
+    Api.get('talks/today','?size=12')
       .then(res => setLectureData(res.data));
-    Api.post('talks/my', {size:3})
+    Api.post('talks/my', {size:12})
       .then(res => setMyLectureData(res.data));
   }, []);
 
