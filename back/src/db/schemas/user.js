@@ -36,6 +36,19 @@ const UserSchema = new Schema(
       required: true,
       default: 1,
     },
+    height: {
+      type: Number,
+      required: true,
+      default: 10,
+    },
+    sex: {
+      type: String,
+      required: false,
+    },
+    occupation: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,

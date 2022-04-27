@@ -29,6 +29,18 @@ const userAuthRouter = Router();
  *          type: string
  *        bearName:
  *          type: string
+ *        level:
+ *          type: Number
+ *        cotton:
+ *          type: Number
+ *        height:
+ *          type: Number
+ *        sex:
+ *          type: string
+ *        age:
+ *          type: Number
+ *        occupation:
+ *          type: string
  *        myTopics:
  *          type: array
  *          items:
@@ -83,8 +95,9 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
     const password = req.body.password;
     const myTopics = req.body.myTopics;
     const bearName = req.body.bearName;
-    const level = req.body.level;
-    const cotton = req.body.level;
+    const sex = req.body.sex;
+    const age = req.body.age;
+    const occupation = req.body.occupation;
 
     // 위 데이터를 유저 db에 추가하기
     const newUser = await userAuthService.addUser({
@@ -93,8 +106,9 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
       password,
       myTopics,
       bearName,
-      level,
-      cotton,
+      sex,
+      age,
+      occupation,
     });
 
     if (newUser.errorMessage) {
@@ -249,6 +263,10 @@ userAuthRouter.put(
       const bearName = req.body.bearName ?? null;
       const level = req.body.level ?? null;
       const cotton = req.body.cotton ?? null;
+      const height = req.body.height ?? null;
+      const sex = req.body.sex ?? null;
+      const age = req.body.age ?? null;
+      const occupation = req.body.occupation ?? null;
 
       const toUpdate = {
         name,
@@ -258,6 +276,10 @@ userAuthRouter.put(
         bearName,
         level,
         cotton,
+        height,
+        sex,
+        age,
+        occupation,
       };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
@@ -374,6 +396,36 @@ userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
     );
 });
 
+/**
+ * @swagger
+ * /bear/{id}:
+ *  get:
+ *    summary: "특정 유저 bear 정보 조회 Path 방식"
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: 유저 아이디
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 유저 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                bearName:
+ *                  type: string
+ *                level:
+ *                  type: Number
+ *                cotton:
+ *                  type: Number
+ *                height:
+ *                  type: Number
+ */
 // 곰 정보 찾기
 userAuthRouter.get(
   '/bear/:id',

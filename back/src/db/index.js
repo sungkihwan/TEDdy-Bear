@@ -3,7 +3,6 @@ import { User } from './models/User';
 import { Data } from './models/Data';
 import { Talk } from './models/Talk';
 import { Topic } from './models/Topic';
-import { Bear } from './models/Bear';
 import { ViewHistory } from './models/ViewHistory';
 
 const DB_URL =
@@ -20,4 +19,4 @@ db.on('error', (error) =>
   console.error('MongoDB 연결에 실패하였습니다...\n' + DB_URL + '\n' + error)
 );
 
-export { User, Data, Talk, Topic, ViewHistory, Bear };
+export { User, Data, Talk, Topic, ViewHistory };

@@ -64,7 +64,18 @@ class userAuthService {
     // const name = user.name;
     // const bearName = user.bearName;
     // const myTopics = user.myTopics;
-    const { id, name, myTopics, bearName, level, cotton } = user;
+    const {
+      id,
+      name,
+      myTopics,
+      bearName,
+      level,
+      cotton,
+      height,
+      sex,
+      age,
+      occupation,
+    } = user;
 
     const loginUser = {
       token,
@@ -75,6 +86,10 @@ class userAuthService {
       bearName,
       level,
       cotton,
+      height,
+      sex,
+      age,
+      occupation,
       errorMessage: null,
     };
 
@@ -99,6 +114,9 @@ class userAuthService {
     if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.level) delete toUpdate.level;
     if (!toUpdate.cotton) delete toUpdate.cotton;
+    if (!toUpdate.height) delete toUpdate.height;
+    if (!toUpdate.sex) delete toUpdate.sex;
+    if (!toUpdate.occupation) delete toUpdate.occupation;
 
     return await User.updateById({ user_id, toUpdate });
   }
