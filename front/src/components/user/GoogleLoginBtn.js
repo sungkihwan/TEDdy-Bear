@@ -6,7 +6,9 @@ function GoogleLoginBtn({ responseGoogle }) {
 
   return (
     <GoogleLogin
-      clientId={ clinetId ? clinetId : console.log("GOOGLE_CLIENT_ID가 없습니다.") }
+      clientId={
+        clinetId ? clinetId : console.log("GOOGLE_CLIENT_ID가 없습니다.")
+      }
       buttonText="구글로 로그인"
       onSuccess={responseGoogle}
       onFailure={responseGoogle}
