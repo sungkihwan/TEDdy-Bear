@@ -7,7 +7,11 @@ from pymongo import MongoClient
 
 # client = MongoClient("mongodb+srv://elice:1234@cluster0.usvux.mongodb.net/")
 # 본인의 몽고 db url을 설정해주세요.
+<<<<<<< HEAD
 client = MongoClient("")
+=======
+client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.hxrzu.mongodb.net/ted?retryWrites=true&w=majority")
+>>>>>>> db1e77a0ccd0d605bced79b3dd8fb3d2fd3b28b3
 db = client['ted']
 collection_talk = db['talks']
 collection_topic = db['topics']
@@ -15,8 +19,10 @@ collection_topic = db['topics']
 ######################################### talk, topic #############################
 tedUltimate = pd.read_csv('./ted_talks_ko.csv', encoding='utf-8')
 tedUltimate['link'] = tedUltimate['url'].str.slice(start=26, stop=-1)
-tedUltimate.drop(['transcript', 'event', 'views', 'title'], axis=1, inplace=True)
+tedUltimate.drop(['transcript', 'event', 'views'], axis=1, inplace=True)
+
 ted = pd.read_csv('./data.csv')
+ted.drop(['title'], axis=1, inplace=True)
 ted['link'] = ted['link'].str.slice(start=22)
 
 newData = pd.merge(tedUltimate, ted, how='inner', on='link')
@@ -66,7 +72,3 @@ for key, value in teddy_topics.items():
 
 collection_talk.insert_many(teddy_talks)
 collection_topic.insert_many(teddy_topics_list)
-
-
-
-
