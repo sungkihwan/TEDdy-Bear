@@ -9,6 +9,7 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
+      immutable: true,
     },
     name: {
       type: String,
@@ -58,8 +59,8 @@ const UserSchema = new Schema(
     infoProvider: {
       type: String,
       enum: {
-        values: ['User', 'Google'],
-        message: '{VALUE} is not supported',
+        values: ["User", "Google"],
+        message: "{VALUE} 로 로그인하기는 아직 지원되지 않습니다.",
       },
     },
   },

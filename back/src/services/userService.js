@@ -13,7 +13,6 @@ class userAuthService {
     myTopics,
     infoProvider,
   }) {
-    console.log(name, email, password, bearName, myTopics, infoProvider);
     // 이메일 중복 확인
     const user = await User.findByEmail({ email });
     if (user) {
@@ -152,14 +151,14 @@ class userAuthService {
       return { errorMessage };
     }
     if (!toUpdate.name) delete toUpdate.name;
-    if (!toUpdate.email) delete toUpdate.email;
-    if (!toUpdate.password) delete toUpdate.password;
+    if (!toUpdate.password || user.infoProvider !== "User") delete toUpdate.password;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
     if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.level) delete toUpdate.level;
     if (!toUpdate.cotton) delete toUpdate.cotton;
     if (!toUpdate.height) delete toUpdate.height;
     if (!toUpdate.sex) delete toUpdate.sex;
+    if (!toUpdate.age) delete toUpdate.age;
     if (!toUpdate.occupation) delete toUpdate.occupation;
 
     return await User.updateById({ user_id, toUpdate });
