@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Main from "./components/main/Main";
-import UserPage from "./components/user/UserPage";
+import UserPage from "./components/user/userPage/UserPage";
 import Prologue from "./components/prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
 import React, { useState, useEffect, useReducer, createContext } from "react";

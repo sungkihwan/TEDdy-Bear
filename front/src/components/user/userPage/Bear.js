@@ -7,7 +7,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { brown } from "@mui/material/colors";
-import { theme } from "../../style/Style";
+import { theme } from "../../../style/Style";
+import * as Api from "../../../api";
 
 const textColor = { color: theme.brown.dark };
 
@@ -15,35 +16,48 @@ const textColor = { color: theme.brown.dark };
  *
  * @returns {component} My bear information
  */
-export default function Bear({ isEditable }) {
-  const [level, setLevel] = useState(1);
+export default function Bear({ isEditable, user }) {
+  const [bear, setBear] = useState({
+    cotton: user.cotton,
+    height: user.height,
+    level: user.level,
+  });
   const [exp, setExp] = useState(0);
-  const [cotton, setCotton] = useState(11);
-  let maxExp = level * 10;
+  let maxExp = bear.level * 10;
   const [progress, setProgress] = useState(exp / maxExp);
 
+  //server bear data update
+  const fetchBear = async () => {
+    await Api.put(`users/${user.id}`, {
+      cotton: bear.cotton,
+      level: bear.level,
+      height: bear.height,
+    });
+  };
   //if exp full, execute a function
   useEffect(() => {
     if (exp === maxExp) {
       setExp(0);
       setProgress(0);
-      setLevel((cur) => cur + 1);
-      maxExp = level * 10;
+      setBear((cur) => ({ ...cur, level: cur.level + 1 }));
+      maxExp = bear.level * 10;
     }
     setProgress((exp / maxExp) * 100);
+    fetchBear();
   }, [exp]);
 
   //click button, execute a function
-  const click = () => {
-    if (cotton === 0) {
+  const click = async () => {
+    if (bear.cotton === 0) {
       alert("솜이 부족합니다!");
-      setCotton(0);
+      bear.cotton = 0;
     } else {
       setExp((cur) => cur + 1);
-      setCotton((cur) => cur - 1);
+      setBear((cur) => ({ ...cur, cotton: cur.cotton - 1 }));
     }
     return;
   };
+
   return (
     <div>
       <img src="/mybear.png" alt="bear" style={{ height: "40vh" }} />
@@ -56,20 +70,25 @@ export default function Bear({ isEditable }) {
           }}
         >
           <div style={{ width: "50%" }}>
-            <p style={textColor}>LEVEL {level}</p>
+            <p style={textColor}>LEVEL {bear.level}</p>
             <p style={textColor}>
               {exp} / {maxExp}
             </p>
             <ExpBar value={progress} />
           </div>
           <div>
-            <p style={textColor}>남은 솜 : {cotton}</p>
+            <p style={textColor}>남은 솜 : {bear.cotton}</p>
             <ExpButton onClick={click}>솜 주기</ExpButton>
           </div>
         </div>
       )}
       {!isEditable && (
-        <p style={(textColor, { textAlign: "center" })}>LEVEL {level}</p>
+        <>
+          <p style={(textColor, { textAlign: "center" })}>LEVEL {bear.level}</p>
+          <p style={(textColor, { textAlign: "center" })}>
+            키 : {bear.height} cm
+          </p>
+        </>
       )}
     </div>
   );

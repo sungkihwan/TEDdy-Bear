@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import Bear from "./Bear";
 import Lawn from "./Lawn";
-import * as Api from "../../api";
+import * as Api from "../../../api";
 import { useContext, useEffect, useState } from "react";
-import { UserStateContext } from "../../App";
+import { UserStateContext } from "../../../App";
 import { useParams } from "react-router-dom";
-import Loading from "../common/Loading";
+import Loading from "../../common/Loading";
 
 /** My page component
  *
  * @returns {component} My page
  */
-export default function MyPage() {
+export default function UserPage() {
   const params = useParams();
   const userState = useContext(UserStateContext);
   const [isEditable, setIsEditable] = useState(false);
@@ -52,7 +52,7 @@ export default function MyPage() {
         <p>
           {user.name}님의 {user.bearName}
         </p>
-        <Bear isEditable={isEditable} />
+        <Bear isEditable={isEditable} user={user} />
         <Lawn />
       </Page>
     </div>
