@@ -2,9 +2,18 @@ import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
 
 class userAuthService {
-  static async addUser({ name, email, password, bearName, myTopics }) {
+  static async addUser({
+    name,
+    email,
+    password,
+    bearName,
+    myTopics,
+    infoProvider,
+  }) {
+    console.log(name, email, password, bearName, myTopics, infoProvider);
     // 이메일 중복 확인
     const user = await User.findByEmail({ email });
     if (user) {
@@ -13,19 +22,24 @@ class userAuthService {
       return { errorMessage };
     }
 
-    // 비밀번호 해쉬화
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // id 는 유니크 값 부여
     const id = uuidv4();
-    const newUser = {
+
+    let newUser = {
       id,
-      name,
       email,
-      password: hashedPassword,
-      myTopics,
+      name,
       bearName,
+      myTopics,
+      infoProvider,
     };
+
+    if (infoProvider === 'User') {
+      // 비밀번호 해쉬화
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      newUser.password = hashedPassword;
+    }
 
     // db에 저장
     const createdNewUser = await User.create({ newUser });
@@ -41,6 +55,11 @@ class userAuthService {
       const errorMessage =
         '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
+    } else if (user.infoProvider === 'Google') {
+      return {
+        errorMessage:
+          '해당 아이디는 기본 로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
+      };
     }
 
     // 비밀번호 일치 여부 확인
@@ -55,45 +74,70 @@ class userAuthService {
       return { errorMessage };
     }
 
+    // 반환할 loginuser 객체
+    const loginUser = await this.getLoginUserInfoBy(user);
+
+    return loginUser;
+  }
+
+  static async getLoginUserInfoBy(user) {
     // 로그인 성공 -> JWT 웹 토큰 생성
     const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
     const token = jwt.sign({ user_id: user.id }, secretKey);
 
-    // 반환할 loginuser 객체를 위한 변수 설정
-    // const id = user.id;
-    // const name = user.name;
-    // const bearName = user.bearName;
-    // const myTopics = user.myTopics;
-    const {
-      id,
-      name,
-      myTopics,
-      bearName,
-      level,
-      cotton,
-      height,
-      sex,
-      age,
-      occupation,
-    } = user;
-
-    const loginUser = {
+    // 반환할 loginuser 객체
+    return {
       token,
-      id,
-      email,
-      name,
-      myTopics,
-      bearName,
-      level,
-      cotton,
-      height,
-      sex,
-      age,
-      occupation,
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      bearName: user.bearName,
+      level: user.level,
+      cotton: user.cotton,
+      height: user.cotton,
+      sex: user.sex,
+      age: user.age,
+      occupation: user.occupation,
+      myTopics: user.myTopics,
+      infoProvider: user.infoProvider,
       errorMessage: null,
     };
+  }
 
-    return loginUser;
+  static async socialLoginBy(token) {
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const client = new OAuth2Client(clientId);
+
+    // 유효한 idToken인지 확인
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: clientId,
+    });
+
+    const { name, email } = ticket.getPayload();
+
+    let user = await User.findByEmail({ email });
+    if (user) {
+      // 소셜로그인으로 회원가입한 사용자인 경우
+      if (user.infoProvider === 'Google') {
+        return await this.getLoginUserInfoBy(user);
+      } else if (user.infoProvider === 'User') {
+        // 소셜로그인으로 회원가입한 사용자가 아닌 경우
+        return {
+          errorMessage:
+            '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
+        };
+      }
+    } else {
+      // 새로운 사용자 정보 저장
+      user = await this.addUser({
+        name: name,
+        email: email,
+        infoProvider: 'Google',
+      });
+    }
+
+    return user;
   }
 
   static async getUsers() {

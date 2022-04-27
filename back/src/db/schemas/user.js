@@ -16,7 +16,9 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        return this.infoProvider === 'User';
+      },
     },
     myTopics: {
       type: Array,
@@ -24,7 +26,7 @@ const UserSchema = new Schema(
     },
     bearName: {
       type: String,
-      required: true,
+      default: 'Teddy',
     },
     level: {
       type: Number,
@@ -48,6 +50,17 @@ const UserSchema = new Schema(
     occupation: {
       type: String,
       required: false,
+    },
+    myTopics: {
+      type: Array,
+      default: [],
+    },
+    infoProvider: {
+      type: String,
+      enum: {
+        values: ['User', 'Google'],
+        message: '{VALUE} is not supported',
+      },
     },
   },
   {

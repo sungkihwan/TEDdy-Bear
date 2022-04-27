@@ -32,7 +32,20 @@ const viewHistoryRouter = Router();
  *          type: date
  *        updatedAt: 
  *          type: date
+ */
 
+// 커스텀 스키마
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    rankingBoard:
+ *      type: object
+ *      properties:
+ *        _id:
+ *          type: string
+ *        count:
+ *          type: number
  */
 
 /**
@@ -200,6 +213,35 @@ viewHistoryRouter.get(
       });
 
       res.status(200).send(viewHistoryDatelist);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /viewhistory/rankingBoard:
+ *  get:
+ *    summary: "최다 뷰 유저 랭킹 조회 top 5"
+ *    description: "5명까지 영상을 가장 많이 본 유저 조회"
+ *    tags: [viewhistory]
+ *    responses:
+ *      "200":
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/rankingBoard'
+ */
+viewHistoryRouter.get(
+  '/viewhistory/rankingBoard',
+  async function (req, res, next) {
+    try {
+      const rankingBoard = await ViewHistoryService.rankingBoard({});
+
+      res.status(200).send(rankingBoard);
     } catch (error) {
       next(error);
     }

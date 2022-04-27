@@ -78,11 +78,11 @@ const TalkSchema = new Schema(
     },
     teddy_view_count: {
       type: Number,
-      required: true,
+      min: [0, '0보다 작을 수는 없으므로 {VALUE} 값은 저장할 수 없습니다.'],
     },
     teddy_like_count: {
       type: Number,
-      required: true,
+      min: [0, '0보다 작을 수는 없으므로 {VALUE} 값은 저장할 수 없습니다.'],
     },
     url: {
       type: String,

@@ -109,6 +109,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
       sex,
       age,
       occupation,
+      infoProvider: 'User',
     });
 
     if (newUser.errorMessage) {
@@ -156,6 +157,38 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
     }
 
     res.status(200).send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ *
+ * /user/google-login:
+ *  post:
+ *    summary: "유저 구글로그인"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              token:
+ *                  type: string
+ */
+userAuthRouter.post('/user/google-login', async function (req, res, next) {
+  try {
+    const { token } = req.body;
+
+    const user = await userAuthService.socialLoginBy(token);
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
+    }
+
+    return res.status(200).send(user);
   } catch (error) {
     next(error);
   }
