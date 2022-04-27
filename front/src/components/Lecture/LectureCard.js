@@ -4,7 +4,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import LectureInfo from './LectureInfo'
-
+import './lecture.css'
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -15,7 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
     marginBottom:10
   }));
   
-  function LectureCard({lectureData, type}) {
+  function LectureCard({lectureData, type, cname=""}) {
     let lectureInfo = [...lectureData];
   
     const customFetcher = async (url) => {
@@ -44,7 +44,9 @@ const Item = styled(Paper)(({ theme }) => ({
       return (
         <>
             <div style={{width:'100%', height:'500px'}}>
-              <h1 style={{marginLeft:'20px'}}>{type}</h1>
+              <div className={cname}>
+                <h1 style={{marginLeft:'20px', verticalAlign: 'middle'}}>{type}</h1>
+              </div>
               <Carousel itemsToShow={3}>
                 {lectureData.map((data, index) => (
                   <Item key={index}>  

@@ -13,7 +13,6 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
 import ProfileEdit from './ProfileEdit';
-
 function Profile() {
     const userState = useContext(UserStateContext);
     const dispatch = useContext(DispatchContext);

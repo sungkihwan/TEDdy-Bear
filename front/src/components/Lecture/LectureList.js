@@ -24,8 +24,8 @@ function LectureList({lectureData, myLectureData}) {
                 width={300}/>
         </div>
         <div style={{width:'80%', height:500}}>
-          <LectureCard lectureData={lectureData} type="TEDdy : 다람쥐야 이건 어때?"></LectureCard>
-          <LectureCard lectureData={myLectureData} type="추천된 영상"></LectureCard>
+          <LectureCard lectureData={lectureData} type="TEDdy : 다람쥐야 이건 어때?" cname={"balloon_03"}></LectureCard>
+          <LectureCard lectureData={myLectureData} type="추천된 영상" cname={"basic"}></LectureCard>
         </div>
       </div>
     );
