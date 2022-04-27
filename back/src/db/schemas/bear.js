@@ -23,11 +23,11 @@ const BearSchema = new Schema({
     required: true,
     default: 1,
   },
-  height: {
-    type: Number,
-    required: true,
-    default: 1,
-  },
+  // height: {
+  //   type: Number,
+  //   required: true,
+  //   default: 1,
+  // },
 });
 
 const BearModel = model('Bear', BearSchema);
