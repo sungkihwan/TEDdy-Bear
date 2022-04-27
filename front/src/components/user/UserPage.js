@@ -42,14 +42,16 @@ export default function MyPage() {
   // if (!isFetchCompleted) {
   //   return "loading...";
   // }
-
+  const user = {
+    id: "61272000-cee1-4d20-892a-c1ade22cbdeb",
+  };
   return (
     <>
       <Page>
         <Header />
         <Bear />
       </Page>
-      <Lawn />
+      <Lawn user={user} />
     </>
   );
 }

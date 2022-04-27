@@ -1,68 +1,43 @@
 import styled from "styled-components";
 import * as React from "react";
-import { useState, useContext, useNaviagate } from "react";
-import Link from "@mui/material/Link";
+import { useState, useContext, useNaviagate, useEffect } from "react";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import Chip from "@mui/material/Chip";
-import { useNavigate } from "react-router-dom";
-import * as Api from "../../api";
-import Account from "./Account";
-import TeddyImage from "./TeddyImage";
-import UserTopics from "./UserTopics";
-import Name from "./Name";
-import Buttons from "./Buttons";
 
-import CalendarPicker from "@mui/lab/CalendarPicker";
-import MonthPicker from "@mui/x-date-pickers/MonthPicker";
-import YearPicker from "@mui/x-date-pickers/YearPicker";
-
-import isWeekend from "date-fns/isWeekend";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import StaticDatePicker from "@mui/lab/StaticDatePicker";
+import DateForm from "./DateButton";
+import WeekForm from "./WeekForm";
 
 /** Lawn component
  *
  * @returns {component} My lawn information
  */
-function Lawn() {
-  const minDate = new Date("2021-01-01T00:00:00.000");
-  const maxDate = new Date("2099-01-01T00:00:00.000");
-  const [date, setDate] = React.useState(new Date());
-  const navigate = useNavigate();
+function Lawn({ user }) {
+  const [history, setHistory] = useState(["데이터가 없습니다", "실험", "진짜없나"]);
+  // useEffect(() => {
+  //   Api.get(`/viewhistorylists/${user.id}`).then((res) => setHistory(res.data));
+  // }, []);
 
-  const handleChange = async (e) => {
-    e.preventDefault();
+  function getDate(날짜문자열) {
+    let week = ["일", "월", "화", "수", "목", "금", "토"];
+    var dayOfWeek = week[new Date(날짜문자열).getDay()];
+    return dayOfWeek;
+  }
+  const week = ["일", "월", "화", "수", "목", "금", "토"];
 
-    try {
-      // "user/login" 엔드포인트로 post요청함.
-      // const res = await Api.post("user/login", {
-      //   email,
-      //   password,
-      // });
-      // console.log("로그인에 성공했씁니다.\n");
-      // 기본 페이지로 이동함.
-    } catch (err) {
-      console.log("로그인에 실패하였습니다.\n", err);
-    }
-  };
-
+  var arr = [];
+  for (let i = 0; i < 53; i++) {
+    arr.push(i);
+  }
+  const today = new Date();
   return (
-    <Card>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Grid container justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <CalendarPicker date={date} onChange={handleChange} />
-          </Grid>
+    <Grid container direction="row" justifyContent="center" alignItems="center">
+      {arr.map(() => (
+        <Grid item>
+          <WeekForm />
         </Grid>
-      </LocalizationProvider>
-    </Card>
+      ))}
+    </Grid>
   );
 }
 
