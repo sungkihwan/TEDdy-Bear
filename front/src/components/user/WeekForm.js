@@ -6,19 +6,13 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import DateButton from "./DateButton";
 
-function WeekForm({ days, day }) {
-  function getDate(day) {
-    let week = ["일", "월", "화", "수", "목", "금", "토"];
-    var dayOfWeek = week[new Date(day).getDay()];
-    return dayOfWeek;
-  }
-
+function WeekForm({ today, days, day, weekNum, dailyList, setDailyList }) {
   let week = ["일", "월", "화", "수", "목", "금", "토"];
 
   return (
     <div>
-      {week.map(() => (
-        <DateButton />
+      {week.map((day, idx) => (
+        <DateButton day={idx} weekNum={weekNum} today={today} dailyList={dailyList} setDailyList={setDailyList} />
       ))}
     </div>
   );

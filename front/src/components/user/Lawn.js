@@ -18,23 +18,20 @@ function Lawn({ user }) {
   //   Api.get(`/viewhistorylists/${user.id}`).then((res) => setHistory(res.data));
   // }, []);
 
-  function getDate(날짜문자열) {
-    let week = ["일", "월", "화", "수", "목", "금", "토"];
-    var dayOfWeek = week[new Date(날짜문자열).getDay()];
-    return dayOfWeek;
-  }
   const week = ["일", "월", "화", "수", "목", "금", "토"];
 
+  const [dailyList, setDailyList] = useState([]);
+
   var arr = [];
-  for (let i = 0; i < 53; i++) {
+  for (let i = 1; i < 54; i++) {
     arr.push(i);
   }
   const today = new Date();
   return (
     <Grid container direction="row" justifyContent="center" alignItems="center">
-      {arr.map(() => (
+      {arr.map((idx) => (
         <Grid item>
-          <WeekForm />
+          <WeekForm weekNum={idx} dailyList={dailyList} setDailyList={setDailyList} />
         </Grid>
       ))}
     </Grid>
