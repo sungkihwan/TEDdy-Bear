@@ -33,6 +33,7 @@ class likeService {
     return userlist;
   }
 
+  // 영상 아이디, 유저 아이디로 리스트 삭제하기
   static async deleteLike({ userId, talkId }) {
     const like = await Like.deleteOneLike({ userId, talkId });
     if (!like) {
@@ -40,6 +41,29 @@ class likeService {
       return { errorMessage };
     }
     return like;
+  }
+
+  // 한 번 누르면 -> 영상아이디, 유저 아이디 객체 생성
+  // 이미 객체가 있으면 -> 객체 삭제
+
+  static async setLike({ userId, talkId }) {
+    const user = await User.findById({ user_id: userId });
+    const talk = await Talk.findOneById({ id: talkId });
+    const user_id = user._id;
+    const talk_id = talk._id;
+
+    const isLiked = await Like.findBoth({ user_id, talk_id });
+
+    if (isLiked) {
+      return await Like.deleteOneLike({ isLiked });
+    } else {
+      const newLike = { user_id, talk_id, user: userId, talk: talkId };
+
+      const LikeUser = await Like.create({
+        newLike,
+      });
+      return LikeUser;
+    }
   }
 }
 
