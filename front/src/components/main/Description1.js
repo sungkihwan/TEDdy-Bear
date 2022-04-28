@@ -1,5 +1,5 @@
 import { MainText } from "../../style/Style";
-import styled from "styled-components";
+import { Page } from "./styles/Style";
 
 /** First page component
  *
@@ -20,12 +20,3 @@ export default function Page1() {
     </Page>
   );
 }
-
-//page style
-const Page = styled.div`
-  width: 98vw;
-  height: 80vh;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;

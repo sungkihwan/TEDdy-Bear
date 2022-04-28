@@ -1,11 +1,17 @@
-import styled from "styled-components";
-import Bear from "./Bear";
+import Bear from "./bear/Bear";
 import Lawn from "./Lawn";
-import * as Api from "../../../api";
 import { useContext, useEffect, useState } from "react";
 import { UserStateContext } from "../../../App";
 import { useParams } from "react-router-dom";
+import * as Api from "../../../api";
 import Loading from "../../common/Loading";
+import UserProfile from "./UserProfile";
+import {
+  Page,
+  UserLeftPage,
+  UserRightPage,
+  UserPageText,
+} from "./styles/Style";
 
 /** My page component
  *
@@ -23,9 +29,9 @@ export default function UserPage() {
     const res = await Api.get("users", ownerId);
     // 사용자 정보는 response의 data임.
     const ownerData = res.data;
-    console.log(ownerData);
     setUser(ownerData);
     setIsFetchCompleted(true);
+    console.log(user);
   };
   useEffect(() => {
     if (params.userId) {
@@ -47,24 +53,17 @@ export default function UserPage() {
   }
 
   return (
-    <div style={{ marginTop: "10vh" }}>
-      <Page>
-        <p>
+    <Page>
+      <UserLeftPage>
+        <UserProfile user={user} />
+      </UserLeftPage>
+      <UserRightPage>
+        <UserPageText style={{ fontSize: 20, margin: 0 }}>
           {user.name}님의 {user.bearName}
-        </p>
+        </UserPageText>
         <Bear isEditable={isEditable} user={user} />
         <Lawn />
-      </Page>
-    </div>
+      </UserRightPage>
+    </Page>
   );
 }
-
-//page style
-const Page = styled.div`
-  width: 98vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  flex-direction: column;
-`;

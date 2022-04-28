@@ -10,7 +10,6 @@ export default function Lawn() {
 
 //page style
 const Page = styled.div`
-  width: 98vw;
   height: 100vh;
   display: flex;
   justify-content: space-evenly;
