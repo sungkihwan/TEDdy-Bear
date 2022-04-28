@@ -6,7 +6,7 @@
 
 import { ViewHistory } from '../db';
 import { v4 as uuidv4 } from 'uuid';
-import { utile } from './utile';
+import { utils } from './utils';
 
 class ViewHistoryService {
   // addViewHistory()
@@ -57,13 +57,17 @@ class ViewHistoryService {
     for (var i in viewhistorylist) {
       const createdAt =
         viewhistorylist[Object.keys(viewhistorylist)[i]].createdAt;
-      formatDate = utile.makeDateToString(createdAt);
+      formatDate = utils.makeDateToString(createdAt);
 
       if (formatDate == date) {
         viewhistoryDatelist.push(viewhistorylist[i]);
       }
     }
     return viewhistoryDatelist;
+  }
+
+  static async getViewHistoryUntilToday({ user_id }) {
+    return await ViewHistory.findManyByCreatedAt({ user_id });
   }
 
   static async rankingBoard({}) {

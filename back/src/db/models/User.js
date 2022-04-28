@@ -27,6 +27,14 @@ class User {
     return user;
   }
 
+  static async updatePassword({ user_id, toUpdate }) {
+    const filter = { id: user_id };
+    const update = { $set: toUpdate };
+    const option = { returnOriginal: false };
+    
+    return await UserModel.findOneAndUpdate(filter, update, option);
+  }
+
   static async updateById({ user_id, toUpdate }) {
     const filter = { id: user_id };
     const update = { $set: toUpdate };
@@ -43,8 +51,9 @@ class User {
     const level = user.level;
     const cotton = user.cotton;
     const height = user.height;
+    const exp = user.exp;
 
-    const bearInfo = { bearName, level, cotton, height };
+    const bearInfo = { bearName, level, cotton, height, exp };
 
     return bearInfo;
   }

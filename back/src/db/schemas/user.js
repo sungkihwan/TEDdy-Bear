@@ -27,12 +27,18 @@ const UserSchema = new Schema(
     },
     bearName: {
       type: String,
+      required: true,
       default: 'Teddy',
     },
     level: {
       type: Number,
       required: true,
       default: 1,
+    },
+    exp: {
+      type: Number,
+      required: true,
+      default: 0,
     },
     cotton: {
       type: Number,
@@ -59,9 +65,14 @@ const UserSchema = new Schema(
     infoProvider: {
       type: String,
       enum: {
-        values: ["User", "Google"],
-        message: "{VALUE} 로 로그인하기는 아직 지원되지 않습니다.",
+        values: ['User', 'Google'],
+        message: '{VALUE} 로 로그인하기는 아직 지원되지 않습니다.',
       },
+    },
+    description: {
+      type: String,
+      required: true,
+      default: '설명이 아직 없습니다. 추가해 주세요.',
     },
   },
   {

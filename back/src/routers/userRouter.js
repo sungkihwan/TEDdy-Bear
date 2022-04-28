@@ -2,6 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
+import { sendMail } from '../utils/email-sender'
 
 const userAuthRouter = Router();
 
@@ -25,6 +26,8 @@ const userAuthRouter = Router();
  *          type: string
  *        name:
  *          type: string
+ *        description:
+ *          type: string
  *        password:
  *          type: string
  *        bearName:
@@ -34,6 +37,8 @@ const userAuthRouter = Router();
  *        cotton:
  *          type: number
  *        height:
+ *          type: number
+ *        exp:
  *          type: number
  *        sex:
  *          type: string
@@ -196,6 +201,40 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
   }
 });
 
+userAuthRouter.post(
+  '/user/sendMail',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { email, id } = req.body;
+
+      const info = await sendMail(email, id);
+
+      console.log(info)
+
+      return res.status(200).send(true);
+    } catch (error) {
+      next(error);
+    }
+});
+
+userAuthRouter.post(
+  '/user/update/password',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { id, password } = req.body;
+      const updatedUser = await userAuthService.updatePassword({ user_id: id, password });
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+      
+      return res.status(200).send(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+});
+
 /**
  * @swagger
  * paths:
@@ -301,6 +340,8 @@ userAuthRouter.put(
       const sex = req.body.sex ?? null;
       const age = req.body.age ?? null;
       const occupation = req.body.occupation ?? null;
+      const description = req.body.description ?? null;
+      const exp = req.body.exp ?? null;
 
       const toUpdate = {
         name,
@@ -313,6 +354,8 @@ userAuthRouter.put(
         sex,
         age,
         occupation,
+        description,
+        exp,
       };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
@@ -420,14 +463,7 @@ userAuthRouter.delete(
   }
 );
 
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
-  res
-    .status(200)
-    .send(
-      `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
+
 
 /**
  * @swagger
@@ -457,6 +493,8 @@ userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
  *                cotton:
  *                  type: Number
  *                height:
+ *                  type: Number
+ *                exp:
  *                  type: Number
  */
 // 곰 정보 찾기

@@ -93,12 +93,14 @@ class userAuthService {
       bearName: user.bearName,
       level: user.level,
       cotton: user.cotton,
-      height: user.cotton,
+      height: user.height,
       sex: user.sex,
       age: user.age,
       occupation: user.occupation,
       myTopics: user.myTopics,
       infoProvider: user.infoProvider,
+      description: user.description,
+      exp: user.exp,
       errorMessage: null,
     };
   }
@@ -151,7 +153,8 @@ class userAuthService {
       return { errorMessage };
     }
     if (!toUpdate.name) delete toUpdate.name;
-    if (!toUpdate.password || user.infoProvider !== "User") delete toUpdate.password;
+    if (!toUpdate.password || user.infoProvider !== 'User')
+      delete toUpdate.password;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
     if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.level) delete toUpdate.level;
@@ -160,6 +163,8 @@ class userAuthService {
     if (!toUpdate.sex) delete toUpdate.sex;
     if (!toUpdate.age) delete toUpdate.age;
     if (!toUpdate.occupation) delete toUpdate.occupation;
+    if (!toUpdate.description) delete toUpdate.description;
+    if (!toUpdate.exp) delete toUpdate.exp;
 
     return await User.updateById({ user_id, toUpdate });
   }
@@ -198,6 +203,23 @@ class userAuthService {
       return { errorMessage };
     }
     return bearInfo;
+  }
+
+  static async updatePassword({ user_id, password }) {
+    
+    const toUpdate = {}
+    const hashedPassword = await bcrypt.hash(password, 10);
+    toUpdate.password = hashedPassword;
+    const updatedUser = await User.updatePassword({ user_id, toUpdate });
+    
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!updatedUser) {
+      const errorMessage =
+        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    return updatedUser;
   }
 }
 
