@@ -9,6 +9,7 @@ import { login_required } from '../middlewares/login_required';
 import { ViewHistoryService } from '../services/viewHistoryService';
 
 const viewHistoryRouter = Router();
+viewHistoryRouter.use(login_required);
 
 /**
  * @swagger
@@ -28,9 +29,9 @@ const viewHistoryRouter = Router();
  *          type: string
  *        talkId:
  *          type: string
- *        createdAt: 
+ *        createdAt:
  *          type: date
- *        updatedAt: 
+ *        updatedAt:
  *          type: date
  */
 
@@ -213,6 +214,55 @@ viewHistoryRouter.get(
       });
 
       res.status(200).send(viewHistoryDatelist);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /viewhistory/today/:user_id:
+ *  get:
+ *    summary: "유저 아이디와 날짜를 통한 당일날부터 1년전까지의 시청기록 조회 "
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [viewhistory]
+ *    parameters:
+ *      - in: path
+ *        name: user_id
+ *        required: true
+ *        description: 유저 아이디
+ *      - in: path
+ *        name: today
+ *        required: true
+ *        description: new Date()
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/ViewHistory'
+ */
+
+viewHistoryRouter.get(
+  '/viewhistorydatelist/:user_id',
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.user_id;
+      // const month = req.params.month;
+
+      const today = await ViewHistoryService.getViewHistoryUntilToday({
+        user_id,
+        // month,
+      });
+
+      res.status(200).send(today);
+      // console.log(month);
     } catch (error) {
       next(error);
     }

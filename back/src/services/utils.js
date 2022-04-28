@@ -1,4 +1,4 @@
-class utile {
+class utils {
   // new Date() => yyyymmdd
   static makeDateToString(d) {
     new Date();
@@ -8,4 +8,4 @@ class utile {
     return stringDate;
   }
 }
-export { utile };
+export { utils };
