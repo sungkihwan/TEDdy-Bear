@@ -30,30 +30,48 @@ class ViewHistory {
     return ViewHistoryModel.find({ user_id });
   }
 
+  // createAt으로 4달 전까지의 데이터 찾아서 보내기
+  static async findManyByCreatedAt({ user_id }) {
+    const userViewHistorylist = ViewHistoryModel.find({ user_id });
+    // const term = parseInt(month);
+    // console.log(typeof term);
+
+    return userViewHistorylist.find({
+      createdAt: {
+        $gte: new Date(new Date().setDate(new Date().getMonth() - 4)),
+        $lte: new Date(),
+      },
+    });
+  }
+
   // 랭킹보드 쿼리로 조회
   static async rankingBoard({}) {
-
     const aggregatorOpts = [
       {
         $group: {
-            _id: "$user_id",
-            count: { $sum: 1 }
-        }
+          _id: '$user_id',
+          count: { $sum: 1 },
+        },
       },
       {
-        $sort:{'count':-1}
-      }
-    ]
+        $sort: { count: -1 },
+      },
+    ];
 
-    return await ViewHistoryModel.aggregate(aggregatorOpts).limit(5).exec()
+    return await ViewHistoryModel.aggregate(aggregatorOpts).limit(5).exec();
   }
 
   static async streamRankingBoard({}) {
-
-    const cursor = ViewHistoryModel.find({}).cursor().addCursorFlag('noCursorTimeout', true);
+    const cursor = ViewHistoryModel.find({})
+      .cursor()
+      .addCursorFlag('noCursorTimeout', true);
 
     // local cache의 sorted Set, 혹은 redis global cache의 sorted Set에 상태변경
-    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+    for (
+      let doc = await cursor.next();
+      doc != null;
+      doc = await cursor.next()
+    ) {
       // data[doc[user_id]] += 1
       console.log(doc); // Prints documents one at a time
     }
