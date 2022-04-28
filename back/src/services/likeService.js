@@ -3,22 +3,24 @@ import { Like, User, Talk } from '../db';
 // addlike,
 class likeService {
   static async addlike({ userId, talkId }) {
-    const currentUser = await User.findById({ user_id: userId });
-    const currentTalk = await Talk.findOneById({ id: talkId });
-    const user_id = currentUser._id;
-    const talk_id = currentTalk._id;
+    const user = await User.findById({ user_id: userId });
+    const talk = await Talk.findOneById({ id: talkId });
+    const user_id = user._id;
+    const talk_id = talk._id;
+
+    const newLike = { user_id, talk_id, user: userId, talk: talkId };
+
     const LikeUser = await Like.create({
-      currentUserId: user_id,
-      currentTalkId: talk_id,
+      newLike,
     });
 
     return LikeUser;
   }
 
   static async getUserLikeList({ userId }) {
-    const currentUser = await User.findById({ user_id: userId });
-    const user_id = currentUser._id;
-    const talklist = await Like.findByUserId({ user_id });
+    const user = await User.findById({ user_id: userId });
+    const user_id = user._id;
+    const talklist = await Like.findManyByUserId({ userId: user_id });
     return talklist;
   }
 

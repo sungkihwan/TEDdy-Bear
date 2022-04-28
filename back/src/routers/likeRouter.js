@@ -1,12 +1,11 @@
 import { Router } from 'express';
-import { LikeModel } from '../db/schemas/like';
 // import { login_required } from '../middlewares/login_required';
 import { likeService } from '../services/likeService';
 
 const likeRouter = Router();
 // viewHistoryRouter.use(login_required);
 
-// like get, post, put, delete
+// like get, post, delete
 
 likeRouter.post('/like/:userId', async function (req, res, next) {
   try {
@@ -27,7 +26,7 @@ likeRouter.get('/likelist/:userId', async function (req, res, next) {
     const userId = req.params.userId;
     const userLike = await likeService.getUserLikeList({ userId });
 
-    res.status(200).json(userLike);
+    res.status(200).send(userLike);
   } catch (error) {
     next(error);
   }

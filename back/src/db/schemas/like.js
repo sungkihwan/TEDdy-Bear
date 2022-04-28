@@ -1,18 +1,25 @@
 import mongoose from 'mongoose';
 import { Schema, model } from 'mongoose';
-import { User } from '../models/User';
 
 const LikeSchema = new Schema(
   {
-    userId: {
-      type: Schema.Types.ObjectId,
+    user_id: {
+      type: mongoose.Types.ObjectId,
       ref: 'User',
       // required: true,
     },
-    talkId: {
-      type: Schema.Types.ObjectId,
+    talk_id: {
+      type: mongoose.Types.ObjectId,
       ref: 'Talk',
       // required: true,
+    },
+    user: {
+      type: String,
+      required: true,
+    },
+    talk: {
+      type: Number,
+      required: true,
     },
   }
   // {

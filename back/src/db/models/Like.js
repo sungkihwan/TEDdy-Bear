@@ -3,11 +3,8 @@ import { LikeModel } from '../schemas/like';
 class Like {
   // like 생성 조회 삭제
   // 다 필요한 듯!
-  static async create({ currentUserId, currentTalkId }) {
-    const createdNewLike = await LikeModel.create({
-      currentUserId,
-      currentTalkId,
-    });
+  static async create({ newLike }) {
+    const createdNewLike = await LikeModel.create(newLike);
 
     return createdNewLike;
   }
@@ -28,7 +25,7 @@ class Like {
   }
 
   static findManyByUserId({ userId }) {
-    return LikeModel.find({ userId }).populate('userId');
+    return LikeModel.populate('user_id').find({ userId });
   }
 
   static findManyByTalkId({ talkId }) {
