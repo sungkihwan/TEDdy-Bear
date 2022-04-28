@@ -1,8 +1,9 @@
-import { ProfileImg, ProfileText, UserInfo } from "./styles/Style";
+import { MyButton } from "../../common/MyButton";
+import { ProfileCard, ProfileImg, ProfileText, UserInfo } from "./styles/Style";
 
 function UserProfile({ user }) {
   return (
-    <div>
+    <ProfileCard>
       <ProfileImg src="/mybear.png" alt="bear" />
       <UserInfo>
         <ProfileText>{user.name}</ProfileText>
@@ -17,8 +18,9 @@ function UserProfile({ user }) {
         {user.age && <ProfileText>{user.age} 세</ProfileText>}
         <ProfileText>{user.occupation}</ProfileText>
         <ProfileText>{user.sex}</ProfileText>
+        <MyButton style={{ width: "100%" }}>내 정보 편집</MyButton>
       </UserInfo>
-    </div>
+    </ProfileCard>
   );
 }
 

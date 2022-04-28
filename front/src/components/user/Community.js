@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import * as Api from "../../api";
-import { styled } from "@mui/material/styles";
-import Styled from "styled-components";
-import Box from "@mui/material/Box";
-import { brown } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import Loading from "../common/Loading";
+import { CommunityPage, UserCard, Link } from "./userPage/styles/Style";
 
-export default function Community() {
+function Community() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const [userList, setUserList] = useState([]);
+  const [Lank, setLank] = useState([]);
   const navigate = useNavigate();
 
   const fetchCurrentUser = async () => {
@@ -21,6 +19,12 @@ export default function Community() {
       console.log("유저리스트를 받을 수 없습니다.");
     }
     // fetchCurrentUser 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
+  };
+
+  const lanking = (list) => {
+    list.map((user) => Lank.push({ name: user.name, height: user.height }));
+    const sortedLank = Lank.sort((a, b) => b.height - a.height);
+    setLank(sortedLank);
     setIsFetchCompleted(true);
   };
 
@@ -29,48 +33,37 @@ export default function Community() {
     fetchCurrentUser();
   }, []);
 
+  useEffect(() => {
+    console.log(userList);
+    lanking(userList);
+  }, []);
+
   if (!isFetchCompleted) {
     return <Loading />;
   }
+
   return (
-    <Page>
+    <CommunityPage>
+      {/* {Lank.map((lank, index) => (
+        <div key={index}>
+          <p>{lank.name}</p>
+          <p>{lank.height}</p>
+        </div>
+      ))} */}
       {userList.map((user, index) => (
         <UserCard key={index}>
           <Link onClick={() => navigate(`/users/${user.id}`)}>
             {user.name}님
           </Link>
           <p>{user.email}</p>
+          <p>{user.description}</p>
+          <p>
+            {user.bearName}의 키 : {user.height}cm
+          </p>
         </UserCard>
       ))}
-    </Page>
+    </CommunityPage>
   );
 }
 
-//page style
-const Page = Styled.div`
-  width: 97vw;
-  margin: 10vh auto;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  position: relative;
-`;
-
-//UserCard style
-const UserCard = styled(Box)(() => ({
-  minWidth: 270,
-  height: 270,
-  margin: 10,
-  borderRadius: 30,
-  color: brown[50],
-  backgroundColor: brown[500],
-  padding: 20,
-  "&:hover": {
-    backgroundColor: brown[700],
-  },
-}));
-
-//Link style
-const Link = Styled.div`
-  cursor: pointer;
-`;
+export default Community;

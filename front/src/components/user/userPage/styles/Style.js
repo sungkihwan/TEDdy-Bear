@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 
 //text style
 export const MyPageText = Styled.p`
@@ -34,11 +35,7 @@ export const Page = Styled.div`
 export const UserLeftPage = Styled.div`
   width: 30%;
   margin-left: 3vh;
-  background-color: ${brown[100]};
   position: relative;
-  height: 80vh;
-  border: 1px solid ${brown[700]};
-  border-radius: 20px;
 `;
 
 //user right page style
@@ -88,3 +85,43 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     backgroundColor: brown[500],
   },
 }));
+
+//community page style
+export const CommunityPage = Styled.div`
+  width: 97vw;
+  margin: 10vh auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+`;
+
+//community user card style
+export const UserCard = styled(Box)(() => ({
+  minWidth: 270,
+  minHeight: 270,
+  margin: 10,
+  borderRadius: 30,
+  color: brown[50],
+  backgroundColor: brown[500],
+  padding: 20,
+  "&:hover": {
+    backgroundColor: brown[700],
+  },
+}));
+
+//profile user card style
+export const ProfileCard = styled(Box)(() => ({
+  minWidth: 270,
+  minHeight: 270,
+  margin: 10,
+  borderRadius: 30,
+  color: brown[50],
+  backgroundColor: brown[100],
+  padding: 20,
+}));
+
+//Link style
+export const Link = Styled.div`
+  cursor: pointer;
+`;
