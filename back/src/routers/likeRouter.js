@@ -35,30 +35,34 @@ likeRouter.get('/likelist/:userId', async function (req, res, next) {
 // 해당 동영상에 좋아요를 누른 유저 리스트 가져오기
 likeRouter.get('/likelist/:talkId', async function (req, res, next) {
   try {
-    console.log('hi');
     const talkId = req.params.talkId;
     const talkLike = await likeService.getTalkLikeList({ talkId });
 
-    res.status(200).json(talkLike);
+    res.status(200).send(talkLike);
   } catch (error) {
     next(error);
   }
 });
 
-// // 좋아요 삭제
-// likeRouter.delete('/like/delete/:userId', async function (req, res, next) {
-//   try {
-//     const userId = req.params.userId;
-//     const result = await likeService.deleteLike({ userId });
+// 좋아요 삭제
+likeRouter.delete(
+  '/like/delete/:userId/:talkId',
+  async function (req, res, next) {
+    try {
+      const userId = req.params.userId;
+      const talkId = req.params.talkId;
 
-//     if (result.errorMessage) {
-//       throw new Error(result.errorMessage);
-//     }
+      const result = await likeService.deleteLike({ userId, talkId });
 
-//     res.send(200).send(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+      if (result.errorMessage) {
+        throw new Error(result.errorMessage);
+      }
+
+      res.send(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export { likeRouter };

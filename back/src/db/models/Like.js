@@ -9,37 +9,39 @@ class Like {
     return createdNewLike;
   }
 
-  static async findByUserId({ currentUser }) {
-    const like = await LikeModel.findOne({
-      currentUser,
-    });
+  // static async findByUserId({ currentUser }) {
+  //   const like = await LikeModel.findOne({
+  //     currentUser,
+  //   });
 
-    return like;
+  //   return like;
+  // }
+
+  // static async findByTalkId({ talkId }) {
+  //   const like = await LikeModel.findOne({
+  //     talkId,
+  //   }).populate('talkId');
+  //   return like;
+  // }
+
+  // 유저 아이디로 영상 리스트 찾기
+  static findManyByUserId({ user_id }) {
+    return LikeModel.find({ user_id });
   }
 
-  static async findByTalkId({ talkId }) {
-    const like = await LikeModel.findOne({
-      talkId,
-    }).populate('talkId');
-    return like;
-  }
-
-  static findManyByUserId({ userId }) {
-    return LikeModel.populate('user_id').find({ userId });
-  }
-
-  static findManyByTalkId({ talkId }) {
-    return LikeModel.find({ talkId }).populate('talkId');
+  // 영상 아이디로 유저 리스트 찾기
+  static findManyByTalkId({ talk_id }) {
+    return LikeModel.find({ talk_id });
   }
 
   // 좋아요 삭제
-  // static async deleteByUserId({ isLiked }) {
-  //   const deleteResult = await LikeModel.deleteOne({
-  //     _id: isLiked._id,
-  //   });
-  //   const isDataDeleted = deleteResult.deletedCount === 1;
-  //   return isDataDeleted;
-  // }
+  static async deleteOneLike({ isLiked }) {
+    const deleteResult = await LikeModel.deleteOne({
+      _id: isLiked._id,
+    });
+    const isDataDeleted = deleteResult.deletedCount === 1;
+    return isDataDeleted;
+  }
 }
 
 export { Like };
