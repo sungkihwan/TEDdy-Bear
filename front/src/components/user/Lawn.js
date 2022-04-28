@@ -25,7 +25,7 @@ function Lawn({ user }) {
   const [dailyList, setDailyList] = useState([]);
 
   var arr = [];
-  for (let i = 1; i < 54; i++) {
+  for (let i = 0; i > -53; i--) {
     arr.push(i);
   }
 
@@ -58,9 +58,9 @@ function Lawn({ user }) {
         </Button>
       </Grid>
       <Grid container item direction="row" justifyContent="center" alignItems="center">
-        {arr.map((idx) => (
+        {arr.map((num) => (
           <Grid item>
-            <WeekForm key={idx} weekNum={idx} dailyList={dailyList} setDailyList={setDailyList} />
+            <WeekForm key={num} weekNum={num} dailyList={dailyList} setDailyList={setDailyList} />
           </Grid>
         ))}
       </Grid>
