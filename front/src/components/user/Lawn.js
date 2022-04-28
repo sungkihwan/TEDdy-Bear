@@ -7,13 +7,14 @@ import Grid from "@mui/material/Grid";
 
 import DateForm from "./DateButton";
 import WeekForm from "./WeekForm";
+import LawnsInfo from "./LawnsInfo";
 
 /** Lawn component
  *
  * @returns {component} My lawn information
  */
 function Lawn({ user }) {
-  const [history, setHistory] = useState(["데이터가 없습니다", "실험", "진짜없나"]);
+  const [history, setHistory] = useState([]);
   // useEffect(() => {
   //   Api.get(`/viewhistorylists/${user.id}`).then((res) => setHistory(res.data));
   // }, []);
@@ -34,6 +35,7 @@ function Lawn({ user }) {
           <WeekForm weekNum={idx} dailyList={dailyList} setDailyList={setDailyList} />
         </Grid>
       ))}
+      {!dailyList && <LawnsInfo />}
     </Grid>
   );
 }
