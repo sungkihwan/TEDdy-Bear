@@ -43,8 +43,9 @@ class User {
     const level = user.level;
     const cotton = user.cotton;
     const height = user.height;
+    const exp = user.exp;
 
-    const bearInfo = { bearName, level, cotton, height };
+    const bearInfo = { bearName, level, cotton, height, exp };
 
     return bearInfo;
   }

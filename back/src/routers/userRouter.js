@@ -25,6 +25,8 @@ const userAuthRouter = Router();
  *          type: string
  *        name:
  *          type: string
+ *        description:
+ *          type: string
  *        password:
  *          type: string
  *        bearName:
@@ -34,6 +36,8 @@ const userAuthRouter = Router();
  *        cotton:
  *          type: number
  *        height:
+ *          type: number
+ *        exp:
  *          type: number
  *        sex:
  *          type: string
@@ -301,6 +305,8 @@ userAuthRouter.put(
       const sex = req.body.sex ?? null;
       const age = req.body.age ?? null;
       const occupation = req.body.occupation ?? null;
+      const description = req.body.description ?? null;
+      const exp = req.body.exp ?? null;
 
       const toUpdate = {
         name,
@@ -313,6 +319,8 @@ userAuthRouter.put(
         sex,
         age,
         occupation,
+        description,
+        exp,
       };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
@@ -457,6 +465,8 @@ userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
  *                cotton:
  *                  type: Number
  *                height:
+ *                  type: Number
+ *                exp:
  *                  type: Number
  */
 // 곰 정보 찾기

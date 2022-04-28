@@ -93,12 +93,14 @@ class userAuthService {
       bearName: user.bearName,
       level: user.level,
       cotton: user.cotton,
-      height: user.cotton,
+      height: user.height,
       sex: user.sex,
       age: user.age,
       occupation: user.occupation,
       myTopics: user.myTopics,
       infoProvider: user.infoProvider,
+      description: user.description,
+      exp: user.exp,
       errorMessage: null,
     };
   }
@@ -151,7 +153,8 @@ class userAuthService {
       return { errorMessage };
     }
     if (!toUpdate.name) delete toUpdate.name;
-    if (!toUpdate.password || user.infoProvider !== "User") delete toUpdate.password;
+    if (!toUpdate.password || user.infoProvider !== 'User')
+      delete toUpdate.password;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
     if (!toUpdate.bearName) delete toUpdate.bearName;
     if (!toUpdate.level) delete toUpdate.level;
@@ -160,6 +163,8 @@ class userAuthService {
     if (!toUpdate.sex) delete toUpdate.sex;
     if (!toUpdate.age) delete toUpdate.age;
     if (!toUpdate.occupation) delete toUpdate.occupation;
+    if (!toUpdate.description) delete toUpdate.description;
+    if (!toUpdate.exp) delete toUpdate.exp;
 
     return await User.updateById({ user_id, toUpdate });
   }
