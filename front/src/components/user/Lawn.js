@@ -5,24 +5,24 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import * as Api from "../../api";
+import Typography from "@mui/material/Typography";
 
 import DateForm from "./DateButton";
 import WeekForm from "./WeekForm";
-import LawnsInfo from "./LawnsInfo";
+import LawnInfo from "./LawnInfo";
 
 /** Lawn component
  *
  * @returns {component} My lawn information
  */
 function Lawn({ user }) {
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState([""]);
   // useEffect(() => {
   //   Api.get(`/viewhistorylists/${user.id}`).then((res) => setHistory(res.data));
   // }, []);
-
-  const week = ["일", "월", "화", "수", "목", "금", "토"];
-
+  console.log(new Date());
   const [dailyList, setDailyList] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
 
   var arr = [];
   for (let i = 0; i > -53; i--) {
@@ -60,11 +60,11 @@ function Lawn({ user }) {
       <Grid container item direction="row" justifyContent="center" alignItems="center">
         {arr.map((num) => (
           <Grid item>
-            <WeekForm key={num} weekNum={num} dailyList={dailyList} setDailyList={setDailyList} />
+            <WeekForm key={num} weekNum={num} dailyList={dailyList} setDailyList={setDailyList} setSelectedDate={setSelectedDate} />
           </Grid>
         ))}
       </Grid>
-      {!dailyList && <LawnsInfo />}
+      {dailyList[0] && <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />}
     </Grid>
   );
 }
