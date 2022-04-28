@@ -4,6 +4,7 @@ import { useState, useContext, useNaviagate, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import * as Api from "../../api";
 
 import DateForm from "./DateButton";
 import WeekForm from "./WeekForm";
@@ -27,14 +28,42 @@ function Lawn({ user }) {
   for (let i = 1; i < 54; i++) {
     arr.push(i);
   }
+
   const today = new Date();
+
+  const clickHandler = async (e) => {
+    e.preventDefault();
+
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+    }
+
+    try {
+      // "user/login" 엔드포인트로 post요청함.
+      const res = await Api.post("/viewhistory/create", {
+        user_id: user.id,
+        talkId: getRandomInt(0, 1000),
+      });
+    } catch (err) {
+      console.log("데이터 만들기에 실패했습니다..\n", err);
+    }
+  };
   return (
-    <Grid container direction="row" justifyContent="center" alignItems="center">
-      {arr.map((idx) => (
-        <Grid item>
-          <WeekForm weekNum={idx} dailyList={dailyList} setDailyList={setDailyList} />
-        </Grid>
-      ))}
+    <Grid container direction="column" justifyContent="center" alignItems="center">
+      <Grid item>
+        <Button variant="outlined" onClick={clickHandler}>
+          목업 데이터 만들기
+        </Button>
+      </Grid>
+      <Grid container item direction="row" justifyContent="center" alignItems="center">
+        {arr.map((idx) => (
+          <Grid item>
+            <WeekForm key={idx} weekNum={idx} dailyList={dailyList} setDailyList={setDailyList} />
+          </Grid>
+        ))}
+      </Grid>
       {!dailyList && <LawnsInfo />}
     </Grid>
   );

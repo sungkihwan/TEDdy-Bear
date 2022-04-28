@@ -8,7 +8,7 @@ function WeekForm({ today, days, day, weekNum, dailyList, setDailyList }) {
   return (
     <div>
       {week.map((day, idx) => (
-        <DateButton day={idx} weekNum={weekNum} today={today} dailyList={dailyList} setDailyList={setDailyList} />
+        <DateButton key={idx} day={idx} weekNum={weekNum} today={today} dailyList={dailyList} setDailyList={setDailyList} />
       ))}
     </div>
   );
