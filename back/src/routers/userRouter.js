@@ -2,6 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
+import { sendMail } from '../utils/email-sender'
 
 const userAuthRouter = Router();
 
@@ -198,6 +199,40 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
   } catch (error) {
     next(error);
   }
+});
+
+userAuthRouter.post(
+  '/user/sendMail',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { email, id } = req.body;
+
+      const info = await sendMail(email, id);
+
+      console.log(info)
+
+      return res.status(200).send(true);
+    } catch (error) {
+      next(error);
+    }
+});
+
+userAuthRouter.post(
+  '/user/update/password',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { id, password } = req.body;
+      const updatedUser = await userAuthService.updatePassword({ user_id: id, password });
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+      
+      return res.status(200).send(updatedUser);
+    } catch (error) {
+      next(error);
+    }
 });
 
 /**
@@ -428,14 +463,7 @@ userAuthRouter.delete(
   }
 );
 
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
-  res
-    .status(200)
-    .send(
-      `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
+
 
 /**
  * @swagger
