@@ -24,6 +24,7 @@
     "@babel/preset-env": "^7.16.11",
     "dotenv": "^16.0.0",
     "nodemon": "^2.0.15",
+    "supertest": "^6.2.3",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.3.0"
   }
