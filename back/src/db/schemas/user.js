@@ -43,7 +43,7 @@ const UserSchema = new Schema(
     cotton: {
       type: Number,
       required: true,
-      default: 1,
+      default: 0,
     },
     height: {
       type: Number,

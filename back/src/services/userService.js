@@ -157,14 +157,14 @@ class userAuthService {
       delete toUpdate.password;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
     if (!toUpdate.bearName) delete toUpdate.bearName;
-    if (!toUpdate.level) delete toUpdate.level;
-    if (!toUpdate.cotton) delete toUpdate.cotton;
-    if (!toUpdate.height) delete toUpdate.height;
     if (!toUpdate.sex) delete toUpdate.sex;
     if (!toUpdate.age) delete toUpdate.age;
     if (!toUpdate.occupation) delete toUpdate.occupation;
     if (!toUpdate.description) delete toUpdate.description;
-    if (!toUpdate.exp) delete toUpdate.exp;
+    if (toUpdate.level == null) delete toUpdate.level;
+    if (toUpdate.cotton == null) delete toUpdate.cotton;
+    if (toUpdate.height == null) delete toUpdate.height;
+    if (toUpdate.exp == null) delete toUpdate.exp;
 
     return await User.updateById({ user_id, toUpdate });
   }
@@ -206,12 +206,11 @@ class userAuthService {
   }
 
   static async updatePassword({ user_id, password }) {
-    
-    const toUpdate = {}
+    const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
     toUpdate.password = hashedPassword;
     const updatedUser = await User.updatePassword({ user_id, toUpdate });
-    
+
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!updatedUser) {
       const errorMessage =
