@@ -1,11 +1,10 @@
-import { MainText } from "../../style/Style";
-import { Page } from "./styles/Style";
+import { MainText, Page } from "./styles/Style";
 
 /** Second page component
  *
  * @returns {component} Second page
  */
-export default function Page2() {
+function Description2() {
   return (
     <Page>
       <MainText>
@@ -22,3 +21,4 @@ export default function Page2() {
     </Page>
   );
 }
+export default Description2;

@@ -1,13 +1,12 @@
-import { MainText } from "../../style/Style";
+import { MainText, Page } from "./styles/Style";
 import { useNavigate } from "react-router-dom";
-import { Page } from "./styles/Style";
 import { MyButton } from "../common/MyButton";
 
 /** Fourth page component
  *
  * @returns {component} Fourth page
  */
-export default function Page4() {
+function Description4() {
   const navigate = useNavigate();
   return (
     <Page>
@@ -27,3 +26,5 @@ export default function Page4() {
     </Page>
   );
 }
+
+export default Description4;

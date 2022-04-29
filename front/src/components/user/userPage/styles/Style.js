@@ -75,6 +75,8 @@ export const UserInfo = Styled.div`
 //profile image style
 export const ProfileImg = Styled.img`
   border-radius: 10;
+  width: 10em;
+  height: 10em;
   display: block;
   margin: 0 auto;
 `;

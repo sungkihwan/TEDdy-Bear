@@ -5,8 +5,8 @@ import Main from "./components/main/Main";
 import UserPage from "./components/user/userPage/UserPage";
 import Prologue from "./components/prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
-import Profile from "./components/profile/Profile";
-import LectureExplanation from './components/Lecture/LectureExplanation';
+import Profile from "./components/Profile/Profile";
+import LectureExplanation from "./components/Lecture/LectureExplanation";
 import React, { useState, useEffect, useReducer, createContext } from "react";
 
 import * as Api from "./api";

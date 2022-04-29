@@ -1,11 +1,10 @@
-import { MainText } from "../../style/Style";
-import { Page } from "./styles/Style";
+import { MainText, Page } from "./styles/Style";
 
 /** Third page component
  *
  * @returns {component} Third page
  */
-export default function Page3() {
+function Description3() {
   return (
     <Page>
       <div>대충 잔디밭 이미지</div>
@@ -18,3 +17,4 @@ export default function Page3() {
     </Page>
   );
 }
+export default Description3;
