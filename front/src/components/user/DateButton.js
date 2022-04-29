@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import * as React from "react";
 import { useState, useContext, useEffect } from "react";
-import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import * as Api from "../../api";
 
-function DateButton({ today, days, day, weekNum, dailyList, setDailyList, user, setSelectedDate }) {
+function DateButton({ day, weekNum, dailyList, setDailyList, user, setSelectedDate, watchedDays }) {
   //버튼의 date를 계산하는 함수를 넣을 부분. 함수값에 따라 visiblity 속성을 바꿔줍니다.
   let date = new Date();
   date.setDate(date.getDate() - 7 * weekNum - day);
@@ -23,23 +21,27 @@ function DateButton({ today, days, day, weekNum, dailyList, setDailyList, user, 
 
   const stringifiedDate = makeDateToString(date);
 
-  function clickHandler() {
+  async function clickHandler() {
     // 여기에 받아온 dailyList의 정보를 이용하여 잔디 아래에 정보를 띄워줍니다.
     // 잔디 MVP에서 dailyList가 있다면 정보를 띄워줍니다.
-    console.log(weekNum, day, date, stringifiedDate);
     setSelectedDate(stringifiedDate);
+    console.log(watchedDays);
     try {
-      Api.get(`/viewhistorylists/${user.id}/${stringifiedDate}`).then((res) => setDailyList(res.data));
+      const res = await Api.get(`viewhistorydatelist/${user.id}/${stringifiedDate}`);
+      setDailyList(res.data);
     } catch (err) {
+      console.log("데이터 불러오기에 실패했습니다..\n", err);
       setDailyList(["Error"]);
       console.log(dailyList);
     }
   }
 
+  const btnColor = watchedDays.has(stringifiedDate) ? "blue" : "white";
+
   return (
     <div>
-      <button style={{ height: "1.5rem" }} onClick={clickHandler}>
-        {weekNum}:{day}
+      <button style={{ backgroundColor: btnColor }} onClick={clickHandler}>
+        {("0" + (date.getMonth() + 1)).slice(-2)} - {("0" + date.getDate()).slice(-2)}
       </button>
     </div>
   );

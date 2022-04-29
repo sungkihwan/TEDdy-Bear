@@ -18,11 +18,11 @@ import { red } from "@mui/material/colors";
  */
 function Lawn({ user }) {
   //유저의 전체 리스트를 조회 -> 본 날짜만 집합으로 저장한다.
-  const [watchedDays, setWatchedDays] = useState(new Set());
+  const [watchedDays, setWatchedDays] = useState(null);
   //선택한 날짜를 저장하는 변수
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
   //날짜별 데이터를 받아올 변수
-  const [dailyList, setDailyList] = useState([]);
+  const [dailyList, setDailyList] = useState(null);
 
   function makeDateToString(date) {
     const stringDate = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + date.getDate()).slice(-2)}`;
@@ -30,21 +30,29 @@ function Lawn({ user }) {
   }
 
   useEffect(() => {
-    const newWatchedDays = new Set();
-    Api.get(`/viewhistorylists/${user.id}`).then((res) => {
-      res.data.forEach((watchedTalk) => {
-        newWatchedDays.add(makeDateToString(watchedTalk.createdAt));
-      });
-      setWatchedDays(newWatchedDays);
-    });
+    const fetchWatchedDays = async () => {
+      try {
+        const newWatchedDays = new Set();
+        const res = await Api.get(`viewhistorylist/${user.id}`);
+        await res.data.forEach((watchedTalk) => {
+          newWatchedDays.add(makeDateToString(new Date(watchedTalk.createdAt)));
+        });
+        setWatchedDays(newWatchedDays);
+      } catch {
+        console.log("%c SessionStorage에 토큰 없음.", "color: #d93d1a;");
+      }
+    };
+    fetchWatchedDays();
   }, []);
+
+  if (!watchedDays) {
+    return "loading...";
+  }
 
   var arr = [];
   for (let i = 0; i > -19; i--) {
     arr.push(i);
   }
-
-  const today = new Date();
 
   const clickHandler = async (e) => {
     e.preventDefault();
@@ -56,8 +64,7 @@ function Lawn({ user }) {
     }
 
     try {
-      // "user/login" 엔드포인트로 post요청함.
-      const res = await Api.post("/viewhistory/create", {
+      await Api.post("viewhistory/create", {
         user_id: user.id,
         talkId: getRandomInt(0, 1000),
       });
@@ -76,11 +83,18 @@ function Lawn({ user }) {
       <Grid container item direction="row" justifyContent="center" alignItems="center">
         {arr.map((num) => (
           <Grid item key={num + 18}>
-            <WeekForm weekNum={num + 18} dailyList={dailyList} setDailyList={setDailyList} setSelectedDate={setSelectedDate} watchedDays={watchedDays} />
+            <WeekForm
+              user={user}
+              weekNum={num + 18}
+              dailyList={dailyList}
+              setDailyList={setDailyList}
+              setSelectedDate={setSelectedDate}
+              watchedDays={watchedDays}
+            />
           </Grid>
         ))}
       </Grid>
-      <Grid item>{dailyList[0] && <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />}</Grid>
+      <Grid item>{dailyList && <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />}</Grid>
     </Grid>
   );
 }

@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 function LawnCard({ talk, idx }) {
   return (
     <>
-      {idx} : {talk}
+      {idx} : {talk.talkId}
     </>
   );
 }
