@@ -2,7 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
-import { sendMail } from '../utils/email-sender'
+import { sendMail } from '../utils/email-sender';
 
 const userAuthRouter = Router();
 
@@ -210,13 +210,14 @@ userAuthRouter.post(
 
       const info = await sendMail(email, id);
 
-      console.log(info)
+      console.log(info);
 
       return res.status(200).send(true);
     } catch (error) {
       next(error);
     }
-});
+  }
+);
 
 userAuthRouter.post(
   '/user/update/password',
@@ -224,16 +225,20 @@ userAuthRouter.post(
   async function (req, res, next) {
     try {
       const { id, password } = req.body;
-      const updatedUser = await userAuthService.updatePassword({ user_id: id, password });
+      const updatedUser = await userAuthService.updatePassword({
+        user_id: id,
+        password,
+      });
       if (updatedUser.errorMessage) {
         throw new Error(updatedUser.errorMessage);
       }
-      
+
       return res.status(200).send(updatedUser);
     } catch (error) {
       next(error);
     }
-});
+  }
+);
 
 /**
  * @swagger
@@ -328,7 +333,7 @@ userAuthRouter.put(
   async function (req, res, next) {
     try {
       // URI로부터 사용자 id를 추출함.
-      const user_id = req.params.id;
+      const user_id = req.currentUserId;
       // body data 로부터 업데이트할 사용자 정보를 추출함.
       const name = req.body.name ?? null;
       const password = req.body.password ?? null;
@@ -452,7 +457,7 @@ userAuthRouter.delete(
   //login_required,
   async function (req, res, next) {
     try {
-      const user_id = req.params.id;
+      const user_id = req.currentUserId;
       //유저 삭제하는 메소드 호출
       await userAuthService.deleteUser({ user_id });
 
@@ -462,8 +467,6 @@ userAuthRouter.delete(
     }
   }
 );
-
-
 
 /**
  * @swagger
@@ -503,7 +506,7 @@ userAuthRouter.get(
   login_required,
   async function (req, res, next) {
     try {
-      const user_id = req.params.id;
+      const user_id = req.currentUserId;
       const bearInfo = await userAuthService.getBearInfo({ user_id });
       if (bearInfo.errorMessage) {
         throw new Error(bearInfo.errorMessage);
