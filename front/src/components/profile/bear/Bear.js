@@ -3,6 +3,8 @@ import UserBear from "./UserBear";
 
 /** Bear component
  *
+ * @param {boolean} isEditable enable edit
+ * @param {object} user user data
  * @returns {component} My bear information
  */
 function Bear({ isEditable, user }) {

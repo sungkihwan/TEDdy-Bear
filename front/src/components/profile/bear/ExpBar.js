@@ -2,7 +2,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { BorderLinearProgress } from "../styles/Style";
 
-//exp bar component
+/** exp bar component
+ *
+ * @param {object} props
+ * @returns {component} exp bar
+ */
 function ExpBar(props) {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
