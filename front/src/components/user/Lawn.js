@@ -4,6 +4,7 @@ import { useState, useContext, useNaviagate, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
 import * as Api from "../../api";
 import Typography from "@mui/material/Typography";
 
@@ -39,7 +40,7 @@ function Lawn({ user }) {
         });
         setWatchedDays(newWatchedDays);
       } catch {
-        console.log("%c SessionStorage에 토큰 없음.", "color: #d93d1a;");
+        console.log("시청기록을 조회할 수 없습니다.", "color: #d93d1a;");
       }
     };
     fetchWatchedDays();
@@ -74,28 +75,32 @@ function Lawn({ user }) {
   };
 
   return (
-    <Grid container direction="column" justifyContent="center" alignItems="center">
-      <Grid item>
-        <Button variant="outlined" onClick={clickHandler}>
-          목업 데이터 만들기
-        </Button>
-      </Grid>
-      <Grid container item direction="row" justifyContent="center" alignItems="center">
-        {arr.map((num) => (
-          <Grid item key={num + 18}>
-            <WeekForm
-              user={user}
-              weekNum={num + 18}
-              dailyList={dailyList}
-              setDailyList={setDailyList}
-              setSelectedDate={setSelectedDate}
-              watchedDays={watchedDays}
-            />
-          </Grid>
-        ))}
-      </Grid>
-      <Grid item>{dailyList && <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />}</Grid>
-    </Grid>
+    <>
+      <Card mb={2}>
+        <Grid container direction="column" justifyContent="center" alignItems="center">
+          <Button variant="outlined" onClick={clickHandler}>
+            목업 데이터 만들기
+          </Button>
+        </Grid>
+        <Grid container item direction="row" justifyContent="center" alignItems="center">
+          {arr.map((num) => (
+            <Grid item key={num + 18}>
+              <WeekForm
+                user={user}
+                weekNum={num + 18}
+                dailyList={dailyList}
+                setDailyList={setDailyList}
+                setSelectedDate={setSelectedDate}
+                watchedDays={watchedDays}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Card>
+      <Card md={2} mt={5}>
+        <Grid item>{dailyList && <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />}</Grid>
+      </Card>
+    </>
   );
 }
 

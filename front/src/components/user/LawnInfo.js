@@ -20,7 +20,7 @@ function LawnInfo({ dailyList, selectedDate }) {
       )}
       {dailyList.map((talk, idx) => (
         <Grid item key={idx}>
-          <LawnCard talk={talk} idx={idx} />
+          <LawnCard talkId={talk.talkId} idx={idx} />
         </Grid>
       ))}
     </Grid>
