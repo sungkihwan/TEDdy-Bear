@@ -2,7 +2,7 @@ import { TalkModel } from "../schemas/talk";
 
 class Talk {
   static findOneById({ id }) {
-    return TalkModel.findOne({ id: id });
+    return TalkModel.findOne({ id: id }).lean();
   }
 
   // static findAll({ perPage, page }) {
