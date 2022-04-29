@@ -4,6 +4,8 @@ import { useState, useContext, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
+import LawnCard from "./LawnCard";
+
 function LawnInfo({ dailyList, selectedDate }) {
   const isEmpty = dailyList.length > 0;
   return (
@@ -21,7 +23,7 @@ function LawnInfo({ dailyList, selectedDate }) {
           </Typography>
           {dailyList.map((history, idx) => (
             <Grid item key={idx}>
-              {idx}:{history}
+              <LawnCard history={history} idx={idx} />
             </Grid>
           ))}
         </Grid>

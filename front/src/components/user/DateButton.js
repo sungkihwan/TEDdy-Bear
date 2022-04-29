@@ -8,7 +8,7 @@ import * as Api from "../../api";
 function DateButton({ today, days, day, weekNum, dailyList, setDailyList, user, setSelectedDate }) {
   //버튼의 date를 계산하는 함수를 넣을 부분. 함수값에 따라 visiblity 속성을 바꿔줍니다.
   let date = new Date();
-  date.setDate(date.getDate() - 7 * weekNum - day + 1);
+  date.setDate(date.getDate() - 7 * weekNum - day);
 
   function getDate(day) {
     let week = ["일", "월", "화", "수", "목", "금", "토"];

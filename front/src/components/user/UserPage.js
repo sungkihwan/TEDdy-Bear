@@ -2,6 +2,7 @@ import Header from "../Header";
 import styled from "styled-components";
 import Bear from "./Bear";
 import Lawn from "./Lawn";
+
 import * as Api from "../../api";
 import { useContext, useEffect, useState } from "react";
 import { UserStateContext } from "../../App";
@@ -45,8 +46,6 @@ export default function MyPage() {
   const user = {
     id: "61272000-cee1-4d20-892a-c1ade22cbdeb",
   };
-
-  
 
   return (
     <>
