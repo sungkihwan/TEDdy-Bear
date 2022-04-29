@@ -4,6 +4,7 @@ import { Data } from './models/Data';
 import { Talk } from './models/Talk';
 import { Topic } from './models/Topic';
 import { ViewHistory } from './models/ViewHistory';
+import { Like } from './models/Like';
 import { Bookmark } from './models/Bookmark';
 
 const DB_URL =
@@ -20,4 +21,4 @@ db.on('error', (error) =>
   console.error('MongoDB 연결에 실패하였습니다...\n' + DB_URL + '\n' + error)
 );
 
-export { User, Data, Talk, Topic, ViewHistory, Bookmark };
+export { User, Data, Talk, Topic, ViewHistory, Bookmark, Like };
