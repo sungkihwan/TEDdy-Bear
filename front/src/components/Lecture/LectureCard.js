@@ -56,7 +56,7 @@ const Item = styled(Paper)(({ theme }) => ({
                 {lectureData.map((data, index) => (
                   <div className="cardbox" key={index}>
                     <Item>
-                      <div>
+                      <div name='123' onClick={(e) => console.log(e.target.getAttribute('name'))}>
                         <LinkPreview url={data.url} fetcher={customFetcher} width='300px' height='250px' fallback={<div>Fallback</div>} />
                       </div>
                     </Item>
