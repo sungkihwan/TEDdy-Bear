@@ -50,6 +50,10 @@ const UserSchema = new Schema(
       required: true,
       default: 10,
     },
+    age: {
+      type: String,
+      required: false,
+    },
     sex: {
       type: String,
       required: false,

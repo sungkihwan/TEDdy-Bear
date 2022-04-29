@@ -12,6 +12,9 @@ class userAuthService {
     bearName,
     myTopics,
     infoProvider,
+    age,
+    sex,
+    occupation,
   }) {
     // 이메일 중복 확인
     const user = await User.findByEmail({ email });
@@ -31,6 +34,9 @@ class userAuthService {
       bearName,
       myTopics,
       infoProvider,
+      age,
+      sex,
+      occupation,
     };
 
     if (infoProvider === 'User') {
