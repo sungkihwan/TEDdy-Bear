@@ -121,14 +121,14 @@ function LoginForm() {
                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={!isFormValid}>
                   로그인
                 </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
+                <Grid container justifyContent="space-evenly" alignItems="center" direction="column" rowSpacing={3}>
+                  <Grid item xs={12}>
+                    <GoogleLoginBtn responseGoogle={handleGoogleData}></GoogleLoginBtn>
+                  </Grid>
+                  <Grid item xs={12}>
                     <Link variant="body2" onClick={() => navigate("/register")}>
                       테디곰과 함께 공부할래요?
                     </Link>
-                  </Grid>
-                  <Grid item>
-                    <GoogleLoginBtn responseGoogle={handleGoogleData}></GoogleLoginBtn>
                   </Grid>
                 </Grid>
               </Box>
