@@ -81,6 +81,11 @@ export const ProfileImg = Styled.img`
   margin: 0 auto;
 `;
 
+export const BearImg = Styled.img`
+  width: 20em;
+  height: 20em;
+`;
+
 //bar style
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   borderRadius: 5,

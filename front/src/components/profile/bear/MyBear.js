@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { BearInfo, BearPage, MyPageText } from "../styles/Style";
+import { BearImg, BearInfo, BearPage, MyPageText } from "../styles/Style";
 import ExpBar from "./ExpBar";
-import * as Api from "../../../../api";
-import { MyButton } from "../../../common/MyButton";
+import * as Api from "../../../api";
+import { MyButton } from "../../common/MyButton";
 
 function MyBear({ user }) {
   const [bear, setBear] = useState({});
@@ -53,7 +53,7 @@ function MyBear({ user }) {
   };
   return (
     <BearPage>
-      <img src="/mybear.png" alt="bear" />
+      <BearImg src="/mybear.png" alt="bear" />
       <BearInfo>
         <MyPageText>LEVEL {bear.level}</MyPageText>
         <MyPageText>

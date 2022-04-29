@@ -1,7 +1,10 @@
-import { MyButton } from "../../common/MyButton";
+import { useNavigate } from "react-router-dom";
+import { MyButton } from "../common/MyButton";
 import { ProfileCard, ProfileImg, ProfileText, UserInfo } from "./styles/Style";
 
-function UserProfile({ user }) {
+function UserProfile({ user, isEditable }) {
+  const navigate = useNavigate();
+
   return (
     <ProfileCard>
       <ProfileImg src="/mybear.png" alt="bear" />
@@ -18,7 +21,14 @@ function UserProfile({ user }) {
         {user.age && <ProfileText>{user.age} 세</ProfileText>}
         <ProfileText>{user.occupation}</ProfileText>
         <ProfileText>{user.sex}</ProfileText>
-        <MyButton style={{ width: "100%" }}>내 정보 편집</MyButton>
+        {isEditable && (
+          <MyButton
+            style={{ width: "100%" }}
+            onClick={() => navigate("/users/edit")}
+          >
+            내 정보 편집
+          </MyButton>
+        )}
       </UserInfo>
     </ProfileCard>
   );

@@ -29,7 +29,6 @@ export default function Header() {
       <Logo onClick={() => navigate("/")} src="/logo.png" />
       <Menu>
         <Link onClick={() => navigate("/prologue")}>프롤로그</Link>
-        {isLogin && <Link onClick={() => navigate("/profile")}>프로필</Link>}
         <Link onClick={() => navigate("/media")}>TEDdyTV📺</Link>
         {!isLogin && <Link onClick={() => navigate("/login")}>로그인</Link>}
         {isLogin && (
@@ -38,6 +37,7 @@ export default function Header() {
             <Link onClick={() => navigate("/users/" + userState.user.id)}>
               내 정보
             </Link>
+            <Link onClick={() => navigate("/mytalks")}>찜 목록</Link>
             <Link onClick={logout}>로그아웃</Link>
           </>
         )}

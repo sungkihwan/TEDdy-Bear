@@ -1,10 +1,10 @@
 import Bear from "./bear/Bear";
 import Lawn from "./Lawn";
 import { useContext, useEffect, useState } from "react";
-import { UserStateContext } from "../../../App";
+import { UserStateContext } from "../../App";
 import { useParams } from "react-router-dom";
-import * as Api from "../../../api";
-import Loading from "../../common/Loading";
+import * as Api from "../../api";
+import Loading from "../common/Loading";
 import UserProfile from "./UserProfile";
 import {
   Page,
@@ -55,7 +55,7 @@ export default function UserPage() {
   return (
     <Page>
       <UserLeftPage>
-        <UserProfile user={user} />
+        <UserProfile isEditable={isEditable} user={user} />
       </UserLeftPage>
       <UserRightPage>
         <UserPageText style={{ fontSize: 20, margin: 0 }}>

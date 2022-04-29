@@ -10,7 +10,7 @@ import {
   RankImg,
   UserPageText,
   Top5Text,
-} from "./userPage/styles/Style";
+} from "../profile/styles/Style";
 
 function Community() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
