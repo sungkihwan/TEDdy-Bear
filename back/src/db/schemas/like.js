@@ -12,14 +12,6 @@ const LikeSchema = new Schema({
     ref: 'Talk',
     required: true,
   },
-  user: {
-    type: String,
-    required: true,
-  },
-  talk: {
-    type: Number,
-    required: true,
-  },
 });
 
 const LikeModel = model('Like', LikeSchema);

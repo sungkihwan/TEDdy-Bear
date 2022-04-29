@@ -6,23 +6,28 @@ const likeRouter = Router();
 likeRouter.use(login_required);
 
 // like get, post, delete
-likeRouter.post('/like/:userId/:talkId', async function (req, res, next) {
-  try {
-    const userId = req.params.userId;
-    const talkId = Number(req.params.talkId);
+likeRouter.post(
+  '/talks/talk/like',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const userId = req.currentUserId;
+      const talkId = Number(req.body.talkId);
 
-    const newLike = await likeService.addlike({ userId, talkId });
+      const newLike = await likeService.addlike({ userId, talkId });
 
-    res.status(200).send(newLike);
-  } catch (error) {
-    next(error);
+      res.status(200).send(newLike);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
+('/talks');
 
 // 유저가 좋아요한 동영상 리스트 가져오기
-likeRouter.get('/likelist/:userId', async function (req, res, next) {
+likeRouter.get('/talk/my', async function (req, res, next) {
   try {
-    const userId = req.params.userId;
+    const userId = req.currentUserId;
     const userLike = await likeService.getUserLikeList({ userId });
 
     res.status(200).send(userLike);
@@ -44,9 +49,9 @@ likeRouter.get('/userlist/:talkId', async function (req, res, next) {
 });
 
 // 좋아요 삭제
-likeRouter.delete('/like/:userId/:talkId', async function (req, res, next) {
+likeRouter.delete('/talks/talk/like/:talkId', async function (req, res, next) {
   try {
-    const userId = req.params.userId;
+    const userId = req.currentUserId;
     const talkId = Number(req.params.talkId);
 
     const result = await likeService.deleteLike({ userId, talkId });
