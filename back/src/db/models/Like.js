@@ -5,38 +5,34 @@ class Like {
   // 다 필요한 듯!
   static async create({ newLike }) {
     const createdNewLike = await LikeModel.create(newLike);
-
     return createdNewLike;
   }
-
-  // static async findByUserId({ currentUser }) {
-  //   const like = await LikeModel.findOne({
-  //     currentUser,
-  //   });
-
-  //   return like;
-  // }
-
-  // static async findByTalkId({ talkId }) {
-  //   const like = await LikeModel.findOne({
-  //     talkId,
-  //   }).populate('talkId');
-  //   return like;
-  // }
+  // 둘 다로 찾기
+  static async findOne({ user_id, talk_id }) {
+    return await LikeModel.findOne({ user_id, talk_id });
+  }
 
   // 유저 아이디로 영상 리스트 찾기
-  static findManyByUserId({ user_id }) {
-    return LikeModel.find({ user_id });
+  static async findManyByUserId({ user_id }) {
+    return await LikeModel.find({ user_id });
   }
 
   // 영상 아이디로 유저 리스트 찾기
-  static findManyByTalkId({ talk_id }) {
-    return LikeModel.find({ talk_id });
+  static async findManyByTalkId({ talk_id }) {
+    return await LikeModel.find({ talk_id });
   }
 
-  // 좋아요 삭제
-  static findLikeAndDelete({ userId, talkId }) {
-    return LikeModel.findOneAndDelete({ user: userId, talk: talkId });
+  // 영상, 유저 아이디로 좋아요 삭제
+  static async findLikeAndDelete({ user_id, talk_id }) {
+    return await LikeModel.findOneAndDelete({ user_id, talk_id });
+  }
+
+  //
+  static async findOneDelete({ isLiked }) {
+    return await LikeModel.findOneAndDelete({
+      user_id: isLiked.user_id,
+      talk_id: isLiked.user_id,
+    });
   }
 }
 
