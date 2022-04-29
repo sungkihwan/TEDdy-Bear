@@ -12,7 +12,7 @@ function Lecture() {
       .then(res => setMyLectureData(res.data));
   }, []);
 
-  
+  console.log(lectureData);
   
   return (
     <div style={{marginTop:75}}>

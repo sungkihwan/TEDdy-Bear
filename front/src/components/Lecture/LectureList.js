@@ -1,31 +1,16 @@
 import React from 'react';
-import Lottie from 'react-lottie';
-import data from './87670-satisfied-bear.json'
 import LectureCard from './LectureCard';
 
 
 
 function LectureList({lectureData, myLectureData}) {
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true, 
-    animationData: data,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
     
     return (
       <div style={{display: 'flex'}}>
-        <div>
-          <Lottie options={defaultOptions}
-                height={350}
-                width={300}/>
-        </div>
-        <div style={{width:'80%', height:500}}>
-          <LectureCard lectureData={lectureData} type="TEDdy : 다람쥐야 이건 어때?" cname={"balloon_03"}></LectureCard>
-          <LectureCard lectureData={myLectureData} type="추천된 영상" cname={"basic"}></LectureCard>
+        <div style={{width:'100%', height:500}}>
+          <LectureCard lectureData={lectureData} type="추천된 영상"></LectureCard>
+          <LectureCard lectureData={myLectureData} type="오늘의 영상" ></LectureCard>
+          <LectureCard lectureData={myLectureData} type="인기 영상" ></LectureCard>
         </div>
       </div>
     );

@@ -6,6 +6,7 @@ import UserPage from "./components/user/UserPage";
 import Prologue from "./components/Prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
 import Profile from "./components/Profile/Profile";
+import LectureExplanation from './components/Lecture/LectureExplanation';
 import React, { useState, useEffect, useReducer, createContext } from "react";
 
 import * as Api from "./api";
@@ -70,6 +71,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/media" element={<Lecture />} />
+          <Route path="/media/:talk_id" element={<LectureExplanation />} />
         </Routes>
       </UserStateContext.Provider>
     </DispatchContext.Provider>

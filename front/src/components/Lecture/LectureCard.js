@@ -1,6 +1,7 @@
 import Carousel from 'react-elastic-carousel'
 import { LinkPreview } from '@dhaiwat10/react-link-preview';
-import React from 'react';
+import React, {useContext} from 'react';
+import { UserStateContext } from "../../App";
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import LectureInfo from './LectureInfo'
@@ -11,13 +12,17 @@ const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    height:300,
-    marginBottom:10
+    width:300,
+    height:250,
+    marginBottom:10,
+    marginLeft:40,
+    marginTop:20
   }));
   
   function LectureCard({lectureData, type, cname=""}) {
     let lectureInfo = [...lectureData];
-  
+    const userState = useContext(UserStateContext);
+    
     const customFetcher = async (url) => {
       const response = await fetch(`https://rlp-proxy.herokuapp.com/v2?url=${url}`);
       const json = await response.json();
@@ -43,18 +48,20 @@ const Item = styled(Paper)(({ theme }) => ({
   
       return (
         <>
-            <div style={{width:'100%', height:'500px'}}>
+            <div style={{ width:'100%', height:'500px'}}>
               <div className={cname}>
-                <h1 style={{marginLeft:'20px', verticalAlign: 'middle'}}>{type}</h1>
+                <h1 style={{marginLeft:'20px', verticalAlign: 'middle', color:'#795548'}}>{type}</h1>
               </div>
               <Carousel itemsToShow={3}>
                 {lectureData.map((data, index) => (
-                  <Item key={index}>  
-                    <div>
-                      <LinkPreview url={data.url} fetcher={customFetcher} width='300px' height='250px' fallback={<div>Fallback</div>} />
-                    </div>
+                  <div className="cardbox" key={index}>
+                    <Item>
+                      <div>
+                        <LinkPreview url={data.url} fetcher={customFetcher} width='300px' height='250px' fallback={<div>Fallback</div>} />
+                      </div>
+                    </Item>
                     <LectureInfo videoInfo={lectureInfo[index]}></LectureInfo>
-                  </Item>
+                  </div>
                 ))}
               </Carousel>
             </div>
