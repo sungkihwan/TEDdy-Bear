@@ -29,7 +29,7 @@ function UserProfile({ user, isEditable }) {
               <span key={index}>{topicDict[topic]} </span>
             ))}
         </ProfileText>
-        {user.age && <ProfileText>{user.age} 세</ProfileText>}
+        {user.age && <ProfileText>{user.age}</ProfileText>}
         <ProfileText>{user.occupation}</ProfileText>
         <ProfileText>{user.sex}</ProfileText>
         {isEditable && (

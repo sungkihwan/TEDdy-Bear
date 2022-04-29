@@ -13,7 +13,6 @@ function EditProfile() {
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
-  console.log(editUser.age);
 
   useEffect(() => {
     try {
@@ -91,7 +90,7 @@ function EditProfile() {
     }
   };
 
-  const updataData = (e) => {
+  const updateData = (e) => {
     console.log(e.target.name, e.target.value);
     setEditUser((cur) => ({
       ...cur,
@@ -103,23 +102,14 @@ function EditProfile() {
     <EditPage>
       <EachEdit>
         <EditText>이름</EditText>
-        <MyInput
-          value={editUser.name}
-          name="name"
-          onChange={(e) =>
-            setEditUser((cur) => ({
-              ...cur,
-              [e.target.name]: e.target.value,
-            }))
-          }
-        />
+        <MyInput value={editUser.name} name="name" onChange={updateData} />
       </EachEdit>
       <EachEdit>
         <EditText>곰 이름</EditText>
         <MyInput
           value={editUser.bearName}
           name="bearName"
-          onChange={updataData}
+          onChange={updateData}
         />
       </EachEdit>
       <EachEdit>
@@ -127,7 +117,7 @@ function EditProfile() {
         <MyInput
           value={editUser.description}
           name="description"
-          onChange={updataData}
+          onChange={updateData}
         />
       </EachEdit>
       <EachEdit>
@@ -151,7 +141,7 @@ function EditProfile() {
       </EachEdit>
       <EachEdit>
         <EditText>나이</EditText>
-        <MySelect name="age" value={editUser.age} onChange={updataData}>
+        <MySelect name="age" value={editUser.age} onChange={updateData}>
           {ages.map((age, index) => (
             <option key={index} value={age}>
               {age}
@@ -164,12 +154,12 @@ function EditProfile() {
         <MyInput
           value={editUser.occupation}
           name="occupation"
-          onChange={updataData}
+          onChange={updateData}
         />
       </EachEdit>
       <EachEdit>
         <EditText>성별</EditText>
-        <MySelect name="sex" value={editUser.sex} onChange={updataData}>
+        <MySelect name="sex" value={editUser.sex} onChange={updateData}>
           {sexs.map((sex, index) => (
             <option key={index} value={sex}>
               {sex}
