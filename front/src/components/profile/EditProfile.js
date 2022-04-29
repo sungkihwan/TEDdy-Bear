@@ -1,21 +1,31 @@
-import React, { useState, useContext } from "react";
-import Typography from "@mui/material/Typography";
+import React, { useState, useContext, useEffect } from "react";
+import { EachEdit, EditPage, EditText } from "./styles/Style";
+import { UserStateContext } from "../../App";
+import { MySelect } from "../common/MySelect";
+import { MyInput } from "../common/MyInput";
+import { MyButton } from "../common/MyButton";
 import TextField from "@mui/material/TextField";
+import { brown } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
-import { DispatchContext, UserStateContext } from "../../App";
-import FormLabel from "@mui/material/FormLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import Button from "@mui/material/Button";
 import * as Api from "../../api";
 
 function EditProfile() {
   const userState = useContext(UserStateContext);
-  const [user, setUser] = useState(userState.user);
+  const [editUser, setEditUser] = useState([]);
+  const [userTopics, setUserTopics] = useState([]);
 
-  console.log(user);
+  useEffect(() => {
+    try {
+      const getUserData = async () => {
+        const res = await Api.get(`users`, userState.user.id);
+        setEditUser(res.data);
+        setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
+      };
+      getUserData();
+    } catch (err) {
+      console.log("Error: award list get request fail", err);
+    }
+  }, []);
 
   const topTopics = [
     "기술",
@@ -29,19 +39,8 @@ function EditProfile() {
     "애니메이션",
     "건강",
   ];
-  const ages = [
-    "비밀",
-    "10대",
-    "20대",
-    "30대",
-    "40대",
-    "50대",
-    "60대",
-    "70대",
-    "80대",
-    "90대",
-    "100이상",
-  ];
+  const ages = ["10대", "20대", "30대", "40대", "50대", "60대"];
+
   const topicDict = {
     기술: "technology",
     과학: "science",
@@ -67,128 +66,115 @@ function EditProfile() {
     animation: "애니메이션",
     health: "건강",
   };
-  const handleOnChangeInfo = (e) => {
-    setModifyUser((cur) => {
-      const newData = { ...cur };
-      newData[e.target.name] = e.target.value;
-      console.log(newData);
-      return newData;
-    });
-  };
-  const handleModify = () => {
-    const data = {
-      ...modifyUser,
-      myTopics: modifyUser.myTopics.map((topic) => topicDict[topic]),
-    };
-    Api.put(`users/${modifyUser.id}`, data).then((res) => {
-      dispatch({
-        payload: res.data,
-        type: "LOGIN_SUCCESS",
-      });
-    });
-  };
-  const dispatch = useContext(DispatchContext);
 
-  const [modifyUser, setModifyUser] = useState({
-    ...userState.user,
-    myTopics: userState.user.myTopics.map((topic) => topicDict2[topic]),
-  });
+  const sexs = ["남자", "여자"];
+
+  //Click OK button, edit user data
+  const saveEdit = async (e) => {
+    e.preventDefault();
+    //Put request to update edited user data
+    try {
+      const res = await Api.put(`users/${editUser.id}`, {
+        name: editUser.name,
+        bearName: editUser.bearName,
+        description: editUser.description,
+        age: editUser.age,
+        occupation: editUser.occupation,
+        sex: editUser.sex,
+        myTopics: userTopics.map((topic) => topicDict[topic]),
+      });
+      setEditUser(res.data);
+      alert("저장되었습니다!");
+    } catch (err) {
+      console.log("Error: user data put request fail", err);
+    }
+  };
+
+  const updateData = (e) => {
+    console.log(e.target.name, e.target.value);
+    setEditUser((cur) => ({
+      ...cur,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
-    <div>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        회원 정보 수정
-      </Typography>
-      <TextField
-        label="변경할 유저 이름"
-        value={modifyUser.name}
-        name="name"
-        onChange={handleOnChangeInfo}
-      />
-      <TextField
-        label="변경할 곰 이름"
-        value={modifyUser.bearName}
-        name="bearName"
-        onChange={handleOnChangeInfo}
-      />
-      <TextField
-        id="outlined-password-input"
-        label="비밀번호"
-        type="password"
-        name="password"
-        onChange={handleOnChangeInfo}
-        autoComplete="current-password"
-      />
-      <Autocomplete
-        multiple
-        id="tags-outlined"
-        options={topTopics}
-        value={modifyUser.myTopics}
-        name="myTopics"
-        onChange={(e, newValue) => {
-          setModifyUser((cur) => {
-            const newData = { ...cur };
-            newData.myTopics = newValue;
-            return newData;
-          });
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="주제"
-            placeholder="고르지 않으셔도 돼요 :)"
-          />
-        )}
-      />
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={ages}
-        sx={{ width: 300 }}
-        value={modifyUser.age}
-        onChange={(event, newValue) => {
-          setModifyUser((cur) => {
-            const newData = { ...cur };
-            newData.age = newValue;
-            return newData;
-          });
-        }}
-        renderInput={(params) => <TextField {...params} label="나이" />}
-      />
-      <TextField
-        label="직업"
-        value={modifyUser.job}
-        name="job"
-        onChange={handleOnChangeInfo}
-      />
-      <FormControl>
-        <FormLabel id="demo-row-radio-buttons-group-label">성별</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="demo-row-radio-buttons-group-label"
-          name="row-radio-buttons-group"
-        >
-          <FormControlLabel
-            value="남"
-            control={<Radio checked={modifyUser.sex === "남"} />}
-            label="남"
-            name="sex"
-            onClick={handleOnChangeInfo}
-          />
-          <FormControlLabel
-            value="여"
-            control={<Radio checked={modifyUser.sex === "여"} />}
-            label="여"
-            name="sex"
-            onClick={handleOnChangeInfo}
-          />
-        </RadioGroup>
-      </FormControl>
-      <Button variant="contained" onClick={handleModify}>
-        수정하기
-      </Button>
-      <Button variant="contained">취소하기</Button>
-    </div>
+    <EditPage>
+      <EachEdit>
+        <EditText>이름</EditText>
+        <MyInput value={editUser.name} name="name" onChange={updateData} />
+      </EachEdit>
+      <EachEdit>
+        <EditText>곰 이름</EditText>
+        <MyInput
+          value={editUser.bearName}
+          name="bearName"
+          onChange={updateData}
+        />
+      </EachEdit>
+      <EachEdit>
+        <EditText>자기소개</EditText>
+        <MyInput
+          value={editUser.description}
+          name="description"
+          onChange={updateData}
+        />
+      </EachEdit>
+      <EachEdit>
+        <EditText>관심 주제</EditText>
+        <Autocomplete
+          multiple
+          sx={{
+            backgroundColor: brown[100],
+            width: "500px",
+          }}
+          id="tags-outlined"
+          options={topTopics}
+          value={userTopics}
+          onChange={(e, newValue) => {
+            setUserTopics(newValue);
+          }}
+          renderInput={(params) => (
+            <TextField sx={{ backgroundColor: brown[100] }} {...params} />
+          )}
+        />
+      </EachEdit>
+      <EachEdit>
+        <EditText>나이</EditText>
+        <MySelect name="age" value={editUser.age} onChange={updateData}>
+          {ages.map((age, index) => (
+            <option key={index} value={age}>
+              {age}
+            </option>
+          ))}
+        </MySelect>
+      </EachEdit>
+      <EachEdit>
+        <EditText>직업</EditText>
+        <MyInput
+          value={editUser.occupation}
+          name="occupation"
+          onChange={updateData}
+        />
+      </EachEdit>
+      <EachEdit>
+        <EditText>성별</EditText>
+        <MySelect name="sex" value={editUser.sex} onChange={updateData}>
+          {sexs.map((sex, index) => (
+            <option key={index} value={sex}>
+              {sex}
+            </option>
+          ))}
+        </MySelect>
+      </EachEdit>
+      <EachEdit>
+        <EditText>회원 탈퇴</EditText>
+        <div style={{ width: "510px" }}>
+          <MyButton style={{ backgroundColor: "#EA541E" }}>회원 탈퇴</MyButton>
+        </div>
+      </EachEdit>
+      <MyButton onClick={saveEdit}>저장</MyButton>
+    </EditPage>
   );
 }
 

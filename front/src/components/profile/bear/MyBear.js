@@ -6,6 +6,7 @@ import { MyButton } from "../../common/MyButton";
 
 function MyBear({ user }) {
   const [bear, setBear] = useState({});
+  console.log(user);
   useEffect(() => {
     setBear({
       cotton: user.cotton,

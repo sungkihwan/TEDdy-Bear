@@ -1,9 +1,9 @@
-import { BearInfo, BearPage, UserPageText } from "../styles/Style";
+import { BearImg, BearInfo, BearPage, UserPageText } from "../styles/Style";
 
 function UserBear({ user }) {
   return (
     <BearPage>
-      <img src="/mybear.png" alt="bear" />
+      <BearImg src="/mybear.png" alt="bear" />
       <BearInfo>
         <UserPageText>LEVEL {user.level}</UserPageText>
         <UserPageText>키 {user.height} cm</UserPageText>

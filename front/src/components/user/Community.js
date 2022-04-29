@@ -18,6 +18,19 @@ function Community() {
   const [Rank, setRank] = useState([]);
   const navigate = useNavigate();
 
+  const topicDict = {
+    technology: "기술",
+    science: "과학",
+    culture: "문화",
+    globalissues: "글로벌이슈",
+    society: "사회",
+    design: "디자인",
+    socialchange: "사회변화",
+    business: "비즈니스",
+    animation: "애니메이션",
+    health: "건강",
+  };
+
   const fetchCurrentUser = async () => {
     try {
       // 이전에 발급받은 토큰이 있다면, 이를 가지고 유저 정보를 받아옴.
@@ -77,6 +90,9 @@ function Community() {
           <p>
             {user.bearName}의 키 : {user.height}cm
           </p>
+          {user.myTopics.map((topic, index) => (
+            <span key={index}>{topicDict[topic]} </span>
+          ))}
         </UserCard>
       ))}
     </CommunityPage>
