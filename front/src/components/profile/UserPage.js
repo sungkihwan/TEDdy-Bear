@@ -1,17 +1,12 @@
 import Bear from "./bear/Bear";
-import Lawn from "./Lawn";
+import Lawn from "./lawn/Lawn";
 import { useContext, useEffect, useState } from "react";
 import { UserStateContext } from "../../App";
 import { useParams } from "react-router-dom";
 import * as Api from "../../api";
 import Loading from "../common/Loading";
 import UserProfile from "./UserProfile";
-import {
-  Page,
-  UserLeftPage,
-  UserRightPage,
-  UserPageText,
-} from "./styles/Style";
+import { Page, UserLeftPage, UserRightPage, UserPageText } from "./styles/Style";
 
 /** My page component
  *
@@ -62,7 +57,7 @@ export default function UserPage() {
           {user.name}님의 {user.bearName}
         </UserPageText>
         <Bear isEditable={isEditable} user={user} />
-        <Lawn />
+        <Lawn user={user} />
       </UserRightPage>
     </Page>
   );
