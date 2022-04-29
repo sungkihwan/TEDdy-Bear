@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import Main from "./components/main/Main";
-import UserPage from "./components/user/UserPage";
-import Prologue from "./components/Prologue/Prologue";
+import UserPage from "./components/user/userPage/UserPage";
+import Prologue from "./components/prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
 import Profile from "./components/Profile/Profile";
 import LectureExplanation from './components/Lecture/LectureExplanation';
@@ -15,6 +15,7 @@ import { loginReducer } from "./reducer";
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import Community from "./components/user/Community";
+import Loading from "./components/common/Loading";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -55,7 +56,7 @@ function App() {
   }, []);
 
   if (!isFetchCompleted) {
-    return "loading...";
+    return <Loading />;
   }
 
   return (

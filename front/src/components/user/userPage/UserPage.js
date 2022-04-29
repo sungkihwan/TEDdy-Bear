@@ -1,16 +1,23 @@
-import styled from "styled-components";
-import Bear from "./Bear";
+import Bear from "./bear/Bear";
 import Lawn from "./Lawn";
-import * as Api from "../../api";
 import { useContext, useEffect, useState } from "react";
-import { UserStateContext } from "../../App";
+import { UserStateContext } from "../../../App";
 import { useParams } from "react-router-dom";
+import * as Api from "../../../api";
+import Loading from "../../common/Loading";
+import UserProfile from "./UserProfile";
+import {
+  Page,
+  UserLeftPage,
+  UserRightPage,
+  UserPageText,
+} from "./styles/Style";
 
 /** My page component
  *
  * @returns {component} My page
  */
-export default function MyPage() {
+export default function UserPage() {
   const params = useParams();
   const userState = useContext(UserStateContext);
   const [isEditable, setIsEditable] = useState(false);
@@ -24,6 +31,7 @@ export default function MyPage() {
     const ownerData = res.data;
     setUser(ownerData);
     setIsFetchCompleted(true);
+    console.log(user);
   };
   useEffect(() => {
     if (params.userId) {
@@ -41,28 +49,21 @@ export default function MyPage() {
   }, [params, userState]);
 
   if (!isFetchCompleted) {
-    return "loading...";
+    return <Loading />;
   }
 
   return (
-    <div style={{ marginTop: "10vh" }}>
-      <Page>
-        <p>
+    <Page>
+      <UserLeftPage>
+        <UserProfile user={user} />
+      </UserLeftPage>
+      <UserRightPage>
+        <UserPageText style={{ fontSize: 20, margin: 0 }}>
           {user.name}님의 {user.bearName}
-        </p>
-        <Bear isEditable={isEditable} />
+        </UserPageText>
+        <Bear isEditable={isEditable} user={user} />
         <Lawn />
-      </Page>
-    </div>
+      </UserRightPage>
+    </Page>
   );
 }
-
-//page style
-const Page = styled.div`
-  width: 98vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  flex-direction: column;
-`;
