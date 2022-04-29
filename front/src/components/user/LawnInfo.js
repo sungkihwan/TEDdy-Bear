@@ -21,9 +21,9 @@ function LawnInfo({ dailyList, selectedDate }) {
           <Typography component="h1" variant="h5">
             {selectedDate}의 발자취
           </Typography>
-          {dailyList.map((history, idx) => (
+          {dailyList.map((talk, idx) => (
             <Grid item key={idx}>
-              <LawnCard history={history} idx={idx} />
+              <LawnCard talk={talk} idx={idx} />
             </Grid>
           ))}
         </Grid>

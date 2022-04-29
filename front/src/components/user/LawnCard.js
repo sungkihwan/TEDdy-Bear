@@ -4,10 +4,10 @@ import { useState, useContext, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-function LawnCard({ history, idx }) {
+function LawnCard({ talk, idx }) {
   return (
     <>
-      {idx} : {history}
+      {idx} : {talk}
     </>
   );
 }
