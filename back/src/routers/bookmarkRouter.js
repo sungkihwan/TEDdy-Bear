@@ -17,7 +17,7 @@ const bookmarkRouter = Router();
  *         required: true
  *         schema:
  *           type: string
- *         description: user_id
+ *         description: userId
  *     responses:
  *       "200":
  *         content:
@@ -31,9 +31,9 @@ const bookmarkRouter = Router();
  */
 bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, next) {
   try {
-    let bookmarks
+    const userId = req.currentUserId
 
-    bookmarks = await BookmarkService.getMyBookmark(req.params.id);
+    const bookmarks = await BookmarkService.getMyBookmarks(userId);
     if (bookmarks.errorMessage) {
       throw new Error(bookmarks.errorMessage)
     }
@@ -57,14 +57,17 @@ bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, n
  *         required: true
  *         schema:
  *           type: string
- *         description: user_id
+ *         description: userId
  *     requestBody:
- *       description: 북마크된(요약된) 강연 정보
+ *       description: 강연 Id
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/BookmarkedTalk'
+ *             type: object
+ *             properties:
+ *               talkId:
+ *                 type: number
  *     responses:
  *       "201":
  *         content:
@@ -72,8 +75,12 @@ bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, n
  *              schema:
  *                type: object
  *                properties:
- *                  message:
- *                    type: string
+ *                  length:
+ *                    type: number
+ *                  bookmarks:
+ *                    type: array
+ *                    items:
+ *                      $ref: '#/components/schemas/Talk'
  *       "400":
  *          description: 잘못된 요청
  *       "500":
@@ -81,9 +88,10 @@ bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, n
  */
 bookmarkRouter.post("/bookmarks/:id", login_required, async function (req, res, next) {
   try {
-    let bookmarks
+    const userId = req.currentUserId
+    const talkId = Number(req.body.talkId)
 
-    bookmarks = await BookmarkService.updateMyBookmarkBy(req.currentUserId, req.body.talk);
+    const bookmarks = await BookmarkService.addBookmark(userId, talkId);
     if (bookmarks.errorMessage) {
       throw new Error(bookmarks.errorMessage)
     }
@@ -108,6 +116,16 @@ bookmarkRouter.post("/bookmarks/:id", login_required, async function (req, res, 
  *         schema:
  *           type: string
  *         description: user_id
+ *     requestBody:
+ *       description: 강연 Id
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               talkId:
+ *                 type: number
  *     responses:
  *       "200":
  *         content:
@@ -124,14 +142,15 @@ bookmarkRouter.post("/bookmarks/:id", login_required, async function (req, res, 
  */
 bookmarkRouter.delete("/bookmarks/:id", login_required, async function (req, res, next) {
   try {
-    let bookmarks
+    const userId = req.currentUserId
+    const talkId = Number(req.body.talkId)
 
-    bookmarks = await BookmarkService.deleteBookmark(req.currentUserId, req.body.talkId);
-    if (bookmarks.errorMessage) {
-      throw new Error(bookmarks.errorMessage)
+    const bookmark = await BookmarkService.deleteBookmark(userId, talkId);
+    if (bookmark.errorMessage) {
+      throw new Error(bookmark.errorMessage)
     }
 
-    res.status(200).send(bookmarks);
+    res.status(200).send(bookmark);
   } catch (error) {
     next(error);
   }

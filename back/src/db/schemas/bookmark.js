@@ -11,69 +11,26 @@ import { Schema, model } from "mongoose";
  * @swagger
  * components:
  *  schemas:
- *    BookmarkedTalk:
- *      type: object
- *      properties:
- *        talk_id:
- *          type: number
- *        title:
- *          type: string
- *        speakers:
- *          type: array
- *          items:
- *            type: string
- *        description:
- *          type: string
- *        url:
- *          type: string
- */
-const BookmarkedTalkSchema = new Schema({
-  talk_id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  speakers: {
-    type: Array,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  url: {
-    type: String,
-    required: true,
-  }
-})
-
-/**
- * @swagger
- * components:
- *  schemas:
  *    Bookmark:
  *      type: object
  *      properties:
- *        user_id:
+ *        userId:
  *          type: string
- *        talks:
- *          type: array
- *          items:
- *            $ref: '#/components/schemas/BookmarkedTalk'
+ *        talk_id:
+ *          type: ObjectId
  */
 
 const BookmarkSchema = new Schema(
   {
-    user_id: {
+    userId: {
       type: String,
       required: true,
-      ref: "User",
     },
-    talks: [ BookmarkedTalkSchema ],
+    talk_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Talk",
+      required: true,
+    },
   },
   {
     timestamps: true,
