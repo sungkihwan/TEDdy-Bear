@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import * as Api from "../../api";
 import { useNavigate } from "react-router-dom";
 import Loading from "../common/Loading";
-import { CommunityPage, UserCard, Link } from "./userPage/styles/Style";
+import {
+  CommunityPage,
+  UserCard,
+  Link,
+  RankCard,
+  RankImg,
+  UserPageText,
+  Top5Text,
+} from "./userPage/styles/Style";
 
 function Community() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
@@ -27,8 +35,8 @@ function Community() {
   const getRanking = (list) => {
     const rank = [];
     list.map((user) => rank.push({ name: user.name, height: user.height }));
-    const sortedRank = rank.sort((a, b) => b.height - a.height);
-    return sortedRank;
+    const sortedRank = rank.sort((a, b) => a.height - b.height);
+    return sortedRank.slice(-5);
   };
 
   // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
@@ -42,12 +50,23 @@ function Community() {
 
   return (
     <CommunityPage>
-      {Rank.map((lank, index) => (
-        <div key={index}>
-          <p>{lank.name}</p>
-          <p>{lank.height}</p>
-        </div>
-      ))}
+      <RankCard>
+        <Top5Text style={{ width: "100%" }}>오늘의 TOP5👑</Top5Text>
+        {Rank.map((lank, index) => (
+          <div key={index}>
+            <UserPageText>{lank.name}님</UserPageText>
+            <UserPageText>{lank.height} cm</UserPageText>
+            <RankImg
+              src="/mybear.png"
+              alt="bear"
+              style={{
+                width: `${(index + 1) * 50}px`,
+                height: `${(index + 1) * 50}px`,
+              }}
+            />
+          </div>
+        ))}
+      </RankCard>
       {userList.map((user, index) => (
         <UserCard key={index}>
           <Link onClick={() => navigate(`/users/${user.id}`)}>

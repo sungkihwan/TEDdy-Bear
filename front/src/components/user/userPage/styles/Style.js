@@ -23,6 +23,13 @@ export const UserPageText = Styled.p`
   text-align: center;
 `;
 
+//top5 text style
+export const Top5Text = Styled.p`
+  color:${brown[900]};
+  text-align: center;
+  font-size: 30px;  
+`;
+
 //user page style
 export const Page = Styled.div`
   width: 98vw;
@@ -67,8 +74,6 @@ export const UserInfo = Styled.div`
 
 //profile image style
 export const ProfileImg = Styled.img`
-  width: 100;
-  height: 100;
   border-radius: 10;
   display: block;
   margin: 0 auto;
@@ -116,10 +121,28 @@ export const ProfileCard = styled(Box)(() => ({
   minHeight: 270,
   margin: 10,
   borderRadius: 30,
-  color: brown[50],
   backgroundColor: brown[100],
   padding: 20,
 }));
+
+//ranking card style
+export const RankCard = styled(Box)(() => ({
+  width: "100%",
+  display: "flex",
+  minHeight: 300,
+  margin: 10,
+  padding: 30,
+  borderRadius: 30,
+  backgroundColor: brown[100],
+  alignItems: "flex-end",
+  justifyContent: "space-evenly",
+  flexWrap: "wrap",
+}));
+
+export const RankImg = Styled.img`
+  display: block;
+  margin: 0 auto;
+`;
 
 //Link style
 export const Link = Styled.div`
