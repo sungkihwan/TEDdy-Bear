@@ -33,7 +33,7 @@ likeRouter.get('/likelist/:userId', async function (req, res, next) {
 });
 
 // 해당 동영상에 좋아요를 누른 유저 리스트 가져오기
-likeRouter.get('/likelist/:talkId', async function (req, res, next) {
+likeRouter.get('/userlist/:talkId', async function (req, res, next) {
   try {
     const talkId = req.params.talkId;
     const talkLike = await likeService.getTalkLikeList({ talkId });
@@ -58,7 +58,7 @@ likeRouter.delete(
         throw new Error(result.errorMessage);
       }
 
-      res.send(200).send(result);
+      res.status(200).send(result);
     } catch (error) {
       next(error);
     }

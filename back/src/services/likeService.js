@@ -19,6 +19,7 @@ class likeService {
 
   // 유저 아이디로 영상 리스트 찾기
   static async getUserLikeList({ userId }) {
+    console.log('hi');
     const user = await User.findById({ user_id: userId });
     const user_id = user._id;
     const talklist = await Like.findManyByUserId({ user_id });
@@ -35,12 +36,14 @@ class likeService {
 
   // 영상 아이디, 유저 아이디로 리스트 삭제하기
   static async deleteLike({ userId, talkId }) {
-    const like = await Like.deleteOneLike({ userId, talkId });
-    if (!like) {
+    const isLiked = await Like.findLikeAndDelete({ userId, talkId });
+
+    if (!isLiked) {
       const errorMessage = '이미 취소했습니다';
       return { errorMessage };
     }
-    return like;
+
+    return { status: 'ok' };
   }
 
   // 한 번 누르면 -> 영상아이디, 유저 아이디 객체 생성

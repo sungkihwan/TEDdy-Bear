@@ -7,6 +7,7 @@ import { talkRouter } from './routers/talkRouter';
 import { viewHistoryRouter } from './routers/viewHistoryRouter';
 import { likeRouter } from './routers/likeRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
+import { bookmarkRouter } from './routers/bookmarkRouter';
 
 const app = express();
 
@@ -35,7 +36,11 @@ app.use(userAuthRouter);
 app.use(dataRouter);
 app.use(talkRouter);
 app.use(viewHistoryRouter);
+<<<<<<< HEAD
 app.use(likeRouter);
+=======
+app.use(bookmarkRouter);
+>>>>>>> 3341fee3a75610d05d0c22fff38a1a474d328957
 
 app.use(errorMiddleware);
 

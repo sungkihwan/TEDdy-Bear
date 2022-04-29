@@ -34,17 +34,9 @@ class Like {
     return LikeModel.find({ talk_id });
   }
 
-  static findBoth({ user_id, talk_id }) {
-    return LikeModel.find({ user_id }).find(talk_id);
-  }
-
   // 좋아요 삭제
-  static async deleteOneLike({ isLiked }) {
-    const deleteResult = await LikeModel.deleteOne({
-      _id: isLiked._id,
-    });
-    const isDataDeleted = deleteResult.deletedCount === 1;
-    return isDataDeleted;
+  static findLikeAndDelete({ userId, talkId }) {
+    return LikeModel.findOneAndDelete({ user: userId, talk: talkId });
   }
 }
 
