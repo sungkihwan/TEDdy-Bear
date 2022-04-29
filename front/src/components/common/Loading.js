@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export default function Loading() {
+/** loading component
+ *
+ * @returns {component} loading image
+ */
+function Loading() {
   return <Img src="/loading.gif" alt="loading" />;
 }
 
@@ -11,3 +15,5 @@ const Img = styled.img`
   display: block;
   margin: 30vh auto;
 `;
+
+export default Loading;

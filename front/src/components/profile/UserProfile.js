@@ -2,8 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { MyButton } from "../common/MyButton";
 import { ProfileCard, ProfileImg, ProfileText, UserInfo } from "./styles/Style";
 
+/** user profile component
+ *
+ * @param {object} user user data
+ * @param {boolean} isEditable enable edit
+ * @returns
+ */
 function UserProfile({ user, isEditable }) {
   const navigate = useNavigate();
+
   const topicDict = {
     technology: "기술",
     science: "과학",
@@ -16,6 +23,7 @@ function UserProfile({ user, isEditable }) {
     animation: "애니메이션",
     health: "건강",
   };
+
   return (
     <ProfileCard>
       <ProfileImg src="/mybear.png" alt="bear" />

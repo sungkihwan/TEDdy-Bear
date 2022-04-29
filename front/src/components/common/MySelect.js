@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { brown } from "@mui/material/colors";
 
-//image style
+//select menu style
 export const MySelect = styled.select`
   background-color: ${brown[100]};
   width: 510px;

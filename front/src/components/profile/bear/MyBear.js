@@ -4,9 +4,16 @@ import ExpBar from "./ExpBar";
 import * as Api from "../../../api";
 import { MyButton } from "../../common/MyButton";
 
+/** my bear page component
+ *
+ * @param {object} param0
+ * @returns {component} my bear page
+ */
 function MyBear({ user }) {
   const [bear, setBear] = useState({});
-  console.log(user);
+  let maxExp = bear.level * 10;
+  const [progress, setProgress] = useState(bear.exp / maxExp);
+
   useEffect(() => {
     setBear({
       cotton: user.cotton,
@@ -15,8 +22,6 @@ function MyBear({ user }) {
       exp: user.exp,
     });
   }, []);
-  let maxExp = bear.level * 10;
-  const [progress, setProgress] = useState(bear.exp / maxExp);
 
   //server bear data update
   const fetchBear = async () => {
@@ -27,6 +32,7 @@ function MyBear({ user }) {
       exp: bear.exp,
     });
   };
+
   //if exp full, execute a function
   useEffect(() => {
     if (bear.exp === maxExp) {
@@ -52,6 +58,7 @@ function MyBear({ user }) {
     fetchBear();
     return;
   };
+
   return (
     <BearPage>
       <BearImg src="/mybear.png" alt="bear" />

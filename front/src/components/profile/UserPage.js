@@ -13,11 +13,11 @@ import {
   UserPageText,
 } from "./styles/Style";
 
-/** My page component
+/** user page component
  *
- * @returns {component} My page
+ * @returns {component} user page
  */
-export default function UserPage() {
+function UserPage() {
   const params = useParams();
   const userState = useContext(UserStateContext);
   const [isEditable, setIsEditable] = useState(false);
@@ -33,6 +33,7 @@ export default function UserPage() {
     setIsFetchCompleted(true);
     console.log(user);
   };
+
   useEffect(() => {
     if (params.userId) {
       // 만약 현재 URL이 "/users/:userId" 라면, 이 userId를 유저 id로 설정함.
@@ -67,3 +68,5 @@ export default function UserPage() {
     </Page>
   );
 }
+
+export default UserPage;

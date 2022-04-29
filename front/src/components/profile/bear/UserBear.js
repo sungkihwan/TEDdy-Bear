@@ -1,5 +1,10 @@
 import { BearImg, BearInfo, BearPage, UserPageText } from "../styles/Style";
 
+/** user bear component
+ *
+ * @param {object} user user data
+ * @returns
+ */
 function UserBear({ user }) {
   return (
     <BearPage>

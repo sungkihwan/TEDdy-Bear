@@ -12,6 +12,10 @@ import {
   Top5Text,
 } from "../profile/styles/Style";
 
+/** community page component
+ *
+ * @returns {component} community page
+ */
 function Community() {
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const [userList, setUserList] = useState([]);
@@ -31,7 +35,7 @@ function Community() {
     health: "건강",
   };
 
-  const fetchCurrentUser = async () => {
+  const fetchUserList = async () => {
     try {
       // 이전에 발급받은 토큰이 있다면, 이를 가지고 유저 정보를 받아옴.
       const res = await Api.get("userlist");
@@ -41,7 +45,7 @@ function Community() {
     } catch {
       console.log("유저리스트를 받을 수 없습니다.");
     }
-    // fetchCurrentUser 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
+    // fetchUserList 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
     setIsFetchCompleted(true);
   };
 
@@ -52,9 +56,9 @@ function Community() {
     return sortedRank.slice(-5);
   };
 
-  // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
+  // useEffect함수를 통해 fetchUserList 함수를 실행함.
   useEffect(() => {
-    fetchCurrentUser();
+    fetchUserList();
   }, []);
 
   if (!isFetchCompleted) {

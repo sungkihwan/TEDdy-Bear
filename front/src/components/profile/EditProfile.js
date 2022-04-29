@@ -9,6 +9,10 @@ import { brown } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
 import * as Api from "../../api";
 
+/** edit profile component
+ *
+ * @returns {component} edit profile page
+ */
 function EditProfile() {
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
