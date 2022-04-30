@@ -47,12 +47,12 @@ function LoginForm() {
 
   const handleGoogleData = async (googleData) => {
     try {
-      const user = await Api.post("user/google-login", {
+      const { message, userInfo } = await Api.post("user/google-login", {
         token: googleData.tokenId,
       }).then((response) => response.data);
 
       // JWT 토큰은 유저 정보의 token임.
-      const jwtToken = user.token;
+      const jwtToken = userInfo.token;
       
       // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
       sessionStorage.setItem("userToken", jwtToken);
@@ -60,13 +60,17 @@ function LoginForm() {
       // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
       dispatch({
         type: "LOGIN_SUCCESS",
-        payload: user,
+        payload: userInfo,
       });
       
       console.log("구글 로그인 성공");
 
-      // 기본 페이지로 이동함.
-      navigate("/", { replace: true });
+      if(message === "newbie") {
+        navigate("/users/edit", { replace: true });
+      } else {
+        // 기본 페이지로 이동함.
+        navigate("/", { replace: true });
+      }
     } catch (e) {
       console.log("구글 로그인 실패: ", e.response.data);
     }
