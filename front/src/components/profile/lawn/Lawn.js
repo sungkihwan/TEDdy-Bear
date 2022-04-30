@@ -58,9 +58,14 @@ function Lawn({ user }) {
     arr.push(i);
   }
 
+  async function clickHandler() {
+    const talkId = await Api.get("talks/today", "?size=1");
+  }
+
   return (
     <>
       <Card mb={2}>
+        <Button onClick={clickHandler}></Button>
         <Grid
           container
           item

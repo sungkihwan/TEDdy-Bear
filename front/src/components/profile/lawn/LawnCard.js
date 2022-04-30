@@ -22,7 +22,7 @@ function LawnCard({ talkId, idx }) {
   }, []);
   return (
     <Card variant="outlined">
-      {idx} : {talkId.talkId}
+      {talkInfo.title} : {talkInfo.description}
     </Card>
   );
 }
