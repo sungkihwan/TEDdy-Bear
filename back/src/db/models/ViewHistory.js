@@ -45,6 +45,7 @@ class ViewHistory {
   }
 
   // 랭킹보드 쿼리로 조회
+  // 성능 문제가 생기면 user_id : count 형식으로 데이터를 따로 저장하고 count에 index를 설정해서 자동 정렬되게끔 설정
   static async rankingBoard({}) {
     const aggregatorOpts = [
       {
@@ -59,22 +60,6 @@ class ViewHistory {
     ];
 
     return await ViewHistoryModel.aggregate(aggregatorOpts).limit(5).exec();
-  }
-
-  static async streamRankingBoard({}) {
-    const cursor = ViewHistoryModel.find({})
-      .cursor()
-      .addCursorFlag('noCursorTimeout', true);
-
-    // local cache의 sorted Set, 혹은 redis global cache의 sorted Set에 상태변경
-    for (
-      let doc = await cursor.next();
-      doc != null;
-      doc = await cursor.next()
-    ) {
-      // data[doc[user_id]] += 1
-      console.log(doc); // Prints documents one at a time
-    }
   }
 }
 
