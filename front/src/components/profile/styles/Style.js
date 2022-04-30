@@ -113,6 +113,11 @@ export const BearImg = Styled.img`
   height: 20em;
 `;
 
+export const BearFootIcon = Styled.img`
+  width: 1em;
+  height: 1em;
+`;
+
 //bar style
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   borderRadius: 5,

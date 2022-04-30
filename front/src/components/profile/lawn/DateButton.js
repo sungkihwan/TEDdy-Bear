@@ -3,7 +3,15 @@ import * as React from "react";
 import { useState, useContext, useEffect } from "react";
 import * as Api from "../../../api";
 
-function DateButton({ day, weekNum, dailyList, setDailyList, user, setSelectedDate, watchedDays }) {
+function DateButton({
+  day,
+  weekNum,
+  dailyList,
+  setDailyList,
+  user,
+  setSelectedDate,
+  watchedDays,
+}) {
   //버튼의 date를 계산하는 함수를 넣을 부분. 함수값에 따라 visiblity 속성을 바꿔줍니다.
   let date = new Date();
   date.setDate(date.getDate() - 7 * weekNum - day);
@@ -15,7 +23,10 @@ function DateButton({ day, weekNum, dailyList, setDailyList, user, setSelectedDa
   }
 
   function makeDateToString(date) {
-    const stringDate = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + date.getDate()).slice(-2)}`;
+    const stringDate = `${date.getFullYear()}${(
+      "0" +
+      (date.getMonth() + 1)
+    ).slice(-2)}${("0" + date.getDate()).slice(-2)}`;
     return stringDate;
   }
 
@@ -27,7 +38,9 @@ function DateButton({ day, weekNum, dailyList, setDailyList, user, setSelectedDa
     setSelectedDate(stringifiedDate);
     console.log(watchedDays);
     try {
-      const res = await Api.get(`viewhistorydatelist/${user.id}/${stringifiedDate}`);
+      const res = await Api.get(
+        `viewhistorydatelist/${user.id}/${stringifiedDate}`
+      );
       setDailyList(res.data);
     } catch (err) {
       console.log("데이터 불러오기에 실패했습니다..\n", err);
@@ -41,7 +54,8 @@ function DateButton({ day, weekNum, dailyList, setDailyList, user, setSelectedDa
   return (
     <div>
       <button style={{ backgroundColor: btnColor }} onClick={clickHandler}>
-        {("0" + (date.getMonth() + 1)).slice(-2)} - {("0" + date.getDate()).slice(-2)}
+        {("0" + (date.getMonth() + 1)).slice(-2)}/
+        {("0" + date.getDate()).slice(-2)}
       </button>
     </div>
   );

@@ -47,7 +47,7 @@ function Lawn({ user }) {
       }
     };
     fetchWatchedDays();
-  }, []);
+  }, [dailyList, user.id]);
 
   if (!watchedDays) {
     return "loading...";
@@ -64,7 +64,7 @@ function Lawn({ user }) {
 
   return (
     <>
-      <Card mb={2}>
+      <Card>
         <Button onClick={clickHandler}></Button>
         <Grid
           container
@@ -72,6 +72,7 @@ function Lawn({ user }) {
           direction="row"
           justifyContent="center"
           alignItems="center"
+          mb={5}
         >
           {arr.map((num) => (
             <Grid item key={num + 18}>
@@ -87,7 +88,7 @@ function Lawn({ user }) {
           ))}
         </Grid>
       </Card>
-      <Card md={2} mt={5}>
+      <Card mt={5}>
         <Grid item>
           {dailyList && (
             <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
