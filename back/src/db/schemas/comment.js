@@ -1,5 +1,36 @@
 import { Schema, model } from "mongoose";
 
+/**
+ * @swagger
+ * tags:
+ *   name: Comment
+ *   description: 댓글 스키마
+ */
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Comment:
+ *      type: object
+ *      properties:
+ *        talk:
+ *          type: string
+ *        user:
+ *          type: object
+ *          properties:
+ *            name: 
+ *              type: string
+ *            email: 
+ *              type: string
+ *        comment:
+ *          type: string
+ *        reply:
+ *          type: array
+ *          items:
+ *            $ref: "#/components/schemas/Reply"
+ */
+
 const CommentSchema = new Schema(
   {
     talk: {

@@ -40,7 +40,7 @@ class CommentService {
       return { errorMessage }
     }
     
-    return { message: "댓글 작성 성공", newComment}
+    return { message: "댓글 작성 성공", newComment }
   }
 
   static async addReply(parentCommentId, comment, userId) {
