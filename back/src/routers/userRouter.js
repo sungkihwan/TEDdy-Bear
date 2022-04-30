@@ -183,8 +183,10 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
  *          schema:
  *            type: object
  *            properties:
- *              token:
+ *              message:
  *                  type: string
+ *              userInfo:
+ *                $ref: '#components/schemas/User'
  */
 userAuthRouter.post('/user/google-login', async function (req, res, next) {
   try {

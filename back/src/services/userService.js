@@ -124,16 +124,15 @@ class userAuthService {
     const { name, email } = ticket.getPayload();
 
     let user = await User.findByEmail({ email });
+    let message = ""
+
     if (user) {
       // 소셜로그인으로 회원가입한 사용자인 경우
       if (user.infoProvider === 'Google') {
-        return await this.getLoginUserInfoBy(user);
+        user = await this.getLoginUserInfoBy(user);
       } else if (user.infoProvider === 'User') {
         // 소셜로그인으로 회원가입한 사용자가 아닌 경우
-        return {
-          errorMessage:
-            '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
-        };
+        return { errorMessage: '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.' };
       }
     } else {
       // 새로운 사용자 정보 저장
@@ -142,9 +141,11 @@ class userAuthService {
         email: email,
         infoProvider: 'Google',
       });
+      user = await this.getLoginUserInfoBy(user)
+      message = "newbie"
     }
 
-    return user;
+    return { message, userInfo: user }
   }
 
   static async getUsers() {
