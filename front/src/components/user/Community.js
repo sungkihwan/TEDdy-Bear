@@ -85,19 +85,19 @@ function Community() {
         ))}
       </RankCard>
       {userList.map((user, index) => (
-        <UserCard key={index}>
-          <Link onClick={() => navigate(`/users/${user.id}`)}>
-            {user.name}님
-          </Link>
-          <p>{user.email}</p>
-          <p>{user.description}</p>
-          <p>
-            {user.bearName}의 키 : {user.height}cm
-          </p>
-          {user.myTopics.map((topic, index) => (
-            <span key={index}>{topicDict[topic]} </span>
-          ))}
-        </UserCard>
+        <Link onClick={() => navigate(`/users/${user.id}`)}>
+          <UserCard key={index}>
+            <p>{user.name}님</p>
+            <p>{user.email}</p>
+            <p>{user.description}</p>
+            <p>
+              {user.bearName}의 키 : {user.height}cm
+            </p>
+            {user.myTopics.map((topic, index) => (
+              <span key={index}>{topicDict[topic]} </span>
+            ))}
+          </UserCard>
+        </Link>
       ))}
     </CommunityPage>
   );
