@@ -114,8 +114,8 @@ export const BearImg = Styled.img`
 `;
 
 export const BearFootIcon = Styled.img`
-  width: 1em;
-  height: 1em;
+  width: 2em;
+  height: 2em;
 `;
 
 //bar style

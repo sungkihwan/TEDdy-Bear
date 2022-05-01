@@ -1,7 +1,10 @@
 import styled from "styled-components";
+
 import * as React from "react";
 import { useState, useContext, useEffect } from "react";
+
 import * as Api from "../../../api";
+import { BearFootIcon } from "../styles/Style";
 
 function DateButton({
   day,
@@ -49,13 +52,23 @@ function DateButton({
     }
   }
 
-  const btnColor = watchedDays.has(stringifiedDate) ? "blue" : "white";
-
   return (
     <div>
-      <button style={{ backgroundColor: btnColor }} onClick={clickHandler}>
-        {("0" + (date.getMonth() + 1)).slice(-2)}/
-        {("0" + date.getDate()).slice(-2)}
+      <button
+        style={{
+          height: "3rem",
+          width: "3rem",
+        }}
+        onClick={clickHandler}
+      >
+        {watchedDays.has(stringifiedDate) ? (
+          <BearFootIcon src="/bearfooticon.png" alt="Icon of bear's foot" />
+        ) : (
+          <>
+            {("0" + (date.getMonth() + 1)).slice(-2)}/
+            {("0" + date.getDate()).slice(-2)}
+          </>
+        )}
       </button>
     </div>
   );
