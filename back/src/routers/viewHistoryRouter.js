@@ -75,8 +75,6 @@ viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
     const newViewHistory = await ViewHistoryService.addViewHistory({
       user_id,
       talkId,
-      // url,
-      // title,
     });
     if (newViewHistory.errorMessage) {
       throw new Error(newViewHistory.errorMessage);

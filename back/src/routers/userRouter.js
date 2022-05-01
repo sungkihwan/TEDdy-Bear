@@ -463,6 +463,9 @@ userAuthRouter.delete(
       //유저 삭제하는 메소드 호출
       await userAuthService.deleteUser({ user_id });
 
+      // 전체 정보 삭제
+      await userAuthService.deleteUserAllInfo({ user_id });
+
       res.status(200).send();
     } catch (error) {
       next(error);
