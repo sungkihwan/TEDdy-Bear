@@ -39,6 +39,7 @@ function DateButton({
     // 여기에 받아온 dailyList의 정보를 이용하여 잔디 아래에 정보를 띄워줍니다.
     // 잔디 MVP에서 dailyList가 있다면 정보를 띄워줍니다.
     setSelectedDate(stringifiedDate);
+    setDailyList(null);
     console.log(watchedDays);
     try {
       const res = await Api.get(
