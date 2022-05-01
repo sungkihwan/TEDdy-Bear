@@ -269,6 +269,16 @@ viewHistoryRouter.get(
   }
 );
 
+viewHistoryRouter.get('/viewhistory/latest', async function (req, res, next) {
+  try {
+    const user_id = req.currentUserId;
+    const latest = await ViewHistoryService.getLatest5({ user_id });
+
+    res.status(200).send(latest);
+  } catch (error) {
+    next(error);
+  }
+});
 /**
  * @swagger
  * /viewhistory/rankingBoard:

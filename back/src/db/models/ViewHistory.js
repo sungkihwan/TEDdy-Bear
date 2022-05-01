@@ -33,15 +33,43 @@ class ViewHistory {
   // createAt으로 4달 전까지의 데이터 찾아서 보내기
   static async findManyByCreatedAt({ user_id }) {
     const userViewHistorylist = ViewHistoryModel.find({ user_id });
-    // const term = parseInt(month);
-    // console.log(typeof term);
+    const month = 4;
+    const now = new Date();
+    console.log(now);
+    console.log(month);
+    console.log(typeof month);
+    now.setMonth(now.getMonth() - month);
+    console.log(now);
 
     return userViewHistorylist.find({
       createdAt: {
-        $gte: new Date(new Date().setDate(new Date().getMonth() - 4)),
+        $gte: now,
         $lte: new Date(),
       },
     });
+  }
+
+  static async latest5({ user_id }) {
+    const latest5 = [
+      {
+        $match: { user_id },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $group: {
+          _id: '$talkId',
+        },
+      },
+      // {
+      //   $limit: 5,
+      // },
+    ];
+    const latest = await ViewHistoryModel.find({ user_id })
+      .sort({ createdAt: -1 })
+      .distinct('talkId');
+    return latest;
   }
 
   // 랭킹보드 쿼리로 조회
