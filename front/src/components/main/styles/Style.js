@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "../../../style/Style";
 
 //each page style
 export const Page = styled.div`
@@ -11,6 +12,12 @@ export const Page = styled.div`
 
 //main page style
 export const MainPage = styled.div`
-  position: "relative";
-  margin-top : 10vh;
+  position: relative;
+  margin-top: 10vh;
+`;
+
+//Main page text style
+export const MainText = styled.div`
+  font-size: 30px;
+  color: ${theme.brown.main};
 `;

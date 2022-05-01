@@ -1,23 +1,18 @@
 import Bear from "./bear/Bear";
-import Lawn from "./Lawn";
+import Lawn from "./lawn/Lawn";
 import { useContext, useEffect, useState } from "react";
-import { UserStateContext } from "../../../App";
+import { UserStateContext } from "../../App";
 import { useParams } from "react-router-dom";
-import * as Api from "../../../api";
-import Loading from "../../common/Loading";
+import * as Api from "../../api";
+import Loading from "../common/Loading";
 import UserProfile from "./UserProfile";
-import {
-  Page,
-  UserLeftPage,
-  UserRightPage,
-  UserPageText,
-} from "./styles/Style";
+import { Page, UserLeftPage, UserRightPage, UserPageText } from "./styles/Style";
 
-/** My page component
+/** user page component
  *
- * @returns {component} My page
+ * @returns {component} user page
  */
-export default function UserPage() {
+function UserPage() {
   const params = useParams();
   const userState = useContext(UserStateContext);
   const [isEditable, setIsEditable] = useState(false);
@@ -33,6 +28,7 @@ export default function UserPage() {
     setIsFetchCompleted(true);
     console.log(user);
   };
+
   useEffect(() => {
     if (params.userId) {
       // 만약 현재 URL이 "/users/:userId" 라면, 이 userId를 유저 id로 설정함.
@@ -55,15 +51,17 @@ export default function UserPage() {
   return (
     <Page>
       <UserLeftPage>
-        <UserProfile user={user} />
+        <UserProfile isEditable={isEditable} user={user} />
       </UserLeftPage>
       <UserRightPage>
         <UserPageText style={{ fontSize: 20, margin: 0 }}>
           {user.name}님의 {user.bearName}
         </UserPageText>
         <Bear isEditable={isEditable} user={user} />
-        <Lawn />
+        <Lawn user={user} />
       </UserRightPage>
     </Page>
   );
 }
+
+export default UserPage;

@@ -10,13 +10,11 @@ import { MainPage } from "./styles/Style";
  */
 export default function Main() {
   return (
-    <>
-      <MainPage>
-        <Description1 />
-        <Description2 />
-        <Description3 />
-        <Description4 />
-      </MainPage>
-    </>
+    <MainPage>
+      <Description1 />
+      <Description2 />
+      <Description3 />
+      <Description4 />
+    </MainPage>
   );
 }

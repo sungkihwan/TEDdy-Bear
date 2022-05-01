@@ -38,6 +38,33 @@ export const Page = Styled.div`
   margin-top: 15vh;
 `;
 
+//edit page style
+export const EditPage = Styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 15vh;
+`;
+
+//each edit form style
+export const EachEdit = Styled.div`
+  width: 50%;
+  display: flex;
+  position: relative;
+  align-items: center;
+`;
+
+//edit p tag style
+export const EditText = Styled.p`
+  color: ${brown[900]};
+  font-size: 20px;
+  width: 40%;
+`;
+
 //user left page style
 export const UserLeftPage = Styled.div`
   width: 30%;
@@ -75,8 +102,15 @@ export const UserInfo = Styled.div`
 //profile image style
 export const ProfileImg = Styled.img`
   border-radius: 10;
+  width: 10em;
+  height: 10em;
   display: block;
   margin: 0 auto;
+`;
+
+export const BearImg = Styled.img`
+  width: 20em;
+  height: 20em;
 `;
 
 //bar style
