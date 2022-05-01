@@ -2,7 +2,6 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
-import { sendMail } from '../utils/email-sender';
 
 const userAuthRouter = Router();
 
@@ -183,10 +182,8 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
  *          schema:
  *            type: object
  *            properties:
- *              message:
+ *              token:
  *                  type: string
- *              userInfo:
- *                $ref: '#components/schemas/User'
  */
 userAuthRouter.post('/user/google-login', async function (req, res, next) {
   try {
@@ -208,13 +205,33 @@ userAuthRouter.post(
   login_required,
   async function (req, res, next) {
     try {
-      const { email, id } = req.body;
+      const { email, id, type } = req.body;
+      const user = await userAuthService.sendMail(email, id, type);
 
-      const info = await sendMail(email, id);
+      if (user.errorMessage) {
+        throw new Error(user.errorMessage);
+      }
 
-      console.log(info);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
-      return res.status(200).send(true);
+userAuthRouter.post(
+  '/user/checkCode',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { code } = req.body;
+      const auth = await userAuthService.checkCode(code);
+
+      if (user.errorMessage) {
+        throw new Error(user.errorMessage);
+      }
+
+      return auth
+
     } catch (error) {
       next(error);
     }

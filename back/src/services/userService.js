@@ -1,8 +1,11 @@
 import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { Ttl } from '../db'; 
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
+import { sendMail } from '../utils/email-sender';
+import generator from 'generate-password';
 
 class userAuthService {
   static async addUser({
@@ -212,6 +215,57 @@ class userAuthService {
     return bearInfo;
   }
 
+  static async sendMail(email, user_id, type) {
+    const user = await User.findById({ user_id });
+
+    if (!user) {
+      const errorMessage =
+        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    if (type == 'temp') {
+      const password = generator.generate({
+        length: 8,
+        numbers: true
+      });
+
+      const toUpdate = {};
+      const hashedPassword = await bcrypt.hash(password, 10);
+      toUpdate.password = hashedPassword;
+
+      sendMail(email, password)
+      return await User.updatePassword({ user_id, toUpdate });
+    } else {
+      const password = generator.generate({
+        length: 6,
+        numbers: true
+      });
+
+      const newItem = {}
+      newItem.code = password;
+      newItem.expireAt = Date.now();
+
+      await Ttl.create({ newItem });
+
+      sendMail(email, password)
+
+      return true
+    }
+  }
+
+  static async checkCode(code) {
+    const auth = await Ttl.findById({ code });
+
+    if (!auth) {
+      const errorMessage =
+        '인증에 실패했습니다.';
+      return { errorMessage };
+    }
+
+    return true
+  }
+  
   static async updatePassword({ user_id, password }) {
     const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
