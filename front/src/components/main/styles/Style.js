@@ -11,5 +11,6 @@ export const Page = styled.div`
 
 //main page style
 export const MainPage = styled.div`
-  position: "relative", marginTop: "10vh"
+  position: "relative";
+  margin-top : 10vh;
 `;

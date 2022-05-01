@@ -7,11 +7,17 @@
 }
 /* round buttons on hover */
 .rec.rec-arrow:hover {
-    border-radius: 50px;
-    background-color: #efebe9;
-    box-shadow: none;
+    border-radius: 0 !important;
+    background-color: #efebe9 !important;
+    box-shadow: none !important;
 }
 
+.rec.rec-arrow:hover:enabled, .rec.rec-arrow:focus:enabled {
+    border-radius: 0 !important;
+    background-color: #efebe9 !important;
+    box-shadow: none !important;
+    color : #795548 !important;
+}
 
 .hPeugC:hover:enabled, .hPeugC:focus:enabled {
     background-color: #efebe9 !important;
@@ -62,16 +68,30 @@
     width: 15px !important;
     height: 15px !important;
 }
-
+.test {
+    z-index : 1000000 !important;
+}
 .cardbox {
     width: 400px;
     height:350px;
     background-color: #F6F6F6;
     text-align: center !important;
     border-radius : 44px;
+    /* z-index: -1;
+    position:relative; */
     /* display: flex; */
 }
-
+/* .item {
+    border: 2px solid red;
+    background-color:#fff;
+    text-align: 'center';
+    color: theme.palette.text.secondary,
+    width:400;
+    height:250;
+    margin-bottom:10;
+    margin-left:80;
+    margin-top:20;
+} */
 .infobox {
     display: flex;
     border: 2px solid red;
@@ -79,6 +99,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    font-family: Georgia, serif;
 }
 
 img {
