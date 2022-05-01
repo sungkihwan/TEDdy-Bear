@@ -215,7 +215,7 @@ class userAuthService {
     return bearInfo;
   }
 
-  static async sendMail(email, user_id, type) {
+  static async sendMail(email, user_id) {
     const user = await User.findById({ user_id });
 
     if (!user) {
@@ -224,7 +224,7 @@ class userAuthService {
       return { errorMessage };
     }
 
-    if (type == 'temp') {
+    if (!email) {
       const password = generator.generate({
         length: 8,
         numbers: true
@@ -234,7 +234,7 @@ class userAuthService {
       const hashedPassword = await bcrypt.hash(password, 10);
       toUpdate.password = hashedPassword;
 
-      sendMail(email, password)
+      sendMail(user.email, password)
       return await User.updatePassword({ user_id, toUpdate });
     } else {
       const password = generator.generate({

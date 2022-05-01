@@ -200,13 +200,33 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
   }
 });
 
+/**
+ * @swagger
+ *
+ * /user/sendMail:
+ *  post:
+ *    summary: "메일 전송하기"
+ *    tags: [Users]
+ *    requestBody:
+ *      description: email이 비어있으면 임시비밀번호 발급, email이 있으면 인증 code 발급 (10분 ttl)
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                  type: string
+ *              id:
+ *                  type: string
+ */
 userAuthRouter.post(
   '/user/sendMail',
   login_required,
   async function (req, res, next) {
     try {
-      const { email, id, type } = req.body;
-      const user = await userAuthService.sendMail(email, id, type);
+      const { email, id } = req.body;
+      const user = await userAuthService.sendMail(email, id);
 
       if (user.errorMessage) {
         throw new Error(user.errorMessage);
@@ -218,6 +238,23 @@ userAuthRouter.post(
   }
 );
 
+/**
+ * @swagger
+ *
+ * /user/sendMail:
+ *  post:
+ *    summary: "email로 받은 인증 code check 로직"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              code:
+ *                  type: string
+ */
 userAuthRouter.post(
   '/user/checkCode',
   login_required,
@@ -238,6 +275,25 @@ userAuthRouter.post(
   }
 );
 
+/**
+ * @swagger
+ *
+ * /user/sendMail:
+ *  post:
+ *    summary: "나의 비밀번호 변경"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *                  type: string
+ *              password:
+ *                  type: string
+ */
 userAuthRouter.post(
   '/user/update/password',
   login_required,
