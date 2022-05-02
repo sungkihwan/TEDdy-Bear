@@ -1,7 +1,7 @@
-import is from '@sindresorhus/is';
-import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
-import { userAuthService } from '../services/userService';
+import is from "@sindresorhus/is";
+import { Router } from "express";
+import { login_required } from "../middlewares/login_required";
+import { userAuthService } from "../services/userService";
 
 const userAuthRouter = Router();
 
@@ -87,11 +87,11 @@ const userAuthRouter = Router();
  *            $ref: '#components/schemas/User'
  */
 
-userAuthRouter.post('/user/register', async function (req, res, next) {
+userAuthRouter.post("/user/register", async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
-        'headers의 Content-Type을 application/json으로 설정해주세요'
+        "headers의 Content-Type을 application/json으로 설정해주세요"
       );
     }
 
@@ -115,7 +115,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
       sex,
       age,
       occupation,
-      infoProvider: 'User',
+      infoProvider: "User",
     });
 
     if (newUser.errorMessage) {
@@ -149,7 +149,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
  */
 
 // 로그인
-userAuthRouter.post('/user/login', async function (req, res, next) {
+userAuthRouter.post("/user/login", async function (req, res, next) {
   try {
     // req (request) 에서 데이터 가져오기
     const email = req.body.email;
@@ -185,7 +185,7 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
  *              token:
  *                  type: string
  */
-userAuthRouter.post('/user/google-login', async function (req, res, next) {
+userAuthRouter.post("/user/google-login", async function (req, res, next) {
   try {
     const { token } = req.body;
 
@@ -221,17 +221,18 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
  *                  type: string
  */
 userAuthRouter.post(
-  '/user/sendMail',
+  "/user/sendMail",
   login_required,
   async function (req, res, next) {
     try {
       const { email, id } = req.body;
+      console.log(email, id);
       const user = await userAuthService.sendMail(email, id);
-
+      console.log(user);
       if (user.errorMessage) {
+        console.log("error");
         throw new Error(user.errorMessage);
       }
-
     } catch (error) {
       next(error);
     }
@@ -256,7 +257,7 @@ userAuthRouter.post(
  *                  type: string
  */
 userAuthRouter.post(
-  '/user/checkCode',
+  "/user/checkCode",
   login_required,
   async function (req, res, next) {
     try {
@@ -267,8 +268,7 @@ userAuthRouter.post(
         throw new Error(user.errorMessage);
       }
 
-      return auth
-
+      return auth;
     } catch (error) {
       next(error);
     }
@@ -295,7 +295,7 @@ userAuthRouter.post(
  *                  type: string
  */
 userAuthRouter.post(
-  '/user/update/password',
+  "/user/update/password",
   login_required,
   async function (req, res, next) {
     try {
@@ -336,7 +336,7 @@ userAuthRouter.post(
 
 //userlist 반환
 userAuthRouter.get(
-  '/userlist',
+  "/userlist",
   login_required,
   async function (req, res, next) {
     try {
@@ -351,7 +351,7 @@ userAuthRouter.get(
 
 //사용자 정보 반환
 userAuthRouter.get(
-  '/user/current',
+  "/user/current",
   login_required,
   async function (req, res, next) {
     try {
@@ -403,7 +403,7 @@ userAuthRouter.get(
 
 //user 정보 수정
 userAuthRouter.put(
-  '/users/:id',
+  "/users/:id",
   login_required,
   async function (req, res, next) {
     try {
@@ -480,7 +480,7 @@ userAuthRouter.put(
 
 //user 정보 반환
 userAuthRouter.get(
-  '/users/:id',
+  "/users/:id",
   login_required,
   async function (req, res, next) {
     try {
@@ -528,7 +528,7 @@ userAuthRouter.get(
 
 //user 삭제 컴포넌트
 userAuthRouter.delete(
-  '/users/:id',
+  "/users/:id",
   //login_required,
   async function (req, res, next) {
     try {
@@ -577,7 +577,7 @@ userAuthRouter.delete(
  */
 // 곰 정보 찾기
 userAuthRouter.get(
-  '/bear/:id',
+  "/bear/:id",
   login_required,
   async function (req, res, next) {
     try {

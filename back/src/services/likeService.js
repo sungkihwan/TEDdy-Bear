@@ -1,4 +1,4 @@
-import { Like, User, Talk } from '../db';
+import { Like, User, Talk } from "../db";
 
 // addlike,
 class likeService {
@@ -6,23 +6,23 @@ class likeService {
     const user = await User.findById({ user_id: userId });
     const talk = await Talk.findOneById({ id: talkId });
     if (!talk) {
-      const errorMessage = '존재하지 않는 동영상입니다.';
+      const errorMessage = "존재하지 않는 동영상입니다.";
       return { errorMessage };
     }
     const user_id = user._id;
     const talk_id = talk._id;
-
     const newLike = { user_id, talk_id, user: userId, talk: talkId };
+    console.log(newLike);
     const isLiked = await Like.findOne({ user_id, talk_id });
     if (isLiked) {
-      const errorMessage = '이미 좋아요를 누른 동영상입니다.';
+      const errorMessage = "이미 좋아요를 누른 동영상입니다.";
       return { errorMessage };
     }
 
     const LikeUser = await Like.create({
       newLike,
     });
-
+    console.log(LikeUser);
     return LikeUser;
   }
 
@@ -32,7 +32,7 @@ class likeService {
     const user_id = user._id;
     const talklist = await Like.findManyByUserId({ user_id });
     if (talklist.length == 0) {
-      const errorMessage = '좋아요를 누른 영상이 없습니다.';
+      const errorMessage = "좋아요를 누른 영상이 없습니다.";
       return { errorMessage };
     }
     return talklist;
@@ -44,7 +44,7 @@ class likeService {
     const talk_id = talk._id;
     const userlist = await Like.findManyByTalkId({ talk_id });
     if (userlist.length == 0) {
-      const errorMessage = '해당 영상에 좋아요를 누른 유저가 없습니다.';
+      const errorMessage = "해당 영상에 좋아요를 누른 유저가 없습니다.";
       return { errorMessage };
     }
     return userlist;
@@ -55,7 +55,7 @@ class likeService {
     const user = await User.findById({ user_id: userId });
     const talk = await Talk.findOneById({ id: talkId });
     if (!talk) {
-      const errorMessage = '존재하지 않는 동영상입니다.';
+      const errorMessage = "존재하지 않는 동영상입니다.";
       return { errorMessage };
     }
     const user_id = user._id;
@@ -64,11 +64,11 @@ class likeService {
     const isLiked = await Like.findLikeAndDelete({ user_id, talk_id });
 
     if (!isLiked) {
-      const errorMessage = '이미 취소했습니다';
+      const errorMessage = "이미 취소했습니다";
       return { errorMessage };
     }
 
-    return { status: 'ok' };
+    return { status: "ok" };
   }
 }
 

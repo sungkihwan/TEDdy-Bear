@@ -1,11 +1,11 @@
-import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { Ttl } from '../db'; 
-import bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
-import jwt from 'jsonwebtoken';
-import { OAuth2Client } from 'google-auth-library';
-import { sendMail } from '../utils/email-sender';
-import generator from 'generate-password';
+import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { Ttl } from "../db";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
+import { sendMail } from "../utils/email-sender";
+import generator from "generate-password";
 
 class userAuthService {
   static async addUser({
@@ -23,7 +23,7 @@ class userAuthService {
     const user = await User.findByEmail({ email });
     if (user) {
       const errorMessage =
-        '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
+        "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.";
       return { errorMessage };
     }
 
@@ -42,7 +42,7 @@ class userAuthService {
       occupation,
     };
 
-    if (infoProvider === 'User') {
+    if (infoProvider === "User") {
       // 비밀번호 해쉬화
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -61,12 +61,12 @@ class userAuthService {
     const user = await User.findByEmail({ email });
     if (!user) {
       const errorMessage =
-        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
-    } else if (user.infoProvider === 'Google') {
+    } else if (user.infoProvider === "Google") {
       return {
         errorMessage:
-          '해당 아이디는 기본 로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
+          "해당 아이디는 기본 로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.",
       };
     }
 
@@ -78,7 +78,7 @@ class userAuthService {
     );
     if (!isPasswordCorrect) {
       const errorMessage =
-        '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.';
+        "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
 
@@ -90,7 +90,7 @@ class userAuthService {
 
   static async getLoginUserInfoBy(user) {
     // 로그인 성공 -> JWT 웹 토큰 생성
-    const secretKey = process.env.JWT_SECRET_KEY || 'jwt-secret-key';
+    const secretKey = process.env.JWT_SECRET_KEY || "jwt-secret-key";
     const token = jwt.sign({ user_id: user.id }, secretKey);
 
     // 반환할 loginuser 객체
@@ -127,28 +127,31 @@ class userAuthService {
     const { name, email } = ticket.getPayload();
 
     let user = await User.findByEmail({ email });
-    let message = ""
+    let message = "";
 
     if (user) {
       // 소셜로그인으로 회원가입한 사용자인 경우
-      if (user.infoProvider === 'Google') {
+      if (user.infoProvider === "Google") {
         user = await this.getLoginUserInfoBy(user);
-      } else if (user.infoProvider === 'User') {
+      } else if (user.infoProvider === "User") {
         // 소셜로그인으로 회원가입한 사용자가 아닌 경우
-        return { errorMessage: '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.' };
+        return {
+          errorMessage:
+            "해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.",
+        };
       }
     } else {
       // 새로운 사용자 정보 저장
       user = await this.addUser({
         name: name,
         email: email,
-        infoProvider: 'Google',
+        infoProvider: "Google",
       });
-      user = await this.getLoginUserInfoBy(user)
-      message = "newbie"
+      user = await this.getLoginUserInfoBy(user);
+      message = "newbie";
     }
 
-    return { message, userInfo: user }
+    return { message, userInfo: user };
   }
 
   static async getUsers() {
@@ -159,11 +162,11 @@ class userAuthService {
   static async setUser({ user_id, toUpdate }) {
     let user = await User.findById({ user_id });
     if (!user) {
-      const errorMessage = '가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
     if (!toUpdate.name) delete toUpdate.name;
-    if (!toUpdate.password || user.infoProvider !== 'User')
+    if (!toUpdate.password || user.infoProvider !== "User")
       delete toUpdate.password;
     if (!toUpdate.myTopics) delete toUpdate.myTopics;
     if (!toUpdate.bearName) delete toUpdate.bearName;
@@ -185,7 +188,7 @@ class userAuthService {
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
       const errorMessage =
-        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
 
@@ -197,7 +200,7 @@ class userAuthService {
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
       const errorMessage =
-        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+        "해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
     return user;
@@ -209,7 +212,7 @@ class userAuthService {
 
     if (!bearInfo) {
       const errorMessage =
-        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해주세요';
+        "해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해주세요";
       return { errorMessage };
     }
     return bearInfo;
@@ -220,37 +223,37 @@ class userAuthService {
 
     if (!user) {
       const errorMessage =
-        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
 
     if (!email) {
       const password = generator.generate({
         length: 8,
-        numbers: true
+        numbers: true,
       });
-
+      console.log("no email", password);
       const toUpdate = {};
       const hashedPassword = await bcrypt.hash(password, 10);
       toUpdate.password = hashedPassword;
 
-      sendMail(user.email, password)
+      sendMail(user.email, password);
       return await User.updatePassword({ user_id, toUpdate });
     } else {
       const password = generator.generate({
         length: 6,
-        numbers: true
+        numbers: true,
       });
-
-      const newItem = {}
+      console.log(password);
+      const newItem = {};
       newItem.code = password;
       newItem.expireAt = Date.now();
-
       await Ttl.create({ newItem });
+      console.log("this");
 
-      sendMail(email, password)
-
-      return true
+      sendMail(email, password);
+      console.log("this222");
+      return true;
     }
   }
 
@@ -258,14 +261,13 @@ class userAuthService {
     const auth = await Ttl.findById({ code });
 
     if (!auth) {
-      const errorMessage =
-        '인증에 실패했습니다.';
+      const errorMessage = "인증에 실패했습니다.";
       return { errorMessage };
     }
 
-    return true
+    return true;
   }
-  
+
   static async updatePassword({ user_id, password }) {
     const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -275,7 +277,7 @@ class userAuthService {
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!updatedUser) {
       const errorMessage =
-        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
 
