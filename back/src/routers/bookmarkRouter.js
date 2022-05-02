@@ -91,17 +91,17 @@ bookmarkRouter.post("/bookmarks/bookmark", login_required, async function (req, 
 /**
  * @swagger
  * paths:
- *  /bookmarks/{bookmarkId}:
+ *  /bookmarks/{bookmark_id}:
  *   delete:
  *     summary: 강연 북마크 삭제
  *     tags: [Bookmark]
  *     parameters:
  *       - in: path
- *         name: bookmarkId   
+ *         name: bookmark_id   
  *         required: true
  *         schema:
  *           type: string
- *         description: bookmarkId
+ *         description: bookmark_id
  *     responses:
  *       "200":
  *         content:
@@ -116,12 +116,12 @@ bookmarkRouter.post("/bookmarks/bookmark", login_required, async function (req, 
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.delete("/bookmarks/:bookmarkId", login_required, async function (req, res, next) {
+bookmarkRouter.delete("/bookmarks/:bookmark_id", login_required, async function (req, res, next) {
   try {
     const userId = req.currentUserId
-    const bookmarkId = req.params.bookmarkId
+    const bookmark_id = req.params.bookmark_id
 
-    const bookmark = await BookmarkService.deleteBookmark(userId, bookmarkId);
+    const bookmark = await BookmarkService.deleteBookmark(userId, bookmark_id);
     if (bookmark.errorMessage) {
       throw new Error(bookmark.errorMessage)
     }

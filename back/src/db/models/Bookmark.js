@@ -14,9 +14,8 @@ class Bookmark {
     return BookmarkModel.create({ userId: userId, talk_id: talk_id });
   }
 
-  static deleteOne(userId, bookmarkId) {
-    console.log(bookmarkId)
-    return BookmarkModel.deleteOne({ userId: userId, _id: mongoose.Types.ObjectId(bookmarkId) });
+  static deleteOne(userId, bookmark_id) {
+    return BookmarkModel.deleteOne({ userId: userId, _id: mongoose.Types.ObjectId(bookmark_id) });
   }
 
   static deleteManyByUserId(userId) {
