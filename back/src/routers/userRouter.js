@@ -203,7 +203,7 @@ userAuthRouter.post("/user/google-login", async function (req, res, next) {
 /**
  * @swagger
  *
- * /user/sendMail:
+ * /user/mail:
  *  post:
  *    summary: "메일 전송하기"
  *    tags: [Users]
@@ -221,18 +221,17 @@ userAuthRouter.post("/user/google-login", async function (req, res, next) {
  *                  type: string
  */
 userAuthRouter.post(
-  "/user/sendMail",
+  "/user/mail",
   login_required,
   async function (req, res, next) {
     try {
-      const { email, id } = req.body;
-      console.log(email, id);
-      const user = await userAuthService.sendMail(email, id);
-      console.log(user);
+      const { email, type } = req.body;
+      const user = await userAuthService.sendMail({ email, type });
       if (user.errorMessage) {
-        console.log("error");
         throw new Error(user.errorMessage);
       }
+
+      res.status(200).send(user);
     } catch (error) {
       next(error);
     }
@@ -257,18 +256,18 @@ userAuthRouter.post(
  *                  type: string
  */
 userAuthRouter.post(
-  "/user/checkCode",
+  "/user/check/code",
   login_required,
   async function (req, res, next) {
     try {
       const { code } = req.body;
-      const auth = await userAuthService.checkCode(code);
+      const auth = await userAuthService.checkCode({ code });
 
-      if (user.errorMessage) {
-        throw new Error(user.errorMessage);
+      if (auth.errorMessage) {
+        throw new Error(auth.errorMessage);
       }
 
-      return auth;
+      res.status(200).send(true);
     } catch (error) {
       next(error);
     }
