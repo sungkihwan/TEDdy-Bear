@@ -220,27 +220,20 @@ userAuthRouter.post("/user/google-login", async function (req, res, next) {
  *              id:
  *                  type: string
  */
-userAuthRouter.post(
-<<<<<<< HEAD
-  "/user/mail",
-  login_required,
-=======
-  '/user/mail',
->>>>>>> 169c113e5b5f6e2746004faa73dc74b7973a2b88
-  async function (req, res, next) {
-    try {
-      const { email, type } = req.body;
-      const user = await userAuthService.sendMail({ email, type });
-      if (user.errorMessage) {
-        throw new Error(user.errorMessage);
-      }
+userAuthRouter.post("/user/mail", async function (req, res, next) {
+  try {
+    const { email, type } = req.body;
+    const user = await userAuthService.sendMail({ email, type });
 
-      res.status(200).send(user);
-    } catch (error) {
-      next(error);
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
     }
+
+    res.status(200).send(user);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 /**
  * @swagger
@@ -259,28 +252,20 @@ userAuthRouter.post(
  *              code:
  *                  type: string
  */
-userAuthRouter.post(
-<<<<<<< HEAD
-  "/user/check/code",
-  login_required,
-=======
-  '/user/check/code',
->>>>>>> 169c113e5b5f6e2746004faa73dc74b7973a2b88
-  async function (req, res, next) {
-    try {
-      const { code } = req.body;
-      const auth = await userAuthService.checkCode({ code });
+userAuthRouter.post("/user/check/code", async function (req, res, next) {
+  try {
+    const { code } = req.body;
+    const auth = await userAuthService.checkCode({ code });
 
-      if (auth.errorMessage) {
-        throw new Error(auth.errorMessage);
-      }
-
-      res.status(200).send(true);
-    } catch (error) {
-      next(error);
+    if (auth.errorMessage) {
+      throw new Error(auth.errorMessage);
     }
+
+    res.status(200).send(true);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 /**
  * @swagger
