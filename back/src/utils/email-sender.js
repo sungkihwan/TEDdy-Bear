@@ -15,7 +15,7 @@ const transport = nodemailer.createTransport(smtpTransport({
     }
 }));
 
-const sendMail = (to, id) => new Promise((resolve, reject) => {
+const sendMail = (to, message) => new Promise((resolve, reject) => {
 
     const mailOptions = {
         from: mailSender,
@@ -23,8 +23,7 @@ const sendMail = (to, id) => new Promise((resolve, reject) => {
         subject: "TEDdy Bear 이메일 인증",
         html: `<h1>이메일 인증</h1>
                 <div>
-                  아래 버튼을 눌러 인증을 완료해주세요.
-                  <a href='${callbackurl}/auth/verification/${id}'>이메일 인증하기</a>
+                  code: ${message}
                 </div>`,
         text: "인증메일입니다.",
     };

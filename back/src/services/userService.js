@@ -1,8 +1,11 @@
 import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { Ttl } from '../db'; 
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
+import { sendMail } from '../utils/email-sender';
+import generator from 'generate-password';
 
 class userAuthService {
   static async addUser({
@@ -124,16 +127,15 @@ class userAuthService {
     const { name, email } = ticket.getPayload();
 
     let user = await User.findByEmail({ email });
+    let message = ""
+
     if (user) {
       // 소셜로그인으로 회원가입한 사용자인 경우
       if (user.infoProvider === 'Google') {
-        return await this.getLoginUserInfoBy(user);
+        user = await this.getLoginUserInfoBy(user);
       } else if (user.infoProvider === 'User') {
         // 소셜로그인으로 회원가입한 사용자가 아닌 경우
-        return {
-          errorMessage:
-            '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
-        };
+        return { errorMessage: '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.' };
       }
     } else {
       // 새로운 사용자 정보 저장
@@ -142,9 +144,11 @@ class userAuthService {
         email: email,
         infoProvider: 'Google',
       });
+      user = await this.getLoginUserInfoBy(user)
+      message = "newbie"
     }
 
-    return user;
+    return { message, userInfo: user }
   }
 
   static async getUsers() {
@@ -211,6 +215,57 @@ class userAuthService {
     return bearInfo;
   }
 
+  static async sendMail(email, user_id) {
+    const user = await User.findById({ user_id });
+
+    if (!user) {
+      const errorMessage =
+        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+
+    if (!email) {
+      const password = generator.generate({
+        length: 8,
+        numbers: true
+      });
+
+      const toUpdate = {};
+      const hashedPassword = await bcrypt.hash(password, 10);
+      toUpdate.password = hashedPassword;
+
+      sendMail(user.email, password)
+      return await User.updatePassword({ user_id, toUpdate });
+    } else {
+      const password = generator.generate({
+        length: 6,
+        numbers: true
+      });
+
+      const newItem = {}
+      newItem.code = password;
+      newItem.expireAt = Date.now();
+
+      await Ttl.create({ newItem });
+
+      sendMail(email, password)
+
+      return true
+    }
+  }
+
+  static async checkCode(code) {
+    const auth = await Ttl.findById({ code });
+
+    if (!auth) {
+      const errorMessage =
+        '인증에 실패했습니다.';
+      return { errorMessage };
+    }
+
+    return true
+  }
+  
   static async updatePassword({ user_id, password }) {
     const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
