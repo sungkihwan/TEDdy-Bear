@@ -221,8 +221,12 @@ userAuthRouter.post("/user/google-login", async function (req, res, next) {
  *                  type: string
  */
 userAuthRouter.post(
+<<<<<<< HEAD
   "/user/mail",
   login_required,
+=======
+  '/user/mail',
+>>>>>>> 169c113e5b5f6e2746004faa73dc74b7973a2b88
   async function (req, res, next) {
     try {
       const { email, type } = req.body;
@@ -241,7 +245,7 @@ userAuthRouter.post(
 /**
  * @swagger
  *
- * /user/sendMail:
+ * /user/check/code:
  *  post:
  *    summary: "email로 받은 인증 code check 로직"
  *    tags: [Users]
@@ -256,8 +260,12 @@ userAuthRouter.post(
  *                  type: string
  */
 userAuthRouter.post(
+<<<<<<< HEAD
   "/user/check/code",
   login_required,
+=======
+  '/user/check/code',
+>>>>>>> 169c113e5b5f6e2746004faa73dc74b7973a2b88
   async function (req, res, next) {
     try {
       const { code } = req.body;
