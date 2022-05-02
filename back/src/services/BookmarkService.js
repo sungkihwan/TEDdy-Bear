@@ -39,24 +39,18 @@ class BookmarkService {
       return { errorMessage }
     }
 
-    return { message: "북마크 추가 성공"}
+    return { message: "북마크 추가 성공", bookmarkId: newBookmark._id }
   }
 
-  static async deleteBookmark(userId, talkId) {
-    const talk = await Talk.findOneById({ id: talkId })
-    if(!talk) {
-      const errorMessage = "존재하지 않는 강연입니다."
-      return { errorMessage }
-    }
-
-    const myBookmark = await Bookmark.deleteOne(userId, talk._id)
+  static async deleteBookmark(userId, bookmarkId) {
+    const myBookmark = await Bookmark.deleteOne(userId, bookmarkId)
 
     if(myBookmark.deletedCount != 1) {
       const errorMessage = "북마크 삭제 실패"
       return { errorMessage }
     }
 
-    return { message: "북마크 삭제 성공"}
+    return { message: "북마크 삭제 성공" }
   }
 }
 
