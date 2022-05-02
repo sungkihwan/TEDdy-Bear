@@ -2,18 +2,24 @@ import { ReplyModel } from "../schemas/reply";
 import mongoose from "mongoose";
 
 class Reply {
-  static addOne(parentCommentOid, comment, userOid) {
+  static addOne(parentComment_id, comment, user_id) {
+    if(typeof(parentComment_id) !== "object") { parentComment_id = mongoose.Types.ObjectId(parentComment_id) }
+
     return ReplyModel.create({
-      parentComment: parentCommentOid,
-      user: userOid,
+      parentCommentId: parentComment_id,
       comment: comment,
+      user: user_id,
     });
   }
 
-  static deleteOne(commentId, userOid) {
-    return ReplyModel.deleteOne({ _id: mongoose.Types.ObjectId(commentId), user: userOid });
+  static deleteOne(comment_id, user_id) {
+    if(typeof(comment_id) !== "object") { comment_id = mongoose.Types.ObjectId(comment_id) }
+    if(typeof(user_id) !== "object") { user_id = mongoose.Types.ObjectId(user_id) }
+
+    return ReplyModel.deleteOne({ _id: comment_id, user: user_id });
   }
 
+  static 
 }
 
 export { Reply };
