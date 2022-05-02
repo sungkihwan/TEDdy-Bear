@@ -34,17 +34,14 @@ class ViewHistory {
   static async findManyByCreatedAt({ user_id }) {
     const userViewHistorylist = ViewHistoryModel.find({ user_id });
     const month = 4;
+    const dateBefore = new Date();
     const now = new Date();
-    console.log(now);
-    console.log(month);
-    console.log(typeof month);
-    now.setMonth(now.getMonth() - month);
-    console.log(now);
+    dateBefore.setMonth(now.getMonth() - month);
 
     return userViewHistorylist.find({
       createdAt: {
-        $gte: now,
-        $lte: new Date(),
+        $gte: dateBefore,
+        $lte: now,
       },
     });
   }
