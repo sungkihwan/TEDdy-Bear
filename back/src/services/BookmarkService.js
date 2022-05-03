@@ -12,7 +12,7 @@ class BookmarkService {
     const result = {
       length: bookmarks.length,
       bookmarks: bookmarks.reduce((pre, item) => {
-        if(item.talk_id) { pre.push(item.talk_id) }
+        pre.push({ bookmark_id: item._id, talk: item.talk_id })
         return pre
       }, [])
     }
@@ -21,7 +21,7 @@ class BookmarkService {
   }
 
   static async addBookmark(userId, talkId) {
-    const talk = await Talk.findOneById({ id: talkId })
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" })
     if(!talk) {
       const errorMessage = "존재하지 않는 강연입니다."
       return { errorMessage }
@@ -44,7 +44,6 @@ class BookmarkService {
 
   static async deleteBookmark(userId, bookmark_id) {
     const myBookmark = await Bookmark.deleteOne(userId, bookmark_id)
-
     if(myBookmark.deletedCount != 1) {
       const errorMessage = "북마크 삭제 실패"
       return { errorMessage }

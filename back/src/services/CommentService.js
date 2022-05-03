@@ -2,7 +2,7 @@ import { Talk, Comment, Reply, User } from "../db";
 
 class CommentService {
   static async getComments(talkId) {
-    const talk = await Talk.findOneById({ id: talkId })
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO"})
     if(!talk) {
       const errorMessage = "존재하지 않는 강연입니다."
       return { errorMessage }
@@ -21,7 +21,7 @@ class CommentService {
   }
 
   static async addComment(talkId, comment, userId) {
-    const talk = await Talk.findOneById({ id: talkId })
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" })
     if(!talk) {
       const errorMessage = "존재하지 않는 강연입니다."
       return { errorMessage }

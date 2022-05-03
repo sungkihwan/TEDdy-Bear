@@ -7,6 +7,7 @@
 import { ViewHistory } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { utils } from './utils';
+import { TalkService } from './talkService';
 
 class ViewHistoryService {
   // addViewHistory()
@@ -14,6 +15,11 @@ class ViewHistoryService {
   static async addViewHistory({ user_id, talkId, url }) {
     const id = uuidv4();
     const newViewHistory = { user_id, id, talkId, url };
+
+    // view 카운드 올리기
+    if(await TalkService.updateView(talkId) === false) {
+      console.log('조회수 업데이트 실패')
+    }
 
     //db에 저장
     const createdNewHistory = await ViewHistory.create({ newViewHistory });
