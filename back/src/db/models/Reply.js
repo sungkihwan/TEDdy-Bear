@@ -19,7 +19,17 @@ class Reply {
     return ReplyModel.deleteOne({ _id: comment_id, user: user_id });
   }
 
-  static 
+  static deleteMany({ parentCommentId, list_comment_id }) {
+    if(typeof(parentCommentId) !== "object") { parentCommentId = mongoose.Types.ObjectId(parentCommentId) }
+    
+    list_comment_id.reduce((pre, item) => {
+      if(typeof(item) !== "object") { item = mongoose.Types.ObjectId(list_comment_id) }
+      pre.push(item)
+      return pre
+    }, [])
+    
+    return ReplyModel.deleteMany({ parentCommentId: parentCommentId, _id: { $in: list_comment_id } });
+  }
 }
 
 export { Reply };
