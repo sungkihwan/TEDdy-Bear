@@ -1,10 +1,10 @@
-import { Talk, Topic, User } from "../db";
+import { Talk, Topic, User } from '../db';
 
 class TalkService {
   static async getTalk({ id }) {
-    const talk = await Talk.findOneById({ id, resultType: "POJO" });
+    const talk = await Talk.findOneById({ id, resultType: 'POJO' });
     if (!talk) {
-      const errorMessage = "영상 조회에 실패하였습니다.";
+      const errorMessage = '영상 조회에 실패하였습니다.';
       return { errorMessage };
     }
 
@@ -15,7 +15,7 @@ class TalkService {
     // 주제를 랜덤으로 선정 -> 각 주제별로 영상 1개씩 선정
     const randomTopics = await Topic.findManyRandom(size);
     if (randomTopics.length === 0) {
-      const errorMessage = "주제 조회에 실패하였습니다.";
+      const errorMessage = '주제 조회에 실패하였습니다.';
       return { errorMessage };
     }
 
@@ -26,7 +26,7 @@ class TalkService {
 
     const randomTalks = await Talk.findManyRandom(topics, size);
     if (randomTalks.length === 0) {
-      const errorMessage = "영상 조회에 실패하였습니다.";
+      const errorMessage = '영상 조회에 실패하였습니다.';
       return { errorMessage };
     }
 
@@ -36,13 +36,13 @@ class TalkService {
   static async getMyTalk({ size, user_id }) {
     const { myTopics } = await User.findById({ user_id });
     if (!myTopics) {
-      const errorMessage = "주제 조회에 실패하였습니다.";
+      const errorMessage = '주제 조회에 실패하였습니다.';
       return { errorMessage };
     }
 
     const myTalk = await Talk.findManyRandom(myTopics, size);
     if (myTalk.length === 0) {
-      const errorMessage = "영상 조회에 실패하였습니다.";
+      const errorMessage = '영상 조회에 실패하였습니다.';
       return { errorMessage };
     }
 
@@ -51,11 +51,14 @@ class TalkService {
 
   static async updateView(talkId) {
     // 기존 조회수
-    const preTalk = await Talk.findOneById({ id: talkId, resultType: "document" })
-    const preViewCount = preTalk.teddy_view_count
+    const preTalk = await Talk.findOneById({
+      id: talkId,
+      resultType: 'document',
+    });
+    const preViewCount = preTalk.teddy_view_count;
 
     // 조회 수 업데이트
-    preTalk.teddy_view_count++
+    preTalk.teddy_view_count++;
 
     const postTalk = await Talk.updateView(preTalk._id, preTalk);
 
@@ -68,20 +71,26 @@ class TalkService {
 
   static async updateLike({ talkId, status }) {
     // 기존 좋아요수
-    const preTalk = await Talk.findOneById({ id: talkId, resultType: "document" })
-    const preLikeCount = preTalk.teddy_like_count
+    const preTalk = await Talk.findOneById({
+      id: talkId,
+      resultType: 'document',
+    });
+    const preLikeCount = preTalk.teddy_like_count;
 
     // 좋아요 수 업데이트
-    if(status === "cancel") {
-      preTalk.teddy_like_count--
-    } else if(status === "like") {
-      preTalk.teddy_like_count++
+    if (status === 'cancel') {
+      preTalk.teddy_like_count--;
+    } else if (status === 'like') {
+      preTalk.teddy_like_count++;
     }
 
     const postTalk = await Talk.updateView(preTalk._id, preTalk);
 
     // 업데이트 여부 확인
-    if (preLikeCount + 1 === postTalk.teddy_like_count) {
+    if (
+      preLikeCount + 1 === postTalk.teddy_like_count ||
+      preLikeCount - 1 === postTalk.teddy_like_count
+    ) {
       return true;
     }
     return false;
