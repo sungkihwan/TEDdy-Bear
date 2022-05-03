@@ -113,6 +113,18 @@ export const BearImg = Styled.img`
   height: 20em;
 `;
 
+//Lawn
+
+//DateButton style
+export const StyledDateButton = Styled.button`
+  width: 3rem;
+  height: 3rem;
+  margin: 2px;
+  border-radius: 15px;
+  backgroundColor: brown,
+`;
+
+//BearFootIcon style
 export const BearFootIcon = Styled.img`
   width: 2em;
   height: 2em;

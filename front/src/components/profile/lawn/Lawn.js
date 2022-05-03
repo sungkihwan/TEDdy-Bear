@@ -1,17 +1,13 @@
 import styled from "styled-components";
 import * as React from "react";
-import { useState, useContext, useNaviagate, useEffect } from "react";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+import { useState, useEffect } from "react";
+
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import * as Api from "../../../api";
-import Typography from "@mui/material/Typography";
 
-import DateForm from "./DateButton";
+import * as Api from "../../../api";
 import WeekForm from "./WeekForm";
 import LawnInfo from "./LawnInfo";
-import { red } from "@mui/material/colors";
 
 /** Lawn component
  *
@@ -82,9 +78,7 @@ function Lawn({ user }) {
             </Grid>
           ))}
         </Grid>
-      </Card>
-      <Card mt={5}>
-        <Grid item>
+        <Grid item mt={3}>
           {dailyList && (
             <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
           )}
@@ -93,15 +87,5 @@ function Lawn({ user }) {
     </>
   );
 }
-
-//page style
-const Page = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
 
 export default Lawn;
