@@ -4,7 +4,7 @@ import { TalkService } from "./TalkService"
 // addlike,
 class likeService {
   static async addlike({ userId, talkId }) {
-    const user = await User.findById({ user_id: userId });
+    const user = await User.findById({ userId });
     const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" });
     if (!talk) {
       const errorMessage = "존재하지 않는 동영상입니다.";
@@ -34,7 +34,7 @@ class likeService {
 
   // 유저 아이디로 영상 리스트 찾기
   static async getUserLikeList({ userId }) {
-    const user = await User.findById({ user_id: userId });
+    const user = await User.findById({ userId });
     const user_id = user._id;
     const talklist = await Like.findManyByUserId({ user_id });
     if (talklist.length == 0) {
@@ -58,7 +58,7 @@ class likeService {
 
   // 영상 아이디, 유저 아이디로 리스트 삭제하기
   static async deleteLike({ userId, talkId }) {
-    const user = await User.findById({ user_id: userId });
+    const user = await User.findById({ userId });
     const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" });
     if (!talk) {
       const errorMessage = "존재하지 않는 동영상입니다.";

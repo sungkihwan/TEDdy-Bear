@@ -1,4 +1,4 @@
-import { Talk, Topic, User } from "../db";
+import { Bookmark, Talk, Topic, User } from "../db";
 
 class TalkService {
   static async getTalk({ id }) {
@@ -33,20 +33,15 @@ class TalkService {
     return randomTalks;
   }
 
-  static async getMyTalk({ size, user_id }) {
-    const { myTopics } = await User.findById({ user_id });
-    if (!myTopics) {
-      const errorMessage = "주제 조회에 실패하였습니다.";
-      return { errorMessage };
-    }
+  static async getMyTalk({ size, userId }) {
+    // 사용자 관심 주제 조회
+    const { myTopics } = await User.findById({ userId });
+    if (!myTopics) { return { errorMessage: "주제 조회에 실패하였습니다." } }
 
     const myTalk = await Talk.findManyRandom(myTopics, size);
-    if (myTalk.length === 0) {
-      const errorMessage = "영상 조회에 실패하였습니다.";
-      return { errorMessage };
-    }
+    if (myTalk.length === 0) { return { errorMessage: "영상 조회에 실패하였습니다." } }
 
-    return myTalk;
+    return myTalk
   }
 
   static async updateView(talkId) {

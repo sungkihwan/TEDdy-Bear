@@ -24,7 +24,7 @@ class CommentService {
     if(!talk) { return { errorMessage: "존재하지 않는 강연입니다." } }
     
     // 사용자 확인
-    const user = await User.findById({ user_id: userId })
+    const user = await User.findById({ userId })
     if(!user) { return { errorMessage: "존재하지 않는 사용자입니다." } }
     
     // 댓글 생성
@@ -37,7 +37,7 @@ class CommentService {
 
   static async addReply(parentCommentId, comment, userId) {
     // 작성자 _id 조회
-    const user = await User.findById({ user_id: userId })
+    const user = await User.findById({ userId })
     if(!user) { return { errorMessage: "존재하지 않는 사용자입니다." } }
 
     // 부모댓글이 존재하는지 확인
@@ -58,7 +58,7 @@ class CommentService {
 
   static async deleteComment(comment_id, userId) {
     // 작성자 _id 조회
-    const user = await User.findById({ user_id: userId })
+    const user = await User.findById({ userId })
     if(!user) { return { errorMessage: "존재하지 않는 사용자입니다." } }
 
     // 유효한 댓글 id인지 확인
@@ -80,7 +80,7 @@ class CommentService {
 
   static async deleteReply(comment_id, userId) {
     // 작성자 _id 조회
-    const user = await User.findById({ user_id: userId })
+    const user = await User.findById({ userId })
     if(!user) { return { errorMessage: "존재하지 않는 사용자입니다." } }
 
     // 유효한 댓글 id인지 확인

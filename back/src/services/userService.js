@@ -157,7 +157,7 @@ class userAuthService {
   }
 
   static async setUser({ user_id, toUpdate }) {
-    let user = await User.findById({ user_id });
+    let user = await User.findById({ userId: user_id });
     if (!user) {
       const errorMessage = '가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
@@ -180,7 +180,7 @@ class userAuthService {
   }
 
   static async getUserInfo({ user_id }) {
-    const user = await User.findById({ user_id });
+    const user = await User.findById({ userId: user_id });
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
