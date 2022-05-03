@@ -231,7 +231,6 @@ userAuthRouter.post(
       if (user.errorMessage) {
         throw new Error(user.errorMessage);
       }
-
     } catch (error) {
       next(error);
     }
@@ -267,8 +266,7 @@ userAuthRouter.post(
         throw new Error(user.errorMessage);
       }
 
-      return auth
-
+      return auth;
     } catch (error) {
       next(error);
     }
@@ -575,6 +573,7 @@ userAuthRouter.delete(
  *                exp:
  *                  type: Number
  */
+
 // 곰 정보 찾기
 userAuthRouter.get(
   '/bear/:id',
