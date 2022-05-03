@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Bookmark, Talk, Topic, User } from "../db";
-=======
 import { Talk, Topic, User } from '../db';
->>>>>>> 96a5b47b5d127be77b1169a7bd0b806465963f0a
 
 class TalkService {
   static async getTalk({ id }) {

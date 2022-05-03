@@ -4,13 +4,8 @@ import { TalkService } from './TalkService';
 // addlike,
 class likeService {
   static async addlike({ userId, talkId }) {
-<<<<<<< HEAD
     const user = await User.findById({ userId });
     const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" });
-=======
-    const user = await User.findById({ user_id: userId });
-    const talk = await Talk.findOneById({ id: talkId, resultType: 'POJO' });
->>>>>>> 96a5b47b5d127be77b1169a7bd0b806465963f0a
     if (!talk) {
       const errorMessage = '존재하지 않는 동영상입니다.';
       return { errorMessage };
