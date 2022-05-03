@@ -220,6 +220,7 @@ userAuthRouter.post("/user/google-login", async function (req, res, next) {
  *              id:
  *                  type: string
  */
+
 userAuthRouter.post("/user/mail", async function (req, res, next) {
   try {
     const { email, type } = req.body;
@@ -252,6 +253,7 @@ userAuthRouter.post("/user/mail", async function (req, res, next) {
  *              code:
  *                  type: string
  */
+
 userAuthRouter.post("/user/check/code", async function (req, res, next) {
   try {
     const { code } = req.body;
@@ -567,6 +569,7 @@ userAuthRouter.delete(
  *                exp:
  *                  type: Number
  */
+
 // 곰 정보 찾기
 userAuthRouter.get(
   "/bear/:id",

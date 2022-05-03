@@ -269,6 +269,41 @@ viewHistoryRouter.get(
   }
 );
 
+// /**
+//  * @swagger
+//  * /bear/{id}:
+//  *  get:
+//  *    summary: "특정 유저 bear 정보 조회 Path 방식"
+//  *    description: "요청 경로에 값을 담아 서버에 보낸다."
+//  *    tags: [Users]
+//  *    parameters:
+//  *      - in: path
+//  *        name: id
+//  *        required: true
+//  *        description: 유저 아이디
+//  *        schema:
+//  *          type: string
+//  *    responses:
+//  *      "200":
+//  *        description: 유저 조회 성공
+//  *        content:
+//  *          application/json:
+//  *            schema:
+//  *              properties:
+//  *                bearName:
+//  *                  type: array
+//  */
+
+viewHistoryRouter.get('/viewhistory/latest', async function (req, res, next) {
+  try {
+    const user_id = req.currentUserId;
+    const latest = await ViewHistoryService.getLatest5({ user_id });
+
+    res.status(200).send(latest);
+  } catch (error) {
+    next(error);
+  }
+});
 /**
  * @swagger
  * /viewhistory/rankingBoard:

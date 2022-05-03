@@ -2,39 +2,49 @@ import { CommentModel } from "../schemas/comment";
 import mongoose from "mongoose";
 
 class Comment {
-  static findManyByTalkOid(talkOid) {
-    return CommentModel.find({ talk: talkOid })
+  static findManyByTalkId(talk_id) {
+    if(typeof(talk_id) !== "object") { talk_id = mongoose.Types.ObjectId(talk_id) }
+
+    return CommentModel.find({ talk: talk_id })
       .populate({ path: "user", select: "name email" })
       .populate({ 
         path: 'reply', select: "comment user createdAt",
         populate: {
           path: 'user', select: "name email"
         } 
-     })
+      })
       .lean();
   }
 
-  static addOne(talkOid, comment, userOid) {
+  static addOne(talk_id, comment, user_id) {
+    if(typeof(talk_id) !== "object") { talk_id = mongoose.Types.ObjectId(talk_id) }
+    if(typeof(user_id) !== "object") { user_id = mongoose.Types.ObjectId(user_id) }
+
     return CommentModel.create({
-      talk: talkOid,
-      user: userOid,
+      talk: talk_id,
+      user: user_id,
       comment: comment,
     });
   }
 
-  static findOneById(commentId) {
-    return CommentModel.findOne({ _id: mongoose.Types.ObjectId(commentId) });
+  static findOneById(comment_id) {
+    return CommentModel.findOne({ _id: mongoose.Types.ObjectId(comment_id) });
   }
 
-  static updateOne(parentCommentOid, toUpdatedComment) {
+  static updateOne(parentComment_id, toUpdatedComment) {
+    if(typeof(parentComment_id) !== "object") { talk_id = mongoose.Types.ObjectId(parentComment_id) }
+
     return CommentModel.findOneAndUpdate(
-      { _id: parentCommentOid },
+      { _id: parentComment_id },
       toUpdatedComment,
     );
   }
 
-  static deleteOne(commentId, userOid) {
-    return CommentModel.deleteOne({ _id: mongoose.Types.ObjectId(commentId), user: userOid });
+  static deleteOne(comment_id, user_id) {
+    if(typeof(comment_id) !== "object") { comment_id = mongoose.Types.ObjectId(comment_id) }
+    if(typeof(user_id) !== "object") { user_id = mongoose.Types.ObjectId(user_id) }
+
+    return CommentModel.deleteOne({ _id: comment_id, user: user_id });
   }
 
 }

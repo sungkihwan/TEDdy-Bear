@@ -70,6 +70,10 @@ class ViewHistoryService {
     return await ViewHistory.findManyByCreatedAt({ user_id });
   }
 
+  static async getLatest5({ user_id }) {
+    return await ViewHistory.latest5({ user_id });
+  }
+
   static async rankingBoard({}) {
     return await ViewHistory.rankingBoard({});
   }
