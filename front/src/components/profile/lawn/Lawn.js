@@ -1,13 +1,12 @@
-import styled from "styled-components";
 import * as React from "react";
 import { useState, useEffect } from "react";
 
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
 
 import * as Api from "../../../api";
 import WeekForm from "./WeekForm";
 import LawnInfo from "./LawnInfo";
+import { LawnStyledPage } from "../styles/Style";
 
 /** Lawn component
  *
@@ -56,17 +55,17 @@ function Lawn({ user }) {
 
   return (
     <>
-      <Card>
+      <LawnStyledPage>
         <Grid
           container
           item
           direction="row"
           justifyContent="center"
           alignItems="center"
-          mb={5}
+          mb={3}
         >
           {arr.map((num) => (
-            <Grid item key={num + 18} mt={5}>
+            <Grid item key={num + 18} mt={3}>
               <WeekForm
                 user={user}
                 weekNum={num + 18}
@@ -78,12 +77,12 @@ function Lawn({ user }) {
             </Grid>
           ))}
         </Grid>
-        <Grid item mt={3}>
-          {dailyList && (
-            <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
-          )}
-        </Grid>
-      </Card>
+      </LawnStyledPage>
+      <Grid item mt={3}>
+        {dailyList && (
+          <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
+        )}
+      </Grid>
     </>
   );
 }

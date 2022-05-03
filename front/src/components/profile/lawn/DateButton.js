@@ -1,9 +1,8 @@
 import * as React from "react";
+import Tooltip from "@mui/material/Tooltip";
 
 import * as Api from "../../../api";
 import { BearFootIcon, StyledDateButton } from "../styles/Style";
-
-import Tooltip from "@mui/material/Tooltip";
 
 function DateButton({
   day,
