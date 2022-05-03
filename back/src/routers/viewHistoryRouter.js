@@ -9,6 +9,7 @@ import { login_required } from '../middlewares/login_required';
 import { ViewHistoryService } from '../services/viewHistoryService';
 
 const viewHistoryRouter = Router();
+viewHistoryRouter.use(login_required);
 
 /**
  * @swagger
@@ -28,11 +29,26 @@ const viewHistoryRouter = Router();
  *          type: string
  *        talkId:
  *          type: string
- *        createdAt: 
+ *        url:
+ *          type: string
+ *        createdAt:
  *          type: date
- *        updatedAt: 
+ *        updatedAt:
  *          type: date
+ */
 
+// 커스텀 스키마
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    rankingBoard:
+ *      type: object
+ *      properties:
+ *        _id:
+ *          type: string
+ *        count:
+ *          type: number
  */
 
 /**
@@ -48,7 +64,20 @@ const viewHistoryRouter = Router();
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#components/schemas/ViewHistory'
+ *            type: object
+ *            properties:
+ *              user_id:
+ *                  type: string
+ *              talkId:
+ *                  type: string
+ *              url:
+ *                  type: string
+ *    responses:
+ *       "200":
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ViewHistory'
  */
 
 viewHistoryRouter.use(login_required);
@@ -56,13 +85,12 @@ viewHistoryRouter.use(login_required);
 // viewHistory를 만드는 router api (링크 클릭시 호출)
 viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
   try {
-    const { user_id, talkId } = req.body;
+    const { user_id, talkId, url } = req.body;
 
     const newViewHistory = await ViewHistoryService.addViewHistory({
       user_id,
       talkId,
-      // url,
-      // title,
+      url,
     });
     if (newViewHistory.errorMessage) {
       throw new Error(newViewHistory.errorMessage);
@@ -122,7 +150,7 @@ viewHistoryRouter.get('/viewhistories/:id', async function (req, res, next) {
  *      - in: path
  *        name: id
  *        required: true
- *        description: 시청목록 id
+ *        description: 유저 아이디
  *        schema:
  *          type: string
  *    responses:
@@ -141,12 +169,10 @@ viewHistoryRouter.get(
   '/viewhistorylist/:user_id',
   async function (req, res, next) {
     try {
-      const currentUserId = req.currentUserId;
       const user_id = req.params.user_id;
 
       //해당 user_id에 맞는 목록을 db에서 가져와 조회
       const viewHistorylist = await ViewHistoryService.getViewHistorylist({
-        currentUserId,
         user_id,
       });
       res.status(200).send(viewHistorylist);
@@ -191,15 +217,130 @@ viewHistoryRouter.get(
     try {
       const user_id = req.params.user_id;
       const date = req.params.date;
-      const currentUserId = req.currentUserId;
 
       const viewHistoryDatelist = await ViewHistoryService.getViewHistoryDate({
-        currentUserId,
         user_id,
         date,
       });
 
       res.status(200).send(viewHistoryDatelist);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ *  /viewhistorydatelist/{user_id} :
+ *  get:
+ *    summary: "유저 아이디와 날짜를 통한 당일날부터 size달 전까지의 시청기록 조회 "
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [viewhistory]
+ *    parameters:
+ *      - in: path
+ *        name: user_id
+ *        required: true
+ *        description: 유저 아이디
+ *      - in: query
+ *        name: size
+ *        required: true
+ *        description: size 달 전까지의 기록을 return
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/ViewHistory'
+ */
+
+viewHistoryRouter.get(
+  '/viewhistorydatelist/:user_id',
+  async function (req, res, next) {
+    try {
+      const user_id = req.params.user_id;
+      const size = Number(req.query.size);
+
+      const today = await ViewHistoryService.getViewHistoryUntilToday({
+        user_id,
+        size,
+      });
+
+      res.status(200).send(today);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ *  /viewhistory/latest:
+ *  get:
+ *    summary: "최근 기록 조회(talkId 중복 제거) "
+ *    description: "최근 기록 talkId를 반환한다."
+ *    tags: [viewhistory]
+ *    parameters:
+ *      - in: query
+ *        name: size
+ *        required: true
+ *        description: size 수의 최근 기록을 return
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공, url을 return
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                url:
+ *                  type: string
+ */
+
+viewHistoryRouter.get(
+  '/viewhistory/latest',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId;
+      const size = Number(req.query.size);
+      const latest = await ViewHistoryService.getLatest5({ user_id, size });
+
+      res.status(200).send(latest);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+/**
+ * @swagger
+ * /viewhistory/rankingBoard:
+ *  get:
+ *    summary: "최다 뷰 유저 랭킹 조회 top 5"
+ *    description: "5명까지 영상을 가장 많이 본 유저 조회"
+ *    tags: [viewhistory]
+ *    responses:
+ *      "200":
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/rankingBoard'
+ */
+viewHistoryRouter.get(
+  '/viewhistory/rankingBoard',
+  async function (req, res, next) {
+    try {
+      const rankingBoard = await ViewHistoryService.rankingBoard({});
+
+      res.status(200).send(rankingBoard);
     } catch (error) {
       next(error);
     }

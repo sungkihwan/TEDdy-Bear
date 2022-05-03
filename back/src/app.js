@@ -5,7 +5,10 @@ import { userAuthRouter } from './routers/userRouter';
 import { dataRouter } from './routers/dataRouter';
 import { talkRouter } from './routers/talkRouter';
 import { viewHistoryRouter } from './routers/viewHistoryRouter';
+import { likeRouter } from './routers/likeRouter';
 import { errorMiddleware } from './middlewares/errorMiddleware';
+import { bookmarkRouter } from './routers/bookmarkRouter';
+import { commentRouter } from './routers/commentRouter';
 
 const app = express();
 
@@ -34,6 +37,9 @@ app.use(userAuthRouter);
 app.use(dataRouter);
 app.use(talkRouter);
 app.use(viewHistoryRouter);
+app.use(likeRouter);
+app.use(bookmarkRouter);
+app.use(commentRouter);
 
 app.use(errorMiddleware);
 

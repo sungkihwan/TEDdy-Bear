@@ -3,7 +3,12 @@ import { User } from './models/User';
 import { Data } from './models/Data';
 import { Talk } from './models/Talk';
 import { Topic } from './models/Topic';
+import { Ttl } from './models/Ttl';
 import { ViewHistory } from './models/ViewHistory';
+import { Like } from './models/Like';
+import { Bookmark } from './models/Bookmark';
+import { Comment } from './models/Comment';
+import { Reply } from './models/Reply';
 
 const DB_URL =
   process.env.MONGODB_URL ||
@@ -19,4 +24,15 @@ db.on('error', (error) =>
   console.error('MongoDB 연결에 실패하였습니다...\n' + DB_URL + '\n' + error)
 );
 
-export { User, Data, Talk, Topic, ViewHistory };
+export {
+  User,
+  Data,
+  Talk,
+  Topic,
+  ViewHistory,
+  Bookmark,
+  Comment,
+  Reply,
+  Ttl,
+  Like,
+};

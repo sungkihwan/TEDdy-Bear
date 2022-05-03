@@ -1,15 +1,13 @@
 import { TalkModel } from "../schemas/talk";
 
 class Talk {
-  static findOneById({ id }) {
-    return TalkModel.findOne({ id: id });
+  static findOneById({ id, resultType }) {
+    if (resultType === "document") { 
+      return TalkModel.findOne({ id: id });
+    } //else if(resultType === "POJO") {
+    return TalkModel.findOne({ id: id }).lean();
+    // }
   }
-
-  // static findAll({ perPage, page }) {
-  //   return TalkModel.find({})
-  //     .skip(perPage * (page - 1))
-  //     .limit(perPage);
-  // }
 
   static findManyRandom(topics, size) {
     return TalkModel.aggregate([
@@ -20,6 +18,12 @@ class Talk {
       },
       { $sample: { size: size } },
     ]);
+  }
+
+  static updateView(id, toUpdate) {
+    return TalkModel.findOneAndUpdate({ _id: id }, toUpdate, {
+      returnOriginal: false,
+    });
   }
 }
 

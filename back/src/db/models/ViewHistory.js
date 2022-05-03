@@ -29,6 +29,60 @@ class ViewHistory {
   static async findManyByUserId({ user_id }) {
     return ViewHistoryModel.find({ user_id });
   }
+
+  // createAt으로 4달 전까지의 데이터 찾아서 보내기
+  static async findManyByCreatedAt({ user_id, size }) {
+    const userViewHistorylist = ViewHistoryModel.find({ user_id });
+    const dateBefore = new Date();
+    const now = new Date();
+    dateBefore.setMonth(now.getMonth() - size);
+
+    return userViewHistorylist.find({
+      createdAt: {
+        $gte: dateBefore,
+        $lte: now,
+      },
+    });
+  }
+
+  static async latest5({ user_id, size }) {
+    const latest5 = ViewHistoryModel.aggregate([
+      {
+        $match: { user_id: user_id },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $limit: size,
+      },
+      {
+        $group: {
+          _id: '$url',
+        },
+      },
+    ]);
+
+    return latest5;
+  }
+
+  // 랭킹보드 쿼리로 조회
+  // 성능 문제가 생기면 user_id : count 형식으로 데이터를 따로 저장하고 count에 index를 설정해서 자동 정렬되게끔 설정
+  static async rankingBoard({}) {
+    const aggregatorOpts = [
+      {
+        $group: {
+          _id: '$user_id',
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ];
+
+    return await ViewHistoryModel.aggregate(aggregatorOpts).limit(5).exec();
+  }
 }
 
 export { ViewHistory };
