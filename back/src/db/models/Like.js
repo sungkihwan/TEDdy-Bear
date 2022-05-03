@@ -14,7 +14,9 @@ class Like {
 
   // 유저 아이디로 영상 리스트 찾기
   static async findManyByUserId({ user_id }) {
-    return await LikeModel.find({ user_id });
+    return await LikeModel.find({ user_id })
+      .populate({ path: 'talk_id' })
+      .lean();
   }
 
   // 영상 아이디로 유저 리스트 찾기
