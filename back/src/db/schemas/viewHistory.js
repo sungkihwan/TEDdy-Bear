@@ -21,13 +21,10 @@ const viewHistorySchema = new Schema(
       type: String,
       required: true,
     },
-<<<<<<< HEAD
-=======
     url: {
       type: String,
       required: true,
     },
->>>>>>> 0def5e0fa8d313a09fc1493a17fe7dc4134d8797
   },
   {
     timestamps: true,
