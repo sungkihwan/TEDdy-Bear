@@ -203,7 +203,7 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
 /**
  * @swagger
  *
- * /user/sendMail:
+ * /user/mail:
  *  post:
  *    summary: "메일 전송하기"
  *    tags: [Users]
@@ -220,27 +220,25 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
  *              id:
  *                  type: string
  */
-userAuthRouter.post(
-  '/user/sendMail',
-  login_required,
-  async function (req, res, next) {
-    try {
-      const { email, id } = req.body;
-      const user = await userAuthService.sendMail(email, id);
+userAuthRouter.post('/user/mail', async function (req, res, next) {
+  try {
+    const { email, type } = req.body;
+    const user = await userAuthService.sendMail({ email, type });
 
-      if (user.errorMessage) {
-        throw new Error(user.errorMessage);
-      }
-    } catch (error) {
-      next(error);
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
     }
+
+    res.status(200).send(user);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 /**
  * @swagger
  *
- * /user/sendMail:
+ * /user/check/code:
  *  post:
  *    summary: "email로 받은 인증 code check 로직"
  *    tags: [Users]
@@ -254,24 +252,20 @@ userAuthRouter.post(
  *              code:
  *                  type: string
  */
-userAuthRouter.post(
-  '/user/checkCode',
-  login_required,
-  async function (req, res, next) {
-    try {
-      const { code } = req.body;
-      const auth = await userAuthService.checkCode(code);
+userAuthRouter.post('/user/check/code', async function (req, res, next) {
+  try {
+    const { code } = req.body;
+    const auth = await userAuthService.checkCode({ code });
 
-      if (user.errorMessage) {
-        throw new Error(user.errorMessage);
-      }
-
-      return auth;
-    } catch (error) {
-      next(error);
+    if (auth.errorMessage) {
+      throw new Error(auth.errorMessage);
     }
+
+    res.status(200).send(true);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 /**
  * @swagger
