@@ -21,7 +21,7 @@ class BookmarkService {
   }
 
   static async addBookmark(userId, talkId) {
-    const talk = await Talk.findOneById({ id: talkId })
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" })
     if(!talk) {
       const errorMessage = "존재하지 않는 강연입니다."
       return { errorMessage }
