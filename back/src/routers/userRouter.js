@@ -220,23 +220,20 @@ userAuthRouter.post('/user/google-login', async function (req, res, next) {
  *              id:
  *                  type: string
  */
-userAuthRouter.post(
-  '/user/mail',
-  async function (req, res, next) {
-    try {
-      const { email, type } = req.body;
-      const user = await userAuthService.sendMail({ email, type });
+userAuthRouter.post('/user/mail', async function (req, res, next) {
+  try {
+    const { email, type } = req.body;
+    const user = await userAuthService.sendMail({ email, type });
 
-      if (user.errorMessage) {
-        throw new Error(user.errorMessage);
-      }
-      
-      res.status(200).send(user);
-    } catch (error) {
-      next(error);
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
     }
+
+    res.status(200).send(user);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 /**
  * @swagger
@@ -255,24 +252,20 @@ userAuthRouter.post(
  *              code:
  *                  type: string
  */
-userAuthRouter.post(
-  '/user/check/code',
-  async function (req, res, next) {
-    try {
-      const { code } = req.body;
-      const auth = await userAuthService.checkCode({ code });
+userAuthRouter.post('/user/check/code', async function (req, res, next) {
+  try {
+    const { code } = req.body;
+    const auth = await userAuthService.checkCode({ code });
 
-      if (auth.errorMessage) {
-        throw new Error(auth.errorMessage);
-      }
-
-      res.status(200).send(true);
-
-    } catch (error) {
-      next(error);
+    if (auth.errorMessage) {
+      throw new Error(auth.errorMessage);
     }
+
+    res.status(200).send(true);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 /**
  * @swagger
@@ -574,6 +567,7 @@ userAuthRouter.delete(
  *                exp:
  *                  type: Number
  */
+
 // 곰 정보 찾기
 userAuthRouter.get(
   '/bear/:id',
