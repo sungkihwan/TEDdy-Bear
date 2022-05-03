@@ -40,7 +40,7 @@ bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next)
 /**
  * @swagger
  * paths:
- *  /bookmarks/{id}:
+ *  /bookmarks/bookmark:
  *   post:
  *     summary: 강연 북마크 추가
  *     tags: [Bookmark]
