@@ -1,5 +1,5 @@
 import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { Ttl } from '../db'; 
+import { Ttl } from '../db';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
@@ -127,7 +127,7 @@ class userAuthService {
     const { name, email } = ticket.getPayload();
 
     let user = await User.findByEmail({ email });
-    let message = ""
+    let message = '';
 
     if (user) {
       // 소셜로그인으로 회원가입한 사용자인 경우
@@ -135,7 +135,10 @@ class userAuthService {
         user = await this.getLoginUserInfoBy(user);
       } else if (user.infoProvider === 'User') {
         // 소셜로그인으로 회원가입한 사용자가 아닌 경우
-        return { errorMessage: '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.' };
+        return {
+          errorMessage:
+            '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
+        };
       }
     } else {
       // 새로운 사용자 정보 저장
@@ -144,11 +147,11 @@ class userAuthService {
         email: email,
         infoProvider: 'Google',
       });
-      user = await this.getLoginUserInfoBy(user)
-      message = "newbie"
+      user = await this.getLoginUserInfoBy(user);
+      message = 'newbie';
     }
 
-    return { message, userInfo: user }
+    return { message, userInfo: user };
   }
 
   static async getUsers() {
@@ -192,6 +195,16 @@ class userAuthService {
     return user;
   }
 
+  static async deleteUserAllInfo({ user_id }) {
+    const user = await User.findById({ user_id });
+    await User.deleteAllById({ user });
+    if (!user) {
+      const errorMessage =
+        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+  }
+
   static async deleteUser({ user_id }) {
     const user = await User.deleteOneUser({ user_id });
     // db에서 찾지 못한 경우, 에러 메시지 반환
@@ -200,6 +213,7 @@ class userAuthService {
         '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
     }
+
     return user;
   }
 
@@ -224,10 +238,10 @@ class userAuthService {
       return { errorMessage };
     }
 
-    if (type == "temp") {
+    if (type == 'temp') {
       const password = generator.generate({
         length: 8,
-        numbers: true
+        numbers: true,
       });
 
       const user_id = user.id;
@@ -235,38 +249,37 @@ class userAuthService {
       const hashedPassword = await bcrypt.hash(password, 10);
       toUpdate.password = hashedPassword;
 
-      sendMail(email, password)
+      sendMail(email, password);
       return await User.updatePassword({ user_id, toUpdate });
     } else {
       const password = generator.generate({
         length: 6,
-        numbers: true
+        numbers: true,
       });
 
-      const newItem = {}
+      const newItem = {};
       newItem.code = password;
       newItem.expireAt = Date.now();
 
       await Ttl.create({ newItem });
 
-      sendMail(email, password)
+      sendMail(email, password);
 
-      return true
+      return true;
     }
   }
 
   static async checkCode({ code }) {
     const auth = await Ttl.find({ code });
-    console.log(auth)
+    console.log(auth);
     if (auth.length == 0) {
-      const errorMessage =
-        '인증에 실패했습니다.';
+      const errorMessage = '인증에 실패했습니다.';
       return { errorMessage };
     }
 
-    return true
+    return true;
   }
-  
+
   static async updatePassword({ user_id, password }) {
     const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
