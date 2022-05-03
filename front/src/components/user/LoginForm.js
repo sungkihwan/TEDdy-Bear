@@ -157,6 +157,14 @@ function LoginForm() {
                       테디곰과 함께 공부할래요?
                     </Link>
                   </Grid>
+                  <Grid item xs={12}>
+                    <Link
+                      variant="body2"
+                      onClick={() => navigate("/findpassword")}
+                    >
+                      비밀번호 찾기
+                    </Link>
+                  </Grid>
                 </Grid>
               </Box>
             </Box>

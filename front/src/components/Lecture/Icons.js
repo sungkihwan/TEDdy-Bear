@@ -2,13 +2,11 @@ import StarIcon from "@mui/icons-material/Star";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { loadCSS } from "fg-loadcss";
 import React, { useState, useEffect, useContext } from "react";
-import * as Api from "../../api";
 import { UserStateContext } from "../../App";
+import * as Api from "../../api";
 
-function Icons({ videoInfo }) {
-  const userId = useContext(UserStateContext).user.id;
-  const talkId = videoInfo.id;
-
+function Icons({ talkId }) {
+  const userState = useContext(UserStateContext);
   useEffect(() => {
     const node = loadCSS(
       "https://use.fontawesome.com/releases/v5.14.0/css/all.css",
@@ -19,28 +17,44 @@ function Icons({ videoInfo }) {
       node.parentNode.removeChild(node);
     };
   }, []);
-  const [star, setStar] = useState(true);
-  const [heart, setHeart] = useState(true);
 
-  const editLikes = async () => {
-    if (heart === true) {
-      Api.delete(`talks/talk/like/${talkId}`, {
-        user_id: userId,
-        talk_id: talkId,
-      });
+  const [userClick, setUserClick] = useState(() => {
+    if (userState.user === null) {
+      return { pointerEvents: "none" };
     } else {
-      Api.post(`talks/talk/like`, { user_id: userId, talk_id: talkId });
+      return { pointerEvents: "auto" };
     }
-    setHeart((cur) => !cur);
+  });
+
+  const [star, setStar] = useState(() => {
+    if (userState.user === null) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  const [heart, setHeart] = useState(() => {
+    if (userState.user === null) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  const handleClickHeart = () => {
+    if (heart) {
+      Api.delete("talks/talk/like", talkId);
+      setHeart(false);
+    } else {
+      Api.post("talks/talk/like", { talkId: talkId });
+      setHeart(true);
+    }
   };
-
-  const editBookMark = async () => {
-    if (star === true) {
-      Api.delete(`bookmarks/${userId}`, { talkId: videoInfo.id });
+  const handleClickStar = () => {
+    if (star) {
+      setStar(false);
     } else {
-      Api.post(`bookmarks/${userId}`, { talkId: videoInfo.id });
+      setStar(true);
     }
-    setStar((cur) => !cur);
   };
 
   return (
@@ -48,23 +62,27 @@ function Icons({ videoInfo }) {
       {heart ? (
         <FavoriteIcon
           sx={{ color: "#e91e63", fontSize: 40, cursor: "pointer" }}
-          onClick={editLikes}
+          style={userClick}
+          onClick={handleClickHeart}
         ></FavoriteIcon>
       ) : (
         <FavoriteIcon
           sx={{ color: "#D7CCC8", fontSize: 40, cursor: "pointer" }}
-          onClick={editLikes}
+          style={userClick}
+          onClick={handleClickHeart}
         ></FavoriteIcon>
       )}
       {star ? (
         <StarIcon
           sx={{ color: "#EAE10B", fontSize: 40, cursor: "pointer" }}
-          onClick={editBookMark}
+          style={userClick}
+          onClick={handleClickStar}
         ></StarIcon>
       ) : (
         <StarIcon
           sx={{ color: "#D7CCC8", fontSize: 40, cursor: "pointer" }}
-          onClick={editBookMark}
+          style={userClick}
+          onClick={handleClickStar}
         ></StarIcon>
       )}
     </div>

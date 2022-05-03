@@ -1,22 +1,37 @@
-import React, {useState, useEffect} from 'react';
-import * as Api from '../../api';
-import LectureList from './LectureList'
+import React, { useState, useEffect, useContext } from "react";
+import * as Api from "../../api";
+import LectureList from "./LectureList";
+import { UserStateContext } from "../../App";
 function Lecture() {
   const [lectureData, setLectureData] = useState([]);
   const [myLectureData, setMyLectureData] = useState([]);
-
+  const userState = useContext(UserStateContext);
   useEffect(() => {
-    Api.get('talks/today','?size=12')
-      .then(res => setLectureData(res.data));
-    Api.post('talks/my', {size:12})
-      .then(res => setMyLectureData(res.data));
+    Api.get("talks/today", "?size=12").then((res) => setLectureData(res.data));
+    // Api.post("talks/my", { size: 12 }).then((res) =>
+    //   setMyLectureData(res.data)
+    // );
+    // if (userState.user.myTopics.length !== 0) {
+    //   Api.post("talks/my", { size: 12 }).then((res) =>
+    //     setMyLectureData(res.data)
+    //   );
+    // }
+    if (userState.user !== null) {
+      if (userState.user.myTopics.length !== 0) {
+        Api.post("talks/my", { size: 12 }).then((res) =>
+          setMyLectureData(res.data)
+        );
+      }
+    }
   }, []);
 
-  console.log(lectureData);
-  
   return (
-    <div style={{marginTop:75}}>
-      <LectureList lectureData={lectureData} myLectureData={myLectureData} setLectureData={setLectureData}></LectureList>
+    <div style={{ marginTop: 75 }}>
+      <LectureList
+        lectureData={lectureData}
+        myLectureData={myLectureData}
+        setLectureData={setLectureData}
+      ></LectureList>
     </div>
   );
 }

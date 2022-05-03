@@ -15,7 +15,7 @@ import TeddyImage from "./TeddyImage";
 import UserTopics from "./UserTopics";
 import Name from "./Name";
 import Buttons from "./Buttons";
-
+import EmailAuth from "./EmailAuth";
 function RegisterForm() {
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ function RegisterForm() {
   const [tName, setTName] = useState("테디");
   const [viewPage, setViewPage] = useState(1);
   const [userTopics, setUserTopics] = useState([]);
-
+  const [buttonAct, setButtonAct] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +41,6 @@ function RegisterForm() {
       애니메이션: "animation",
       건강: "health",
     };
-
 
     try {
       // "user/register" 엔드포인트로 post요청함.
@@ -76,10 +75,19 @@ function RegisterForm() {
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
   const isNameValid = name.length >= 0 && tName.length >= 0;
+  if (isFormValid !== buttonAct && viewPage === 1) {
+    setButtonAct(!buttonAct);
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 12 }} alignItems="stretch">
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        sx={{ marginTop: 12 }}
+        alignItems="stretch"
+      >
         <TeddyImage />
         <Card>
           <Container component="main" maxWidth="xs">
@@ -91,9 +99,19 @@ function RegisterForm() {
                 alignItems: "center",
               }}
             >
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
+              >
                 {viewPage === 1 && (
-                  <Grid container spacing={2} sx={{ alignItems: "center" }} justifyContent="center">
+                  <Grid
+                    container
+                    spacing={2}
+                    sx={{ alignItems: "center" }}
+                    justifyContent="center"
+                  >
                     <Grid item sx={{ mb: 2 }}>
                       <Typography component="h1" variant="h5">
                         테디 곰의 가족이 되어주세요!
@@ -109,17 +127,46 @@ function RegisterForm() {
                     />
                   </Grid>
                 )}
-                {viewPage === 2 && <UserTopics userTopics={userTopics} setUserTopics={setUserTopics} />}
-                {viewPage === 3 && <Name name={name} setName={setName} tName={tName} setTName={setTName} />}
+                {viewPage === 2 && (
+                  <EmailAuth
+                    email={email}
+                    setButtonAct={setButtonAct}
+                    buttonAct={buttonAct}
+                  />
+                )}
+                {viewPage === 3 && (
+                  <UserTopics
+                    userTopics={userTopics}
+                    setUserTopics={setUserTopics}
+                  />
+                )}
+                {viewPage === 4 && (
+                  <Name
+                    name={name}
+                    setName={setName}
+                    tName={tName}
+                    setTName={setTName}
+                  />
+                )}
                 <Grid container item alignItems="flex-end">
-                  <Buttons viewPage={viewPage} setViewPage={setViewPage} isNameValid={isNameValid} isFormValid={isFormValid} handleSubmit={handleSubmit} />
+                  <Buttons
+                    viewPage={viewPage}
+                    setViewPage={setViewPage}
+                    isNameValid={isNameValid}
+                    isFormValid={buttonAct}
+                    handleSubmit={handleSubmit}
+                  />
                   <Grid container justifyContent="center">
                     <Grid item>
-                      <Chip label={`${viewPage} / 3`} color="primary" />
+                      <Chip label={`${viewPage} / 4`} color="primary" />
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="flex-end">
-                    <Link item variant="body2" onClick={() => navigate("/Login")}>
+                    <Link
+                      item
+                      variant="body2"
+                      onClick={() => navigate("/Login")}
+                    >
                       이미 계정이 있나요?
                     </Link>
                   </Grid>
