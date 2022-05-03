@@ -70,7 +70,7 @@ function Lawn({ user }) {
           mb={5}
         >
           {arr.map((num) => (
-            <Grid item key={num + 18}>
+            <Grid item key={num + 18} mt={5}>
               <WeekForm
                 user={user}
                 weekNum={num + 18}
