@@ -1,9 +1,9 @@
 //import styled from "styled-components";
 import * as React from "react";
 import { useState, useEffect } from "react";
-
 import { LinkPreview } from "@dhaiwat10/react-link-preview";
 
+import { LawnText } from "../styles/Style";
 import * as Api from "../../../api";
 
 function LawnCard({ talkId }) {
@@ -22,7 +22,7 @@ function LawnCard({ talkId }) {
   }, [talkId]);
 
   if (!talkInfo) {
-    return "loading...";
+    return <LawnText>"loading..."</LawnText>;
   }
 
   const customFetcher = async (url) => {

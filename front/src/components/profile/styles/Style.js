@@ -124,6 +124,13 @@ export const LawnStyledPage = styled(Box)(() => ({
   padding: 20,
 }));
 
+export const LawnText = Styled.p`
+  color: ${brown[900]};
+  font-size: 20px;
+  width: 25%;
+  text-align: center;
+`;
+
 //DateButton style
 export const StyledDateButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(brown[500]),

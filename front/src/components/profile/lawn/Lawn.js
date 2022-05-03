@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import * as Api from "../../../api";
 import WeekForm from "./WeekForm";
 import LawnInfo from "./LawnInfo";
-import { LawnStyledPage } from "../styles/Style";
+import { LawnStyledPage, LawnText } from "../styles/Style";
 
 /** Lawn component
  *
@@ -45,7 +45,7 @@ function Lawn({ user }) {
   }, [dailyList, user.id]);
 
   if (!watchedDays) {
-    return "loading...";
+    return <LawnText>"loading..."</LawnText>;
   }
 
   const arr = [];
