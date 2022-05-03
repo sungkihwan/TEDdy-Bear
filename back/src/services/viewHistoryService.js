@@ -11,9 +11,9 @@ import { utils } from './utils';
 class ViewHistoryService {
   // addViewHistory()
   // user_id, talkId, url, title를 받아서 새로운 viewHistory 추가
-  static async addViewHistory({ user_id, talkId }) {
+  static async addViewHistory({ user_id, talkId, url }) {
     const id = uuidv4();
-    const newViewHistory = { user_id, id, talkId };
+    const newViewHistory = { user_id, id, talkId, url };
 
     //db에 저장
     const createdNewHistory = await ViewHistory.create({ newViewHistory });
@@ -33,9 +33,8 @@ class ViewHistoryService {
 
   // getViewHistoryList()
   // 전체 viewHistory 반환
-  static async getViewHistorylist({ currentUserId, user_id }) {
+  static async getViewHistorylist({ user_id }) {
     const viewHistorylist = await ViewHistory.findManyByUserId({
-      currentUserId,
       user_id,
     });
     return viewHistorylist;
@@ -43,11 +42,10 @@ class ViewHistoryService {
 
   //getViewHistoryDate()
   // 날짜별로 동영상 기록 조회
-  static async getViewHistoryDate({ currentUserId, user_id, date }) {
+  static async getViewHistoryDate({ user_id, date }) {
     // date랑 createdAt이랑 비교해서 날짜가 같으면 list로 return
     // 해당 유저의 전체 리스트
     const viewhistorylist = await ViewHistory.findManyByUserId({
-      currentUserId,
       user_id,
     });
 
@@ -66,12 +64,13 @@ class ViewHistoryService {
     return viewhistoryDatelist;
   }
 
-  static async getViewHistoryUntilToday({ user_id }) {
-    return await ViewHistory.findManyByCreatedAt({ user_id });
+  static async getViewHistoryUntilToday({ user_id, size }) {
+    const latest5 = await ViewHistory.findManyByCreatedAt({ user_id, size });
+    return latest5;
   }
 
-  static async getLatest5({ user_id }) {
-    return await ViewHistory.latest5({ user_id });
+  static async getLatest5({ user_id, size }) {
+    return await ViewHistory.latest5({ user_id, size });
   }
 
   static async rankingBoard({}) {
