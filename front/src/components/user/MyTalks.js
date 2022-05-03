@@ -1,19 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Api from "../../api";
-import { UserStateContext } from "../../App";
 import LectureCard from "../Lecture/LectureCard";
+import BookmarkCard from "../Lecture/BookMarkCard";
+import LikeCard from "../Lecture/LikeCard";
 function MyTalks() {
-  const userId = useContext(UserStateContext).user.id;
   const [recentLecture, setRecentLecture] = useState([]);
   const [bookMarkList, setBookMarkList] = useState([]);
+  const [likeList, setLikeList] = useState([]);
 
   useEffect(() => {
-    Api.get("talks/today", "?size=12").then((res) => {
-      setRecentLecture(res.data);
-      console.log(res.data);
+    Api.get(`viewhistory/latest`, "?size=5").then((res) => {
+      setRecentLecture(res.data.reverse().slice(0, 10));
     });
-    Api.get(`bookmarks/${userId}`).then((res) => {
+    Api.get(`bookmarks`).then((res) => {
       setBookMarkList(res.data.bookmarks);
+    });
+    Api.get(`likes/my`).then((res) => {
+      setLikeList(res.data);
     });
   }, []);
 
@@ -33,10 +36,17 @@ function MyTalks() {
         style={{ display: "flex", marginTop: 100, justifyContent: "center" }}
       >
         <div style={{ width: "80%", height: 500 }}>
-          <LectureCard
+          <BookmarkCard
             lectureData={bookMarkList}
             type="북마크한 영상"
-          ></LectureCard>
+          ></BookmarkCard>
+        </div>
+      </div>
+      <div
+        style={{ display: "flex", marginTop: 100, justifyContent: "center" }}
+      >
+        <div style={{ width: "80%", height: 500 }}>
+          <LikeCard lectureData={likeList} type="좋아요한 영상"></LikeCard>
         </div>
       </div>
     </>

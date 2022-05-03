@@ -6,6 +6,7 @@ import { loadCSS } from "fg-loadcss";
 import Icons from "./Icons";
 
 function LectureInfo({ videoInfo }) {
+  const talkId = videoInfo.talkId ? videoInfo.talkId : videoInfo.id;
   useEffect(() => {
     const node = loadCSS(
       "https://use.fontawesome.com/releases/v5.14.0/css/all.css",
@@ -18,7 +19,7 @@ function LectureInfo({ videoInfo }) {
   }, []);
 
   const handleInfo = () => {
-    navigate(`/media/${videoInfo.id}`);
+    navigate(`/media/${talkId}`);
   };
   // const [star, setStar] = useState(true);
   // const [heart, setHeart] = useState(true);

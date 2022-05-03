@@ -5,6 +5,8 @@ import { UserStateContext } from "../../App";
 function LectureList({ lectureData, myLectureData }) {
   const userState = useContext(UserStateContext);
   const isLogin = !!userState.user;
+  console.log(lectureData);
+
   return (
     <div style={{ display: "flex" }}>
       <div style={{ width: "100%", height: 500 }}>

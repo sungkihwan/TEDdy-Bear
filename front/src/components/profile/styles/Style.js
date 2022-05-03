@@ -138,6 +138,7 @@ export const CommunityPage = Styled.div`
   align-items: center;
   flex-wrap: wrap;
   position: relative;
+  justify-content: center;
 `;
 
 //community user card style
@@ -166,7 +167,7 @@ export const ProfileCard = styled(Box)(() => ({
 
 //ranking card style
 export const RankCard = styled(Box)(() => ({
-  width: "100%",
+  width: "85%",
   display: "flex",
   minHeight: 300,
   margin: 10,
