@@ -24,17 +24,7 @@ function LectureExplanation() {
       }
     }
   };
-  //   const customFetcher = async (url) => {
-  //     const response = await fetch(
-  //       `https://rlp-proxy.herokuapp.com/v2?url=${url}`
-  //     );
-  //     const json = await response.json();
-  //     setLecture((cur) => {
-  //       const newData = { ...cur };
-  //       newData["image"] = json.metadata.image;
-  //       return newData;
-  //     });
-  //   };
+
   const customFetcher = (url) => {
     if (url !== undefined) {
       fetch(`https://rlp-proxy.herokuapp.com/v2?url=${url}`)
@@ -79,7 +69,7 @@ function LectureExplanation() {
         className="buttoncontent lecturebox"
         style={{ border: "2px solid orange" }}
       >
-        <Icons></Icons>
+        <Icons talkId={talkId}></Icons>
         <GoButton onClick={handleWatch}>영상 시청하러 가기</GoButton>
       </div>
       <div
