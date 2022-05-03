@@ -20,8 +20,8 @@ function DateButton({
   date.setDate(date.getDate() - 7 * weekNum - day);
 
   function getDate(day) {
-    let week = ["일", "월", "화", "수", "목", "금", "토"];
-    var dayOfWeek = week[new Date(day).getDay()];
+    const week = ["일", "월", "화", "수", "목", "금", "토"];
+    const dayOfWeek = week[new Date(day).getDay()];
     return dayOfWeek;
   }
 
@@ -34,6 +34,10 @@ function DateButton({
   }
 
   const stringifiedDate = makeDateToString(date);
+  const formmatedDate =
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    "/" +
+    ("0" + date.getDate()).slice(-2);
 
   async function clickHandler() {
     // 여기에 받아온 dailyList의 정보를 이용하여 잔디 아래에 정보를 띄워줍니다.
@@ -65,10 +69,7 @@ function DateButton({
         {watchedDays.has(stringifiedDate) ? (
           <BearFootIcon src="/bearfooticon.png" alt="Icon of bear's foot" />
         ) : (
-          <>
-            {("0" + (date.getMonth() + 1)).slice(-2)}/
-            {("0" + date.getDate()).slice(-2)}
-          </>
+          <>{formmatedDate}</>
         )}
       </button>
     </div>

@@ -53,19 +53,14 @@ function Lawn({ user }) {
     return "loading...";
   }
 
-  var arr = [];
+  const arr = [];
   for (let i = 0; i > -19; i--) {
     arr.push(i);
-  }
-
-  async function clickHandler() {
-    const talkId = await Api.get("talks/today", "?size=1");
   }
 
   return (
     <>
       <Card>
-        <Button onClick={clickHandler}></Button>
         <Grid
           container
           item
