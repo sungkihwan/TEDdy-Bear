@@ -1,6 +1,7 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+
+import { MyButton } from "../common/MyButton";
 
 function Buttons({
   viewPage,
@@ -14,7 +15,7 @@ function Buttons({
     <Grid container item spacing={4} justifyContent={pageChecker}>
       {viewPage !== 1 && (
         <Grid item>
-          <Button
+          <MyButton
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
             onClick={() => {
@@ -22,12 +23,12 @@ function Buttons({
             }}
           >
             이전
-          </Button>
+          </MyButton>
         </Grid>
       )}
       {viewPage < 4 && (
         <Grid item>
-          <Button
+          <MyButton
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
             disabled={!isFormValid}
@@ -36,19 +37,19 @@ function Buttons({
             }}
           >
             다음
-          </Button>
+          </MyButton>
         </Grid>
       )}
       {viewPage >= 4 && (
         <Grid item>
-          <Button
+          <MyButton
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
             disabled={!isNameValid}
             onClick={handleSubmit}
           >
             회원가입
-          </Button>
+          </MyButton>
         </Grid>
       )}
     </Grid>
