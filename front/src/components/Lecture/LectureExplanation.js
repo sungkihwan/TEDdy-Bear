@@ -9,7 +9,14 @@ import { brown } from "@mui/material/colors";
 
 function LectureExplanation() {
   const userState = useContext(UserStateContext);
-
+  const [comment, setComment] = useState(() => {
+    if (userState.user === null) {
+      console.log("리뷰상태");
+      return true;
+    } else {
+      return false;
+    }
+  });
   const [talkId, setTalkId] = useState(() => {
     const data = window.location.pathname.split("/");
     return data[data.length - 1];
@@ -106,12 +113,12 @@ function LectureExplanation() {
       >
         <h1>리뷰</h1>
       </div>
-      <textarea wrap="on"></textarea>
+      <textarea disabled={comment} wrap="on"></textarea>
       <div
         className="lecturebox"
         style={{ border: "2px solid pink", marginTop: 20, textAlign: "right" }}
       >
-        <GoButton>리뷰 쓰기</GoButton>
+        <GoButton disabled={comment}>리뷰 쓰기</GoButton>
       </div>
     </div>
   );

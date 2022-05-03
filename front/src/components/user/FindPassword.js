@@ -8,8 +8,11 @@ import React, { useState } from "react";
 import * as Api from "../../api";
 import TeddyImage from "./TeddyImage";
 import TextField from "@mui/material/TextField";
+import { MyButton } from "../common/MyButton";
+import { useNavigate } from "react-router-dom";
 
 function FindPassword() {
+  const navigate = useNavigate();
   const theme = createTheme();
   const [email, setEmail] = useState("");
   const validateEmail = (email) => {
@@ -23,6 +26,14 @@ function FindPassword() {
     return false;
   };
   const isEmailValid = validateEmail(email);
+
+  const handlePasswordIssue = () => {
+    Api.post("user/mail", { email: email, type: "temp" }).then((res) =>
+      console.log(res)
+    );
+    navigate("/login");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid
@@ -64,6 +75,10 @@ function FindPassword() {
                   )}
                 </Grid>
               </Grid>
+              <MyButton onClick={handlePasswordIssue}>
+                임시 비밀번호 발급
+              </MyButton>
+              <h4>임시 비밀번호로 로그인 후 비밀번호를 변경해주세요</h4>
             </Box>
           </Container>
         </Card>

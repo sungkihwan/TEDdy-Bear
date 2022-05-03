@@ -10,7 +10,6 @@ function Buttons({
   handleSubmit,
 }) {
   const pageChecker = viewPage === 1 ? "flex-end" : "space-between";
-
   return (
     <Grid container item spacing={4} justifyContent={pageChecker}>
       {viewPage !== 1 && (
@@ -26,7 +25,7 @@ function Buttons({
           </Button>
         </Grid>
       )}
-      {viewPage < 3 && (
+      {viewPage < 4 && (
         <Grid item>
           <Button
             variant="contained"
@@ -40,7 +39,7 @@ function Buttons({
           </Button>
         </Grid>
       )}
-      {viewPage >= 3 && (
+      {viewPage >= 4 && (
         <Grid item>
           <Button
             variant="contained"
