@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { talkService } from "../services/talkService";
+import { TalkService } from "../services/TalkService";
 
 const talkRouter = Router();
 
@@ -32,7 +32,7 @@ talkRouter.get("/talks/today", async (req, res, next) => {
   try {
     const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
 
-    const talks = await talkService.getTodayTalk({ size });
+    const talks = await TalkService.getTodayTalk({ size });
     if (talks.errorMessage) {
       throw new Error(talks.errorMessage);
     }
@@ -73,7 +73,7 @@ talkRouter.post("/talks/my", login_required, async (req, res, next) => {
     const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
     const user_id = req.currentUserId;
 
-    const talks = await talkService.getMyTalk({ size, user_id });
+    const talks = await TalkService.getMyTalk({ size, user_id });
     if (talks.errorMessage) {
       throw new Error(talks.errorMessage);
     }
@@ -111,7 +111,7 @@ talkRouter.get("/talks/:talk_id", async (req, res, next) => {
   try {
     const id = Number(req.params.talk_id);
 
-    const talk = await talkService.getTalk({ id });
+    const talk = await TalkService.getTalk({ id });
     if (talk.errorMessage) {
       throw new Error(talk.errorMessage);
     }

@@ -1,10 +1,11 @@
 import { Like, User, Talk } from "../db";
+import { TalkService } from "./TalkService";
 
 // addlike,
 class likeService {
   static async addlike({ userId, talkId }) {
     const user = await User.findById({ user_id: userId });
-    const talk = await Talk.findOneById({ id: talkId });
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" });
     if (!talk) {
       const errorMessage = "존재하지 않는 동영상입니다.";
       return { errorMessage };
@@ -22,7 +23,14 @@ class likeService {
     const LikeUser = await Like.create({
       newLike,
     });
-    console.log(LikeUser);
+
+    // 영상의 좋아요 수 업데이트
+    if (
+      (await TalkService.updateLike({ talkId: talkId, status: "like" })) ===
+      false
+    ) {
+      console.log("좋아요 수 업데이트 실패");
+    }
     return LikeUser;
   }
 
@@ -40,7 +48,7 @@ class likeService {
 
   // 영상 아이디로 유저 리스트 찾기
   static async getTalkLikeList({ talkId }) {
-    const talk = await Talk.findOneById({ id: talkId });
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" });
     const talk_id = talk._id;
     const userlist = await Like.findManyByTalkId({ talk_id });
     if (userlist.length == 0) {
@@ -53,7 +61,7 @@ class likeService {
   // 영상 아이디, 유저 아이디로 리스트 삭제하기
   static async deleteLike({ userId, talkId }) {
     const user = await User.findById({ user_id: userId });
-    const talk = await Talk.findOneById({ id: talkId });
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" });
     if (!talk) {
       const errorMessage = "존재하지 않는 동영상입니다.";
       return { errorMessage };
@@ -66,6 +74,14 @@ class likeService {
     if (!isLiked) {
       const errorMessage = "이미 취소했습니다";
       return { errorMessage };
+    }
+
+    // 영상의 좋아요 수 업데이트
+    if (
+      (await TalkService.updateLike({ talkId: talkId, status: "cancel" })) ===
+      false
+    ) {
+      console.log("좋아요 수 업데이트 실패");
     }
 
     return { status: "ok" };
