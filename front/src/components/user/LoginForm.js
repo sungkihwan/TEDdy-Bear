@@ -12,7 +12,7 @@ import * as Api from "../../api";
 import { DispatchContext } from "../../App";
 import Account from "./Account";
 import TeddyImage from "./TeddyImage";
-import GoogleLoginBtn from './GoogleLoginBtn';
+import GoogleLoginBtn from "./GoogleLoginBtn";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -47,31 +47,34 @@ function LoginForm() {
 
   const handleGoogleData = async (googleData) => {
     try {
-      const user = await Api.post("user/google-login", {
+      const { message, userInfo } = await Api.post("user/google-login", {
         token: googleData.tokenId,
       }).then((response) => response.data);
 
       // JWT 토큰은 유저 정보의 token임.
-      const jwtToken = user.token;
-      
+      const jwtToken = userInfo.token;
+
       // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
       sessionStorage.setItem("userToken", jwtToken);
-      
+
       // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
       dispatch({
         type: "LOGIN_SUCCESS",
-        payload: user,
+        payload: userInfo,
       });
-      
+
       console.log("구글 로그인 성공");
 
-      // 기본 페이지로 이동함.
-      navigate("/", { replace: true });
+      if (message === "newbie") {
+        navigate("/users/edit", { replace: true });
+      } else {
+        // 기본 페이지로 이동함.
+        navigate("/", { replace: true });
+      }
     } catch (e) {
       console.log("구글 로그인 실패: ", e.response.data);
     }
   };
-
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -94,7 +97,12 @@ function LoginForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" spacing={2} sx={{ marginTop: 12 }}>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        sx={{ marginTop: 12 }}
+      >
         <TeddyImage />
         <Card>
           <Container component="main" maxWidth="xs">
@@ -109,7 +117,12 @@ function LoginForm() {
               <Typography component="h1" variant="h5">
                 오늘도 와주셨군요!
               </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
+              >
                 <Account
                   email={email}
                   setEmail={setEmail}
@@ -118,16 +131,38 @@ function LoginForm() {
                   isEmailValid={isEmailValid}
                   isPasswordValid={isPasswordValid}
                 />
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={!isFormValid}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={!isFormValid}
+                >
                   로그인
                 </Button>
-                <Grid container justifyContent="space-evenly" alignItems="center" direction="column" rowSpacing={3}>
+                <Grid
+                  container
+                  justifyContent="space-evenly"
+                  alignItems="center"
+                  direction="column"
+                  rowSpacing={3}
+                >
                   <Grid item xs={12}>
-                    <GoogleLoginBtn responseGoogle={handleGoogleData}></GoogleLoginBtn>
+                    <GoogleLoginBtn
+                      responseGoogle={handleGoogleData}
+                    ></GoogleLoginBtn>
                   </Grid>
                   <Grid item xs={12}>
                     <Link variant="body2" onClick={() => navigate("/register")}>
                       테디곰과 함께 공부할래요?
+                    </Link>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Link
+                      variant="body2"
+                      onClick={() => navigate("/findpassword")}
+                    >
+                      비밀번호 찾기
                     </Link>
                   </Grid>
                 </Grid>

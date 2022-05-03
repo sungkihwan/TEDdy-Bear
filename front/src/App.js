@@ -17,7 +17,7 @@ import RegisterForm from "./components/user/RegisterForm";
 import Community from "./components/user/Community";
 import Loading from "./components/common/Loading";
 import EditProfile from "./components/profile/EditProfile";
-
+import FindPassword from "./components/user/FindPassword";
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 
@@ -75,6 +75,7 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/media" element={<Lecture />} />
           <Route path="/media/:talk_id" element={<LectureExplanation />} />
+          <Route path="findpassword" element={<FindPassword />} />
         </Routes>
       </UserStateContext.Provider>
     </DispatchContext.Provider>

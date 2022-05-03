@@ -47,34 +47,30 @@ function Lawn({ user }) {
       }
     };
     fetchWatchedDays();
-  }, []);
+  }, [dailyList, user.id]);
 
   if (!watchedDays) {
     return "loading...";
   }
 
-  var arr = [];
+  const arr = [];
   for (let i = 0; i > -19; i--) {
     arr.push(i);
   }
 
-  async function clickHandler() {
-    const talkId = await Api.get("talks/today", "?size=1");
-  }
-
   return (
     <>
-      <Card mb={2}>
-        <Button onClick={clickHandler}></Button>
+      <Card>
         <Grid
           container
           item
           direction="row"
           justifyContent="center"
           alignItems="center"
+          mb={5}
         >
           {arr.map((num) => (
-            <Grid item key={num + 18}>
+            <Grid item key={num + 18} mt={5}>
               <WeekForm
                 user={user}
                 weekNum={num + 18}
@@ -87,7 +83,7 @@ function Lawn({ user }) {
           ))}
         </Grid>
       </Card>
-      <Card md={2} mt={5}>
+      <Card mt={5}>
         <Grid item>
           {dailyList && (
             <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
