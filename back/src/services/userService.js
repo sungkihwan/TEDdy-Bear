@@ -1,5 +1,5 @@
 import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { Ttl } from '../db'; 
+import { Ttl } from '../db';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
@@ -195,6 +195,16 @@ class userAuthService {
     return user;
   }
 
+  static async deleteUserAllInfo({ user_id }) {
+    const user = await User.findById({ user_id });
+    await User.deleteAllById({ user });
+    if (!user) {
+      const errorMessage =
+        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+  }
+
   static async deleteUser({ user_id }) {
     const user = await User.deleteOneUser({ user_id });
     // db에서 찾지 못한 경우, 에러 메시지 반환
@@ -203,6 +213,7 @@ class userAuthService {
         '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
     }
+
     return user;
   }
 
@@ -230,30 +241,30 @@ class userAuthService {
     if (!email) {
       const password = generator.generate({
         length: 8,
-        numbers: true
+        numbers: true,
       });
 
       const toUpdate = {};
       const hashedPassword = await bcrypt.hash(password, 10);
       toUpdate.password = hashedPassword;
 
-      sendMail(user.email, password)
+      sendMail(user.email, password);
       return await User.updatePassword({ user_id, toUpdate });
     } else {
       const password = generator.generate({
         length: 6,
-        numbers: true
+        numbers: true,
       });
 
-      const newItem = {}
+      const newItem = {};
       newItem.code = password;
       newItem.expireAt = Date.now();
 
       await Ttl.create({ newItem });
 
-      sendMail(email, password)
+      sendMail(email, password);
 
-      return true
+      return true;
     }
   }
 
@@ -261,14 +272,13 @@ class userAuthService {
     const auth = await Ttl.findById({ code });
 
     if (!auth) {
-      const errorMessage =
-        '인증에 실패했습니다.';
+      const errorMessage = '인증에 실패했습니다.';
       return { errorMessage };
     }
 
-    return true
+    return true;
   }
-  
+
   static async updatePassword({ user_id, password }) {
     const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -283,11 +293,6 @@ class userAuthService {
     }
 
     return updatedUser;
-  }
-
-  static async deleteUserAllInfo({ user_id }) {
-    const user = await User.findById({ user_id });
-    await User.deleteAllById({ user });
   }
 }
 
