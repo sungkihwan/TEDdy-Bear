@@ -31,17 +31,39 @@ class ViewHistory {
   }
 
   // createAt으로 4달 전까지의 데이터 찾아서 보내기
-  static async findManyByCreatedAt({ user_id }) {
+  static async findManyByCreatedAt({ user_id, size }) {
     const userViewHistorylist = ViewHistoryModel.find({ user_id });
-    // const term = parseInt(month);
-    // console.log(typeof term);
+    const dateBefore = new Date();
+    const now = new Date();
+    dateBefore.setMonth(now.getMonth() - size);
 
     return userViewHistorylist.find({
       createdAt: {
-        $gte: new Date(new Date().setDate(new Date().getMonth() - 4)),
-        $lte: new Date(),
+        $gte: dateBefore,
+        $lte: now,
       },
     });
+  }
+
+  static async latest5({ user_id, size }) {
+    const latest5 = ViewHistoryModel.aggregate([
+      {
+        $match: { user_id: user_id },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $limit: size,
+      },
+      {
+        $group: {
+          _id: '$url',
+        },
+      },
+    ]);
+
+    return latest5;
   }
 
   // 랭킹보드 쿼리로 조회

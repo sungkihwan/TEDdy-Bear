@@ -37,9 +37,11 @@ likeRouter.use(login_required);
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#components/schemas/Like'
+ *            type: object
+ *            properties:
+ *              talkId:
+ *                  type: ObjectId
  */
-
 // like get, post, delete
 likeRouter.post(
   '/talks/talk/like',
@@ -134,13 +136,6 @@ likeRouter.get('/userlist/:talkId', async function (req, res, next) {
  *        required: true
  *        schema:
  *          type: string
- *    requestBody:
- *      description: 유저 삭제
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *              $ref: '#components/schemas/Like'
  *    responses:
  *      "200":
  *        description: 좋아요 취소 성공

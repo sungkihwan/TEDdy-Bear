@@ -14,17 +14,17 @@ import { Schema, model } from "mongoose";
  *    Reply:
  *      type: object
  *      properties:
- *        parentComment:
- *          type: string
- *        user:
+ *        parentCommentId:
  *          type: string
  *        comment:
+ *          type: string
+ *        user:
  *          type: string
  */
 
 const ReplySchema = new Schema(
   {
-    parentComment: {
+    parentCommentId: {
       type: Schema.Types.ObjectId,
       ref: "Comment",
       required: true,

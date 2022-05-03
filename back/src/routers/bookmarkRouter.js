@@ -7,17 +7,10 @@ const bookmarkRouter = Router();
 /**
  * @swagger
  * paths:
- *  /bookmarks/{id}:
+ *  /bookmarks:
  *   get:
  *     summary: "user_id로 북마크 조회"
  *     tags: [Bookmark]
- *     parameters:
- *       - in: path
- *         name: id   
- *         required: true
- *         schema:
- *           type: string
- *         description: userId
  *     responses:
  *       "200":
  *         content:
@@ -29,7 +22,7 @@ const bookmarkRouter = Router();
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, next) {
+bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next) {
   try {
     const userId = req.currentUserId
 
@@ -47,17 +40,10 @@ bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, n
 /**
  * @swagger
  * paths:
- *  /bookmarks/{id}:
+ *  /bookmarks/bookmark:
  *   post:
  *     summary: 강연 북마크 추가
  *     tags: [Bookmark]
- *     parameters:
- *       - in: path
- *         name: id   
- *         required: true
- *         schema:
- *           type: string
- *         description: userId
  *     requestBody:
  *       description: 강연 Id
  *       required: true
@@ -86,7 +72,7 @@ bookmarkRouter.get("/bookmarks/:id", login_required, async function (req, res, n
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.post("/bookmarks/:id", login_required, async function (req, res, next) {
+bookmarkRouter.post("/bookmarks/bookmark", login_required, async function (req, res, next) {
   try {
     const userId = req.currentUserId
     const talkId = Number(req.body.talkId)
@@ -105,27 +91,17 @@ bookmarkRouter.post("/bookmarks/:id", login_required, async function (req, res, 
 /**
  * @swagger
  * paths:
- *  /bookmarks/{id}:
+ *  /bookmarks/{bookmark_id}:
  *   delete:
  *     summary: 강연 북마크 삭제
  *     tags: [Bookmark]
  *     parameters:
  *       - in: path
- *         name: id   
+ *         name: bookmark_id   
  *         required: true
  *         schema:
  *           type: string
- *         description: user_id
- *     requestBody:
- *       description: 강연 Id
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               talkId:
- *                 type: number
+ *         description: bookmark_id
  *     responses:
  *       "200":
  *         content:
@@ -140,12 +116,12 @@ bookmarkRouter.post("/bookmarks/:id", login_required, async function (req, res, 
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.delete("/bookmarks/:id", login_required, async function (req, res, next) {
+bookmarkRouter.delete("/bookmarks/:bookmark_id", login_required, async function (req, res, next) {
   try {
     const userId = req.currentUserId
-    const talkId = Number(req.body.talkId)
+    const bookmark_id = req.params.bookmark_id
 
-    const bookmark = await BookmarkService.deleteBookmark(userId, talkId);
+    const bookmark = await BookmarkService.deleteBookmark(userId, bookmark_id);
     if (bookmark.errorMessage) {
       throw new Error(bookmark.errorMessage)
     }

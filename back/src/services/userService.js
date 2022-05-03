@@ -229,8 +229,8 @@ class userAuthService {
     return bearInfo;
   }
 
-  static async sendMail(email, user_id) {
-    const user = await User.findById({ user_id });
+  static async sendMail({ email, type }) {
+    const user = await User.findByEmail({ email });
 
     if (!user) {
       const errorMessage =
@@ -238,17 +238,18 @@ class userAuthService {
       return { errorMessage };
     }
 
-    if (!email) {
+    if (type == 'temp') {
       const password = generator.generate({
         length: 8,
         numbers: true,
       });
 
+      const user_id = user.id;
       const toUpdate = {};
       const hashedPassword = await bcrypt.hash(password, 10);
       toUpdate.password = hashedPassword;
 
-      sendMail(user.email, password);
+      sendMail(email, password);
       return await User.updatePassword({ user_id, toUpdate });
     } else {
       const password = generator.generate({
@@ -268,10 +269,10 @@ class userAuthService {
     }
   }
 
-  static async checkCode(code) {
-    const auth = await Ttl.findById({ code });
-
-    if (!auth) {
+  static async checkCode({ code }) {
+    const auth = await Ttl.find({ code });
+    console.log(auth);
+    if (auth.length == 0) {
       const errorMessage = '인증에 실패했습니다.';
       return { errorMessage };
     }

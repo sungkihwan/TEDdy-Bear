@@ -64,10 +64,6 @@ const TalkSchema = new Schema(
       type: Array,
       required: true,
     },
-    author: {
-      type: String,
-      required: true,
-    },
     description: {
       type: String,
       required: true,
@@ -101,7 +97,7 @@ const TalkSchema = new Schema(
       required: true,
     },
     duration: {
-      type: Number,
+      type: String,
       required: false,
     },
     // related_talks: {

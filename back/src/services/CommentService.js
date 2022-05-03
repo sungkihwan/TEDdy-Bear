@@ -2,14 +2,13 @@ import { Talk, Comment, Reply, User } from "../db";
 
 class CommentService {
   static async getComments(talkId) {
-    const talk = await Talk.findOneById({ id: talkId })
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO"})
     if(!talk) {
       const errorMessage = "존재하지 않는 강연입니다."
       return { errorMessage }
     }
     
-    const talkOid = talk._id
-    const comments = await Comment.findManyByTalkOid(talkOid)
+    const comments = await Comment.findManyByTalkId(talk._id)
     if(comments.length === 0) {
       return { message: "아직 작성된 댓글이 없습니다." }
     }
@@ -22,7 +21,7 @@ class CommentService {
   }
 
   static async addComment(talkId, comment, userId) {
-    const talk = await Talk.findOneById({ id: talkId })
+    const talk = await Talk.findOneById({ id: talkId, resultType: "POJO" })
     if(!talk) {
       const errorMessage = "존재하지 않는 강연입니다."
       return { errorMessage }
@@ -76,7 +75,7 @@ class CommentService {
     return { message: "대댓글 작성 성공", reply }
   }
 
-  static async deleteComment(commentId, userId) {
+  static async deleteComment(comment_id, userId) {
     // 작성자 _id 조회
     const user = await User.findById({ user_id: userId })
     if(!user) {
@@ -84,7 +83,8 @@ class CommentService {
       return { errorMessage }
     }
 
-    const result = await Comment.deleteOne(commentId, user._id)
+    const result = await Comment.deleteOne(comment_id, user._id)
+    
     if(result.deletedCount != 1) {
       const errorMessage = "댓글 삭제 실패"
       return { errorMessage }
@@ -93,7 +93,7 @@ class CommentService {
     return { message: "댓글 삭제 성공"}
   }
 
-  static async deleteReply(commentId, userId) {
+  static async deleteReply(comment_id, userId) {
     // 작성자 _id 조회
     const user = await User.findById({ user_id: userId })
     if(!user) {
@@ -101,7 +101,7 @@ class CommentService {
       return { errorMessage }
     }
 
-    const result = await Reply.deleteOne(commentId, user._id)
+    const result = await Reply.deleteOne(comment_id, user._id)
 
     if(result.deletedCount != 1) {
       const errorMessage = "대댓글 삭제 실패"

@@ -67,7 +67,7 @@ commentRouter.get("/talks/:talkId/comments", async function (req, res, next) {
  *               mode:
  *                 type: string
  *               talkId:
- *                 type: string
+ *                 type: number
  *               parentCommentId:
  *                 type: string
  *               comment:
@@ -148,17 +148,17 @@ commentRouter.post("/comments/comment", login_required, async function (req, res
  *       "500":
  *          description: 서버 에러
  */
-commentRouter.delete("/comments/comment", login_required, async function (req, res, next) {
+commentRouter.delete("/comments/:comment_id", login_required, async function (req, res, next) {
   try {
-    const mode = req.body.mode
+    const mode = req.query.mode
     const userId = req.currentUserId
-    const commentId = req.body.commentId
+    const comment_id = req.params.comment_id
     
     let result
     if(mode === 'comment') {
-      result = await CommentService.deleteComment(commentId, userId);
+      result = await CommentService.deleteComment(comment_id, userId);
     } else if(mode === 'reply') {
-      result = await CommentService.deleteReply(commentId, userId);
+      result = await CommentService.deleteReply(comment_id, userId);
     }
     
     if (result.errorMessage) {
