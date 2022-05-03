@@ -4,7 +4,7 @@
  * viewHistoryRouter에서 넘어온 정보들로 특정 로직을 구성하여 ViewHistory.js에서 처리 후 viewHistoryRouter로 return
  */
 
-import { ViewHistory } from '../db';
+import { Talk, ViewHistory } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { utils } from './utils';
 import { TalkService } from './talkService';
@@ -14,11 +14,13 @@ class ViewHistoryService {
   // user_id, talkId, url, title를 받아서 새로운 viewHistory 추가
   static async addViewHistory({ user_id, talkId, url }) {
     const id = uuidv4();
-    const newViewHistory = { user_id, id, talkId, url };
+    const talk = await Talk.findOneById({ id: talkId, resultType: 'POJO' });
+    const talk_id = talk._id;
+    const newViewHistory = { user_id, id, talkId: talk_id };
 
     // view 카운드 올리기
-    if(await TalkService.updateView(talkId) === false) {
-      console.log('조회수 업데이트 실패')
+    if ((await TalkService.updateView(talkId)) === false) {
+      console.log('조회수 업데이트 실패');
     }
 
     //db에 저장
@@ -76,7 +78,15 @@ class ViewHistoryService {
   }
 
   static async getLatest5({ user_id, size }) {
-    return await ViewHistory.latest5({ user_id, size });
+    const talks = await ViewHistory.latest5({ user_id, size });
+    let viewhistorylatest = [];
+
+    for (let i in talks) {
+      const talk_id = talks[i]._id;
+      const talk = await Talk.findByOid({ _id: talk_id });
+      viewhistorylatest.push(talk);
+    }
+    return viewhistorylatest;
   }
 
   static async rankingBoard({}) {
