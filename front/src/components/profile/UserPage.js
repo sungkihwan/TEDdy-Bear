@@ -6,7 +6,12 @@ import { useParams } from "react-router-dom";
 import * as Api from "../../api";
 import Loading from "../common/Loading";
 import UserProfile from "./UserProfile";
-import { Page, UserLeftPage, UserRightPage, UserPageText } from "./styles/Style";
+import {
+  Page,
+  UserLeftPage,
+  UserRightPage,
+  UserPageText,
+} from "./styles/Style";
 
 /** user page component
  *
@@ -49,18 +54,20 @@ function UserPage() {
   }
 
   return (
-    <Page>
-      <UserLeftPage>
-        <UserProfile isEditable={isEditable} user={user} />
-      </UserLeftPage>
-      <UserRightPage>
-        <UserPageText style={{ fontSize: 20, margin: 0 }}>
-          {user.name}님의 {user.bearName}
-        </UserPageText>
-        <Bear isEditable={isEditable} user={user} />
-        <Lawn user={user} />
-      </UserRightPage>
-    </Page>
+    <>
+      <Page>
+        <UserLeftPage>
+          <UserProfile isEditable={isEditable} user={user} />
+        </UserLeftPage>
+        <UserRightPage>
+          <UserPageText style={{ fontSize: 20, margin: 0 }}>
+            {user.name}님의 {user.bearName}
+          </UserPageText>
+          <Bear isEditable={isEditable} user={user} />
+        </UserRightPage>
+      </Page>
+      <Lawn user={user} />
+    </>
   );
 }
 
