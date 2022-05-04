@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
@@ -26,6 +26,8 @@ function RegisterForm() {
   const [viewPage, setViewPage] = useState(1);
   const [userTopics, setUserTopics] = useState([]);
   const [buttonAct, setButtonAct] = useState(false);
+  const [check, setCheck] = useState(true);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -75,8 +77,11 @@ function RegisterForm() {
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
   const isNameValid = name.length >= 0 && tName.length >= 0;
-  if (isFormValid !== buttonAct && viewPage === 1) {
+  if (isFormValid && viewPage === 1 && check) {
     setButtonAct(!buttonAct);
+    setCheck(false);
+  } else if (viewPage !== 1 && !check) {
+    setCheck(true);
   }
 
   return (
