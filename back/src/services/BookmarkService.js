@@ -1,4 +1,5 @@
 import { Bookmark, Talk, User } from "../db";
+import { TopicPriorityService } from "./TopicPriorityService";
 
 class BookmarkService {
   static async getMyBookmarks(userId) {
@@ -39,15 +40,21 @@ class BookmarkService {
       return { errorMessage }
     }
 
+    // 우선도 업데이트
+    const user = await User.findById({ userId })
+    await TopicPriorityService.plusPriorities({ user_id: user._id, topics: talk.topics, point: 2})
+
     return { message: "북마크 추가 성공", payload: { bookmark_id: newBookmark._id } }
   }
 
   static async deleteBookmark(userId, talk_id) {
-    const myBookmark = await Bookmark.deleteOne(userId, talk_id)
-    if(myBookmark.deletedCount != 1) {
-      const errorMessage = "북마크 삭제 실패"
-      return { errorMessage }
-    }
+    const deletedBookmark = await Bookmark.findOneAndDelete(userId, talk_id)
+    if(!deletedBookmark) { return { errorMessage: "북마크 삭제 실패" } }
+
+    // 우선도 업데이트
+    const user = await User.findById({ userId })
+    const talk = await Talk.findOneByObjectId({ _id: deletedBookmark.talk_id })
+    await TopicPriorityService.minusPriorities({ user_id: user._id, topics: talk.topics, point: 2})
 
     return { message: "북마크 삭제 성공" }
   }
