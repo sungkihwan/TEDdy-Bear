@@ -3,7 +3,7 @@ import { User } from './models/User';
 import { Data } from './models/Data';
 import { Talk } from './models/Talk';
 import { Topic } from './models/Topic';
-import { Ttl } from './models/Ttl';
+import { MailTTL } from './models/MailTTL';
 import { ViewHistory } from './models/ViewHistory';
 import { Like } from './models/Like';
 import { Bookmark } from './models/Bookmark';
@@ -33,6 +33,6 @@ export {
   Bookmark,
   Comment,
   Reply,
-  Ttl,
+  MailTTL,
   Like,
 };

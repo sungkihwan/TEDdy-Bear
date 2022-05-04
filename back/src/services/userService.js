@@ -1,5 +1,5 @@
 import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { Ttl } from '../db';
+import { MailTTL } from '../db';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
@@ -160,7 +160,7 @@ class userAuthService {
   }
 
   static async setUser({ user_id, toUpdate }) {
-    let user = await User.findById({ userId: user_id });
+    let user = await User.findById({ user_id });
     if (!user) {
       const errorMessage = '가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
@@ -183,7 +183,7 @@ class userAuthService {
   }
 
   static async getUserInfo({ user_id }) {
-    const user = await User.findById({ userId: user_id });
+    const user = await User.findById({ user_id });
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
@@ -230,15 +230,15 @@ class userAuthService {
   }
 
   static async sendMail({ email, type }) {
-    const user = await User.findByEmail({ email });
-
-    if (!user) {
-      const errorMessage =
-        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
-      return { errorMessage };
-    }
-
     if (type == 'temp') {
+      const user = await User.findByEmail({ email });
+
+      if (!user) {
+        const errorMessage =
+          '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+        return { errorMessage };
+      }
+
       const password = generator.generate({
         length: 8,
         numbers: true,
@@ -259,9 +259,8 @@ class userAuthService {
 
       const newItem = {};
       newItem.code = password;
-      newItem.expireAt = Date.now();
 
-      await Ttl.create({ newItem });
+      await MailTTL.create({ newItem });
 
       sendMail(email, password);
 
@@ -270,7 +269,7 @@ class userAuthService {
   }
 
   static async checkCode({ code }) {
-    const auth = await Ttl.find({ code });
+    const auth = await MailTTL.find({ code });
     console.log(auth);
     if (auth.length == 0) {
       const errorMessage = '인증에 실패했습니다.';
