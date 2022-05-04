@@ -8,17 +8,9 @@ function Lecture() {
   const userState = useContext(UserStateContext);
   useEffect(() => {
     Api.get("talks/today", "?size=12").then((res) => setLectureData(res.data));
-    // Api.post("talks/my", { size: 12 }).then((res) =>
-    //   setMyLectureData(res.data)
-    // );
-    // if (userState.user.myTopics.length !== 0) {
-    //   Api.post("talks/my", { size: 12 }).then((res) =>
-    //     setMyLectureData(res.data)
-    //   );
-    // }
     if (userState.user !== null) {
       if (userState.user.myTopics.length !== 0) {
-        Api.post("talks/my", { size: 12 }).then((res) =>
+        Api.get("talks/my", "?size=12").then((res) =>
           setMyLectureData(res.data)
         );
       }

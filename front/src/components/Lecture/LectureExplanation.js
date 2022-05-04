@@ -11,7 +11,6 @@ function LectureExplanation() {
   const userState = useContext(UserStateContext);
   const [comment, setComment] = useState(() => {
     if (userState.user === null) {
-      console.log("리뷰상태");
       return true;
     } else {
       return false;

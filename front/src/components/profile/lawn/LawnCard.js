@@ -1,30 +1,12 @@
 //import styled from "styled-components";
 import * as React from "react";
 import { useState, useEffect } from "react";
-
 import { LinkPreview } from "@dhaiwat10/react-link-preview";
 
+import { LawnText } from "../styles/Style";
 import * as Api from "../../../api";
 
-function LawnCard({ talkId }) {
-  const [talkInfo, setTalkInfo] = useState(null);
-  useEffect(() => {
-    const fetchWatchedDays = async () => {
-      try {
-        const res = await Api.get(`talks/${talkId}`);
-        console.log(res);
-        setTalkInfo(res.data);
-      } catch {
-        console.log("영상 정보를 찾을 수 없습니다.", "color: #d93d1a;");
-      }
-    };
-    fetchWatchedDays();
-  }, [talkId]);
-
-  if (!talkInfo) {
-    return "loading...";
-  }
-
+function LawnCard({ talkInfo }) {
   const customFetcher = async (url) => {
     const response = await fetch(
       `https://rlp-proxy.herokuapp.com/v2?url=${url}`
