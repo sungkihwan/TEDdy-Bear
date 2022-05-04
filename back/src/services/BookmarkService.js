@@ -10,8 +10,8 @@ class BookmarkService {
     }
 
     const result = {
-      length: bookmarks.length,
-      bookmarks: bookmarks.reduce((pre, item) => {
+      message: "북마크 조회 성공",
+      payload: bookmarks.reduce((pre, item) => {
         pre[item.talk_id.id] = { ...item.talk_id, bookmark_id: item._id } 
         return pre
       }, {})
@@ -39,7 +39,7 @@ class BookmarkService {
       return { errorMessage }
     }
 
-    return { message: "북마크 추가 성공", bookmarkId: newBookmark._id }
+    return { message: "북마크 추가 성공", payload: { bookmark_id: newBookmark._id } }
   }
 
   static async deleteBookmark(userId, bookmark_id) {

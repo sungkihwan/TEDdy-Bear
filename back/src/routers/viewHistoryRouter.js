@@ -4,9 +4,9 @@
  * 클라이언트로부터 넘어온 정보들을 viewHistoryService에 넘겨주고, 해당 작업에 맞는 return을 받아서 클라이언트로 보내준다.
  */
 
-import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
-import { ViewHistoryService } from '../services/viewHistoryService';
+import { Router } from "express";
+import { login_required } from "../middlewares/login_required";
+import { ViewHistoryService } from "../services/viewHistoryService";
 
 const viewHistoryRouter = Router();
 viewHistoryRouter.use(login_required);
@@ -79,7 +79,7 @@ viewHistoryRouter.use(login_required);
 viewHistoryRouter.use(login_required);
 
 // viewHistory를 만드는 router api (링크 클릭시 호출)
-viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
+viewHistoryRouter.post("/viewhistory/create", async function (req, res, next) {
   try {
     const user_id = req.body.user_id;
     const talkId = Number(req.body.talkId);
@@ -122,7 +122,7 @@ viewHistoryRouter.post('/viewhistory/create', async function (req, res, next) {
  */
 
 // 해당 viewHistoryId에 맞는 viewhistory 조회
-viewHistoryRouter.get('/viewhistories/:id', async function (req, res, next) {
+viewHistoryRouter.get("/viewhistories/:id", async function (req, res, next) {
   try {
     const viewHistoryId = req.params.id;
     const viewHistory = await ViewHistoryService.getViewHistory({
@@ -162,7 +162,7 @@ viewHistoryRouter.get('/viewhistories/:id', async function (req, res, next) {
 
 // user_id에 알맞는 사용자의 viewhistory 리스트를 조회
 viewHistoryRouter.get(
-  '/viewhistorylist/:user_id',
+  "/viewhistorylist/:user_id",
   async function (req, res, next) {
     try {
       const user_id = req.params.user_id;
@@ -208,7 +208,7 @@ viewHistoryRouter.get(
  */
 
 viewHistoryRouter.get(
-  '/viewhistorydatelist/:user_id/:date',
+  "/viewhistorydatelist/:user_id/:date",
   async function (req, res, next) {
     try {
       const user_id = req.params.user_id;
@@ -256,7 +256,7 @@ viewHistoryRouter.get(
  */
 
 viewHistoryRouter.get(
-  '/viewhistorydatelist/:user_id',
+  "/viewhistorydatelist/:user_id",
   async function (req, res, next) {
     try {
       const user_id = req.params.user_id;
@@ -300,14 +300,13 @@ viewHistoryRouter.get(
  */
 
 viewHistoryRouter.get(
-  '/viewhistory/latest',
+  "/viewhistory/latest",
   login_required,
   async function (req, res, next) {
     try {
       const user_id = req.currentUserId;
       const size = Number(req.query.size);
       const latest = await ViewHistoryService.getLatest5({ user_id, size });
-
       res.status(200).send(latest);
     } catch (error) {
       next(error);
@@ -331,7 +330,7 @@ viewHistoryRouter.get(
  *                $ref: '#components/schemas/rankingBoard'
  */
 viewHistoryRouter.get(
-  '/viewhistory/rankingBoard',
+  "/viewhistory/rankingBoard",
   async function (req, res, next) {
     try {
       const rankingBoard = await ViewHistoryService.rankingBoard({});

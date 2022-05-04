@@ -7,7 +7,7 @@ const commentRouter = Router();
 /**
  * @swagger
  * paths:
- *  /talks/:talkId/comments:
+ *  /talks/{talkId}/comments:
  *   get:
  *     summary: "강연 댓글 리스트 조회"
  *     tags: [Comment]
@@ -25,9 +25,9 @@ const commentRouter = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 length:
+ *                 message:
  *                   type: string
- *                 comments:
+ *                 payload:
  *                   $ref: '#/components/schemas/Comment'
  *       "400":
  *          description: 잘못된 요청
@@ -81,10 +81,10 @@ commentRouter.get("/talks/:talkId/comments", async function (req, res, next) {
  *                properties:
  *                  message:
  *                    type: string
- *                  reply:
- *                    $ref: '#/components/schemas/Reply'
- *                  또는 comment:
+ *                  payload:
  *                    $ref: '#/components/schemas/Comment'
+ *                  또는 payload:
+ *                    $ref: '#/components/schemas/Reply'
  *       "400":
  *          description: 잘못된 요청
  *       "500":
