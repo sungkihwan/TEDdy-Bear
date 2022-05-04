@@ -13,7 +13,7 @@ const MailTTLSchema = new Schema(
       expires: 600,
     },
   },
-  { _id : false }
+  { _id: true }
 );
 
 const MailTTLModel = model("MailTTL", MailTTLSchema);

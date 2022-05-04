@@ -50,7 +50,6 @@ likeRouter.post(
     try {
       const userId = req.currentUserId;
       const talkId = Number(req.body.talkId);
-      console.log(userId, talkId);
       const newLike = await likeService.addlike({ userId, talkId });
 
       res.status(200).send(newLike);
