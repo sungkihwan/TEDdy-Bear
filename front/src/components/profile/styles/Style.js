@@ -1,12 +1,13 @@
 import Styled from "styled-components";
 import { brown } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 
-//text style
+//text style54
 export const MyPageText = Styled.p`
   color: ${brown[900]};
 `;
@@ -113,6 +114,39 @@ export const BearImg = Styled.img`
   height: 20em;
 `;
 
+//Lawn
+export const LawnStyledPage = styled(Box)(() => ({
+  minWidth: 270,
+  minHeight: 100,
+  margin: 10,
+  borderRadius: 30,
+  backgroundColor: brown[100],
+  padding: 20,
+}));
+
+export const LawnText = Styled.p`
+  color: ${brown[900]};
+  font-size: 20px;
+  width: 25%;
+  text-align: center;
+`;
+
+//DateButton style
+export const StyledDateButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(brown[500]),
+  backgroundColor: brown[500],
+  maxWidth: "3rem",
+  maxHeight: "3rem",
+  minWidth: "3rem",
+  minHeight: "3rem",
+  margin: "2px",
+  borderRadius: "15px",
+  "&:hover": {
+    backgroundColor: brown[700],
+  },
+}));
+
+//BearFootIcon style
 export const BearFootIcon = Styled.img`
   width: 2em;
   height: 2em;

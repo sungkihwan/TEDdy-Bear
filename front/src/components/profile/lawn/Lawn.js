@@ -1,17 +1,12 @@
-import styled from "styled-components";
 import * as React from "react";
-import { useState, useContext, useNaviagate, useEffect } from "react";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import * as Api from "../../../api";
-import Typography from "@mui/material/Typography";
+import { useState, useEffect } from "react";
 
-import DateForm from "./DateButton";
+import Grid from "@mui/material/Grid";
+
+import * as Api from "../../../api";
 import WeekForm from "./WeekForm";
 import LawnInfo from "./LawnInfo";
-import { red } from "@mui/material/colors";
+import { LawnStyledPage, LawnText } from "../styles/Style";
 
 /** Lawn component
  *
@@ -50,7 +45,7 @@ function Lawn({ user }) {
   }, [dailyList, user.id]);
 
   if (!watchedDays) {
-    return "loading...";
+    return <LawnText>"loading..."</LawnText>;
   }
 
   const arr = [];
@@ -60,17 +55,17 @@ function Lawn({ user }) {
 
   return (
     <>
-      <Card>
+      <LawnStyledPage>
         <Grid
           container
           item
           direction="row"
           justifyContent="center"
           alignItems="center"
-          mb={5}
+          mb={3}
         >
           {arr.map((num) => (
-            <Grid item key={num + 18} mt={5}>
+            <Grid item key={num + 18} mt={3}>
               <WeekForm
                 user={user}
                 weekNum={num + 18}
@@ -82,26 +77,14 @@ function Lawn({ user }) {
             </Grid>
           ))}
         </Grid>
-      </Card>
-      <Card mt={5}>
-        <Grid item>
-          {dailyList && (
-            <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
-          )}
-        </Grid>
-      </Card>
+      </LawnStyledPage>
+      <Grid item mt={3}>
+        {dailyList && (
+          <LawnInfo dailyList={dailyList} selectedDate={selectedDate} />
+        )}
+      </Grid>
     </>
   );
 }
-
-//page style
-const Page = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
 
 export default Lawn;
