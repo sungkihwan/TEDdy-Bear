@@ -12,8 +12,8 @@ class CommentService {
 
     // 결과 반환
     const result = {
-      length: comments.length,
-      comments: comments
+      message: "댓글 조회 성공",
+      payload: comments
     }
     return result
   }
@@ -32,7 +32,7 @@ class CommentService {
     if (!newComment) { return { errorMessage: "댓글 작성 실패" } }
     
     // 결과 반환
-    return { message: "댓글 작성 성공", newComment }
+    return { message: "댓글 작성 성공", payload: newComment }
   }
 
   static async addReply(parentCommentId, comment, userId) {
@@ -53,7 +53,7 @@ class CommentService {
     if (!updatedComment) { return { errorMessage: "댓글에 대댓글 업데이트 실패" } }
 
     // 결과 반환
-    return { message: "대댓글 작성 성공", reply }
+    return { message: "대댓글 작성 성공", payload: reply }
   }
 
   static async deleteComment(comment_id, userId) {

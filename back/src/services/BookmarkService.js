@@ -10,7 +10,7 @@ class BookmarkService {
     }
 
     const result = {
-      length: bookmarks.length,
+      message: "북마크 조회 성공",
       bookmarks: bookmarks.reduce((pre, item) => {
         pre[item.talk_id.id] = { ...item.talk_id, bookmark_id: item._id } 
         return pre
