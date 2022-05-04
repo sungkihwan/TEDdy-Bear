@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 import { sendMail } from '../utils/email-sender';
+import { gcsBucket } from '../utils/multer'
 import generator from 'generate-password';
 
 class userAuthService {
@@ -276,6 +277,20 @@ class userAuthService {
   }
 
   static async updateImg({ user_id, url }) {
+
+    const user = await User.findById({ user_id });
+
+    if (!user) {
+      const errorMessage = '해당 유저가 존재하지 않습니다. 토큰을 확인해주세요.';
+      return { errorMessage };
+    }
+
+    // gcp 기존 이미지 삭제
+    if (user.profileUrl != '') {
+      const url = user.profileUrl.split(`https://${process.env.GCS_BUCKET}.storage.googleapis.com/`)[1]
+      gcsBucket.file(url).delete();
+    }
+
     const toUpdate = { profileUrl : url }
     const updatedUser = await User.updateImg({ user_id, toUpdate });
 
