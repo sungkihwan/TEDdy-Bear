@@ -8,15 +8,12 @@ import * as Api from "../../api";
 import { MyTalksContext } from "../common/MyTalksContext";
 
 function DetailedIcons({ lecture, view }) {
-  console.log(lecture);
-  console.log("아이콘 렌더링!");
+  const userState = useContext(UserStateContext);
   const { myLikeList, myBookMarkList, setMyLikeList, setMyBookMarkList } =
     useContext(MyTalksContext);
   const [star, setStar] = useState(false);
   const [heart, setHeart] = useState(false);
-  const [like, setLike] = useState(() => lecture.teddy_like_count);
-  console.log(like);
-  const userState = useContext(UserStateContext);
+  const [like, setLike] = useState(lecture.teddy_like_count);
 
   const talkId = lecture.id;
   const bookmarkId = lecture._id;

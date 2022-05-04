@@ -59,7 +59,6 @@ function LectureExplanation() {
   useEffect(() => {
     const fetchTalks = async () => {
       const res = await Api.get(`talks`, `${talkId}`);
-      console.log("데이터 가져오기 렌더링!");
       setLecture(res.data);
       customFetcher(res.data.url);
       setView(res.data.teddy_view_count);
@@ -79,7 +78,9 @@ function LectureExplanation() {
         className="buttoncontent lecturebox"
         style={{ border: "2px solid orange" }}
       >
-        <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
+        {Object.keys(lecture).length !== 0 && (
+          <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
+        )}
         <GoButton onClick={handleWatch}>영상 시청하러 가기</GoButton>
       </div>
       <div

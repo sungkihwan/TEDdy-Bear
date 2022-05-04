@@ -18,7 +18,7 @@ function Lecture() {
     // }
     if (userState.user !== null) {
       if (userState.user.myTopics.length !== 0) {
-        Api.post("talks/my", { size: 12 }).then((res) =>
+        Api.get("talks/my", "?size=12").then((res) =>
           setMyLectureData(res.data)
         );
       }
