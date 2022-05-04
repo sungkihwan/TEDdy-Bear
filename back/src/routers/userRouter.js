@@ -313,21 +313,19 @@ userAuthRouter.post(
 /**
  * @swagger
  *
- * /user/update/password:
+ * /user/img:
  *  post:
- *    summary: "나의 비밀번호 변경"
+ *    summary: "프로파일 이미지 업로드"
  *    tags: [Users]
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            type: object
  *            properties:
- *              id:
- *                  type: string
- *              password:
- *                  type: string
+ *              img:
+ *                  type: image
  */
  userAuthRouter.post(
   '/user/img',
