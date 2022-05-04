@@ -9,14 +9,30 @@ const bookmarkRouter = Router();
  * paths:
  *  /bookmarks:
  *   get:
- *     summary: "user_id로 북마크 조회"
+ *     summary: "JWT user_id로 북마크 조회"
  *     tags: [Bookmark]
  *     responses:
  *       "200":
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Bookmark'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 bookmarks:
+ *                   type: object
+ *                   properties:
+ *                     talkId:
+ *                       type: object
+ *                       properties:
+ *                         title:
+ *                           type: string
+ *                         ...topic강연 정보들:
+ *                           type: string
+ *                         bookmark_id:
+ *                           type: string
+ * 
  *       "400":
  *          description: 잘못된 요청
  *       "500":
@@ -45,7 +61,7 @@ bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next)
  *     summary: 강연 북마크 추가
  *     tags: [Bookmark]
  *     requestBody:
- *       description: 강연 Id
+ *       description: JWT user_id, 강연 Id으로 북마크 추가
  *       required: true
  *       content:
  *         application/json:
@@ -61,12 +77,10 @@ bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next)
  *              schema:
  *                type: object
  *                properties:
- *                  length:
- *                    type: number
- *                  bookmarks:
- *                    type: array
- *                    items:
- *                      $ref: '#/components/schemas/Talk'
+ *                  message:
+ *                    type: string
+ *                  bookmarkId:
+ *                    type: string
  *       "400":
  *          description: 잘못된 요청
  *       "500":
