@@ -1,5 +1,4 @@
 import { BookmarkModel } from "../schemas/bookmark";
-import mongoose from "mongoose";
 
 class Bookmark {
   static findOne(userId, talk_id) {
@@ -14,8 +13,8 @@ class Bookmark {
     return BookmarkModel.create({ userId: userId, talk_id: talk_id });
   }
 
-  static deleteOne(userId, bookmark_id) {
-    return BookmarkModel.deleteOne({ userId: userId, _id: mongoose.Types.ObjectId(bookmark_id) });
+  static deleteOne(userId, talk_id) {
+    return BookmarkModel.deleteOne({ userId: userId, talk_id: talk_id });
   }
 
   static deleteManyByUserId(userId) {

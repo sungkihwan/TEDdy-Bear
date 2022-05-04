@@ -42,8 +42,8 @@ class BookmarkService {
     return { message: "북마크 추가 성공", payload: { bookmark_id: newBookmark._id } }
   }
 
-  static async deleteBookmark(userId, bookmark_id) {
-    const myBookmark = await Bookmark.deleteOne(userId, bookmark_id)
+  static async deleteBookmark(userId, talk_id) {
+    const myBookmark = await Bookmark.deleteOne(userId, talk_id)
     if(myBookmark.deletedCount != 1) {
       const errorMessage = "북마크 삭제 실패"
       return { errorMessage }
