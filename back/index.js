@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import "dotenv/config";
 import { app } from "./src/app";
 
 const URL = process.env.SERVER_URL || "http://localhost";
