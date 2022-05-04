@@ -1,4 +1,4 @@
-import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { TopicPriority, User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { MailTTL } from '../db';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
@@ -52,6 +52,9 @@ class userAuthService {
     // db에 저장
     const createdNewUser = await User.create({ newUser });
     createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
+
+    // 선호도 도큐먼트 생성
+    await TopicPriority.create({ user_id: createdNewUser._id })
 
     return createdNewUser;
   }

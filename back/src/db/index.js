@@ -10,6 +10,7 @@ import { Like } from './models/Like';
 import { Bookmark } from './models/Bookmark';
 import { Comment } from './models/Comment';
 import { Reply } from './models/Reply';
+import { TopicPriority } from './models/TopicPriority';
 
 const DB_URL =
   process.env.MONGODB_URL ||
@@ -37,4 +38,5 @@ export {
   MailTTL,
   SomTTL,
   Like,
+  TopicPriority,
 };
