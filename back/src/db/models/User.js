@@ -1,4 +1,9 @@
+import { LikeModel } from '../schemas/like';
 import { UserModel } from '../schemas/user';
+import { ViewHistoryModel } from '../schemas/viewHistory';
+import { BookmarkModel } from '../schemas/bookmark';
+import { CommentModel } from '../schemas/comment';
+import { ReplyModel } from '../schemas/reply';
 
 class User {
   static async create({ newUser }) {
@@ -11,8 +16,8 @@ class User {
     return user;
   }
 
-  static async findById({ user_id }) {
-    const user = await UserModel.findOne({ id: user_id });
+  static async findById({ userId }) {
+    const user = await UserModel.findOne({ id: userId });
     return user;
   }
 
@@ -31,7 +36,7 @@ class User {
     const filter = { id: user_id };
     const update = { $set: toUpdate };
     const option = { returnOriginal: false };
-    
+
     return await UserModel.findOneAndUpdate(filter, update, option);
   }
 
@@ -56,6 +61,13 @@ class User {
     const bearInfo = { bearName, level, cotton, height, exp };
 
     return bearInfo;
+  }
+  static async deleteAllById({ user }) {
+    await ViewHistoryModel.deleteMany({ user_id: user.user_id });
+    await LikeModel.deleteMany({ user_id: user._id });
+    await BookmarkModel.deleteMany({ userId: user.user_id });
+    await CommentModel.deleteMany({ user: user._id });
+    await ReplyModel.deleteMany({ user: user._id });
   }
 }
 

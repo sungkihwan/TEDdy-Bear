@@ -522,11 +522,13 @@ userAuthRouter.get(
 
 //user 삭제 컴포넌트
 userAuthRouter.delete(
-  "/users/:id",
-  //login_required,
+  "/users/user",
+  login_required,
   async function (req, res, next) {
     try {
       const user_id = req.currentUserId;
+      // 전체 정보 삭제
+      await userAuthService.deleteUserAllInfo({ user_id });
       //유저 삭제하는 메소드 호출
       await userAuthService.deleteUser({ user_id });
 

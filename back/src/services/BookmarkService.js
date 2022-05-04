@@ -12,9 +12,9 @@ class BookmarkService {
     const result = {
       length: bookmarks.length,
       bookmarks: bookmarks.reduce((pre, item) => {
-        pre.push({ bookmark_id: item._id, talk: item.talk_id })
+        pre[item.talk_id.id] = { ...item.talk_id, bookmark_id: item._id } 
         return pre
-      }, [])
+      }, {})
     }
 
     return result

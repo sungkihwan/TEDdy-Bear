@@ -30,14 +30,14 @@ const talkRouter = Router();
  */
 talkRouter.get("/talks/today", async (req, res, next) => {
   try {
-    const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
-
-    const talks = await TalkService.getTodayTalk({ size });
+    const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size)
+    
+    const talks = await TalkService.getTodayTalk({ size })
     if (talks.errorMessage) {
-      throw new Error(talks.errorMessage);
+      throw new Error(talks.errorMessage)
     }
 
-    res.status(200).send(talks);
+    res.status(200).send(talks)
   } catch (e) {
     next(e);
   }
@@ -48,19 +48,18 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  * @swagger
  * paths:
  *  /talks/my:
- *   post:
- *    summary: "사용자 관심 주제별 추천 영상"
- *    tags: [Talk]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
+ *   get:
+ *     summary: "사용자 관심 주제별 추천 영상"
+ *     tags: [Talk]
+ *     parameters:
+ *        - in: query
+ *          name: size
+ *          required: true
  *          schema:
- *            type: object
- *            properties:
- *              size:
- *                type: number
- *    responses:
+ *            type: integer
+ *            minimum: 1
+ *          description: 영상 개수
+ *     responses:
  *       "200":
  *         description: 추후 수정 예정...
  *         content:
@@ -68,12 +67,12 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.post("/talks/my", login_required, async (req, res, next) => {
+talkRouter.get("/talks/my", login_required, async (req, res, next) => {
   try {
-    const size = Number(req.body.size) < 1 ? 1 : Number(req.body.size);
-    const user_id = req.currentUserId;
-
-    const talks = await TalkService.getMyTalk({ size, user_id });
+    const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
+    const userId = req.currentUserId;
+    
+    const talks = await TalkService.getMyTalk({ size, userId });
     if (talks.errorMessage) {
       throw new Error(talks.errorMessage);
     }

@@ -1,10 +1,4 @@
-/*
- * bear (mypage) 기능 schema 정의
- */
-
-// 필요한 데이터
-// 시청 날짜
-
+import mongoose from 'mongoose';
 import { Schema, model } from 'mongoose';
 
 const viewHistorySchema = new Schema(
@@ -18,11 +12,8 @@ const viewHistorySchema = new Schema(
       required: true,
     },
     talkId: {
-      type: String,
-      required: true,
-    },
-    url: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: 'Talk',
       required: true,
     },
   },

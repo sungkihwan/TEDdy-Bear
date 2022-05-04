@@ -28,9 +28,7 @@ viewHistoryRouter.use(login_required);
  *        user_id:
  *          type: string
  *        talkId:
- *          type: string
- *        url:
- *          type: string
+ *          type: ObjectId
  *        createdAt:
  *          type: date
  *        updatedAt:
@@ -70,8 +68,6 @@ viewHistoryRouter.use(login_required);
  *                  type: string
  *              talkId:
  *                  type: string
- *              url:
- *                  type: string
  *    responses:
  *       "200":
  *         content:
@@ -85,12 +81,12 @@ viewHistoryRouter.use(login_required);
 // viewHistory를 만드는 router api (링크 클릭시 호출)
 viewHistoryRouter.post("/viewhistory/create", async function (req, res, next) {
   try {
-    const { user_id, talkId, url } = req.body;
+    const user_id = req.body.user_id;
+    const talkId = Number(req.body.talkId);
 
     const newViewHistory = await ViewHistoryService.addViewHistory({
       user_id,
       talkId,
-      url,
     });
     if (newViewHistory.errorMessage) {
       throw new Error(newViewHistory.errorMessage);
@@ -148,7 +144,7 @@ viewHistoryRouter.get("/viewhistories/:id", async function (req, res, next) {
  *    tags: [viewhistory]
  *    parameters:
  *      - in: path
- *        name: id
+ *        name: user_id
  *        required: true
  *        description: 유저 아이디
  *        schema:

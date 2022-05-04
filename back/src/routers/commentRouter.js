@@ -57,7 +57,7 @@ commentRouter.get("/talks/:talkId/comments", async function (req, res, next) {
  *     summary: 강연 댓글 추가
  *     tags: [Comment, Reply]
  *     requestBody:
- *       description: mode(comment댓글, reply대댓글 중에 어떤 종류에 댓글인지), talkId(댓글이 달릴 강연영상Id), parentCommentId(대댓글이라면 부모댓글이 될 댓글Id), comment(댓글 내용)
+ *       description: mode(comment댓글, reply대댓글 중에 어떤 종류에 댓글인지), comment(댓글 내용), (댓글인 경우 필요한 데이터 -> ) talkId(댓글이 달릴 강연영상Id), (대댓글인 경우 필요한 데이터 -> ) parentCommentId(대댓글이라면 부모댓글이 될 댓글Id)
  *       required: true
  *       content:
  *         application/json:
@@ -122,18 +122,19 @@ commentRouter.post("/comments/comment", login_required, async function (req, res
  *   delete:
  *     summary: 강연 댓글 삭제
  *     tags: [Comment, Reply]
- *     requestBody:
- *       description: mode(comment댓글, reply대댓글 중에 어떤 종류에 댓글인지), commentId(삭제할 댓글 Id)
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               mode:
- *                 type: string
- *               commentId:
- *                 type: string
+ *     parameters:
+ *       - in: path
+ *         name: comment_id   
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: comment_id
+ *       - in: query
+ *         name: mode
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: comment댓글, reply대댓글 중에 어떤 종류에 댓글인지
  *     responses:
  *       "200":
  *         content:

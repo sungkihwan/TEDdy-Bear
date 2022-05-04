@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import { Ttl } from "../db";
 import bcrypt from "bcrypt";
@@ -6,6 +7,16 @@ import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import { sendMail } from "../utils/email-sender";
 import generator from "generate-password";
+=======
+import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { Ttl } from '../db';
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
+import { sendMail } from '../utils/email-sender';
+import generator from 'generate-password';
+>>>>>>> 0c5ff7574ebe853471736d182fcab0c9f44afad5
 
 class userAuthService {
   static async addUser({
@@ -127,7 +138,7 @@ class userAuthService {
     const { name, email } = ticket.getPayload();
 
     let user = await User.findByEmail({ email });
-    let message = "";
+    let message = '';
 
     if (user) {
       // 소셜로그인으로 회원가입한 사용자인 경우
@@ -137,7 +148,7 @@ class userAuthService {
         // 소셜로그인으로 회원가입한 사용자가 아닌 경우
         return {
           errorMessage:
-            "해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.",
+            '해당 아이디는 소셜로그인 가입 내역이 없습니다. 다시 한 번 확인해 주세요.',
         };
       }
     } else {
@@ -148,7 +159,7 @@ class userAuthService {
         infoProvider: "Google",
       });
       user = await this.getLoginUserInfoBy(user);
-      message = "newbie";
+      message = 'newbie';
     }
 
     return { message, userInfo: user };
@@ -160,7 +171,7 @@ class userAuthService {
   }
 
   static async setUser({ user_id, toUpdate }) {
-    let user = await User.findById({ user_id });
+    let user = await User.findById({ userId: user_id });
     if (!user) {
       const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
@@ -183,7 +194,7 @@ class userAuthService {
   }
 
   static async getUserInfo({ user_id }) {
-    const user = await User.findById({ user_id });
+    const user = await User.findById({ userId: user_id });
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
@@ -195,6 +206,16 @@ class userAuthService {
     return user;
   }
 
+  static async deleteUserAllInfo({ user_id }) {
+    const user = await User.findById({ user_id });
+    await User.deleteAllById({ user });
+    if (!user) {
+      const errorMessage =
+        '해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
+      return { errorMessage };
+    }
+  }
+
   static async deleteUser({ user_id }) {
     const user = await User.deleteOneUser({ user_id });
     // db에서 찾지 못한 경우, 에러 메시지 반환
@@ -203,6 +224,7 @@ class userAuthService {
         "해당 아이디는 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
+
     return user;
   }
 
@@ -229,7 +251,7 @@ class userAuthService {
       }
     }
 
-    if (type == "temp") {
+    if (type == 'temp') {
       const password = generator.generate({
         length: 8,
         numbers: true,
@@ -247,6 +269,7 @@ class userAuthService {
         length: 6,
         numbers: true,
       });
+
       const newItem = {};
       newItem.code = password;
       newItem.expireAt = Date.now();
@@ -260,7 +283,7 @@ class userAuthService {
   static async checkCode({ code }) {
     const auth = await Ttl.find({ code });
     if (auth.length == 0) {
-      const errorMessage = "인증에 실패했습니다.";
+      const errorMessage = '인증에 실패했습니다.';
       return { errorMessage };
     }
 
