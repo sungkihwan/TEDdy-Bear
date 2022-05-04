@@ -9,6 +9,10 @@ class Talk {
     // }
   }
 
+  static findOneByObjectId({ _id }) {
+    return TalkModel.findOne({ _id })
+  }
+
   static findManyRandom(topics, size) {
     return TalkModel.aggregate([
       {
