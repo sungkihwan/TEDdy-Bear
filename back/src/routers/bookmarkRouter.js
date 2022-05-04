@@ -20,7 +20,7 @@ const bookmarkRouter = Router();
  *               properties:
  *                 message:
  *                   type: string
- *                 bookmarks:
+ *                 payload:
  *                   type: object
  *                   properties:
  *                     talkId:
@@ -28,11 +28,12 @@ const bookmarkRouter = Router();
  *                       properties:
  *                         title:
  *                           type: string
- *                         ...topic강연 정보들:
+ *                         speakers:
+ *                           type: array
+ *                         topic강연 정보들:
  *                           type: string
  *                         bookmark_id:
  *                           type: string
- * 
  *       "400":
  *          description: 잘못된 요청
  *       "500":
@@ -79,8 +80,11 @@ bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next)
  *                properties:
  *                  message:
  *                    type: string
- *                  bookmarkId:
- *                    type: string
+ *                  payload:
+ *                    type: object
+ *                    properties:
+ *                      bookmark_id:
+ *                        type: string
  *       "400":
  *          description: 잘못된 요청
  *       "500":
