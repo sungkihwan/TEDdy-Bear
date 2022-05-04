@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useReducer, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -7,17 +8,16 @@ import Prologue from "./components/prologue/Prologue";
 import Lecture from "./components/Lecture/Lecture";
 import MyTalks from "./components/user/MyTalks";
 import LectureExplanation from "./components/Lecture/LectureExplanation";
-import React, { useState, useEffect, useReducer, createContext } from "react";
-
-import * as Api from "./api";
-import { loginReducer } from "./reducer";
-
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import Community from "./components/user/Community";
 import Loading from "./components/common/Loading";
 import EditProfile from "./components/profile/EditProfile";
 import FindPassword from "./components/user/FindPassword";
+
+import * as Api from "./api";
+import { loginReducer } from "./reducer";
+
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 

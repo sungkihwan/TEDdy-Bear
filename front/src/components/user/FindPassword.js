@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import React, { useState } from "react";
 import * as Api from "../../api";
-import TeddyImage from "./TeddyImage";
+import TeddyImage from "./LoginImage";
 import TextField from "@mui/material/TextField";
 import { MyButton } from "../common/MyButton";
 import { useNavigate } from "react-router-dom";
@@ -42,8 +42,8 @@ function FindPassword() {
         spacing={2}
         sx={{ marginTop: 12 }}
       >
-        <TeddyImage />
-        <Card>
+        <Card sx={{ display: "flex", borderRadius: 5 }}>
+          <TeddyImage />
           <Container component="main" maxWidth="xs">
             <Box
               sx={{

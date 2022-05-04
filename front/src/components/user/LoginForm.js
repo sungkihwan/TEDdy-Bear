@@ -5,18 +5,23 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import { brown } from "@mui/material/colors";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
 import Account from "./Account";
-import TeddyImage from "./TeddyImage";
+import LoginImage from "./LoginImage";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 import { MyButton } from "../common/MyButton";
 
 function LoginForm() {
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  useEffect(() => {
+    setIsAccordionOpen(false);
+  }, []);
+
   const navigate = useNavigate();
   const dispatch = useContext(DispatchContext);
   const handleSubmit = async (e) => {
@@ -39,7 +44,7 @@ function LoginForm() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-      console.log("로그인에 성공했씁니다.\n");
+      console.log("로그인에 성공했습니다.\n");
       // 기본 페이지로 이동함.
       navigate("/", { replace: true });
     } catch (err) {
@@ -91,6 +96,7 @@ function LoginForm() {
     }
     return false;
   };
+
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
@@ -105,10 +111,11 @@ function LoginForm() {
         spacing={2}
         sx={{ marginTop: 12 }}
       >
-        <TeddyImage />
-        <Card>
+        <Card sx={{ display: "flex", borderRadius: 5 }}>
+          <LoginImage />
           <Container component="main" maxWidth="xs">
             <Box
+              justifyContent="center"
               sx={{
                 marginTop: 4,
                 display: "flex",

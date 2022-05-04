@@ -9,11 +9,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
-import { brown } from "@mui/material/colors";
 
 import * as Api from "../../api";
 import Account from "./Account";
-import TeddyImage from "./TeddyImage";
+import RegisterImage from "./RegisterImage";
 import UserTopics from "./UserTopics";
 import Name from "./Name";
 import Buttons from "./Buttons";
@@ -91,8 +90,8 @@ function RegisterForm() {
         sx={{ marginTop: 12 }}
         alignItems="stretch"
       >
-        <TeddyImage />
-        <Card>
+        <Card sx={{ display: "flex", borderRadius: 5 }}>
+          <RegisterImage />
           <Container component="main" maxWidth="xs">
             <Box
               sx={{
@@ -161,7 +160,7 @@ function RegisterForm() {
                   />
                   <Grid container justifyContent="center">
                     <Grid item>
-                      <Chip label={`${viewPage} / 4`} color={brown[800]} />
+                      <Chip label={`${viewPage} / 4`} />
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="flex-end">
