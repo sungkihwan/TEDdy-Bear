@@ -459,7 +459,7 @@ const topics = {
 }
 
 const TopicPrioritySchema = new Schema({
-  user: {
+  user_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -471,7 +471,7 @@ const TopicPrioritySchema = new Schema({
   },
 });
 
-const TopicPriorityModel = model("topicPriority", TopicPrioritySchema);
+const TopicPriorityModel = model("TopicPriority", TopicPrioritySchema);
 
 export { TopicPriorityModel };
 

@@ -1,4 +1,5 @@
 import { Talk, Topic, User } from '../db';
+import { TopicPriorityService } from './TopicPriorityService';
 
 class TalkService {
   static async getTalk({ id }) {
@@ -35,8 +36,12 @@ class TalkService {
 
   static async getMyTalk({ size, userId }) {
     // 사용자 관심 주제 조회
-    const { myTopics } = await User.findById({ userId });
-    if (!myTopics) { return { errorMessage: "주제 조회에 실패하였습니다." } }
+    // const { myTopics } = await User.findById({ userId });
+    // if (!myTopics) { return { errorMessage: "주제 조회에 실패하였습니다." } }
+
+    // 추천 알고리즘 적용
+    const user = await User.findById({ userId })
+    const myTopics = await TopicPriorityService.getMyFavoriteTopics({ user_id: user._id })
 
     const myTalk = await Talk.findManyRandom(myTopics, size);
     if (myTalk.length === 0) { return { errorMessage: "영상 조회에 실패하였습니다." } }
