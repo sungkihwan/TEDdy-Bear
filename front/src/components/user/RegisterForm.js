@@ -1,6 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -8,9 +6,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
+import { useState } from "react";
 import Chip from "@mui/material/Chip";
-import { brown } from "@mui/material/colors";
-
+import { useNavigate } from "react-router-dom";
 import * as Api from "../../api";
 import Account from "./Account";
 import TeddyImage from "./TeddyImage";
@@ -18,7 +16,6 @@ import UserTopics from "./UserTopics";
 import Name from "./Name";
 import Buttons from "./Buttons";
 import EmailAuth from "./EmailAuth";
-
 function RegisterForm() {
   const navigate = useNavigate();
 
@@ -161,7 +158,7 @@ function RegisterForm() {
                   />
                   <Grid container justifyContent="center">
                     <Grid item>
-                      <Chip label={`${viewPage} / 4`} color={brown[800]} />
+                      <Chip label={`${viewPage} / 4`} color="primary" />
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="flex-end">

@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -5,16 +6,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import { brown } from "@mui/material/colors";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
 import Account from "./Account";
 import TeddyImage from "./TeddyImage";
 import GoogleLoginBtn from "./GoogleLoginBtn";
-import { MyButton } from "../common/MyButton";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -113,6 +111,7 @@ function LoginForm() {
                 marginTop: 4,
                 display: "flex",
                 flexDirection: "column",
+                alignItems: "center",
               }}
             >
               <Typography component="h1" variant="h5">
@@ -132,28 +131,27 @@ function LoginForm() {
                   isEmailValid={isEmailValid}
                   isPasswordValid={isPasswordValid}
                 />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={!isFormValid}
+                >
+                  로그인
+                </Button>
                 <Grid
                   container
-                  direction="column"
+                  justifyContent="space-evenly"
                   alignItems="center"
-                  justifyContent="center"
+                  direction="column"
+                  rowSpacing={3}
                 >
-                  <Grid item>
-                    <MyButton
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                      disabled={!isFormValid}
-                    >
-                      로그인
-                    </MyButton>
+                  <Grid item xs={12}>
+                    <GoogleLoginBtn
+                      responseGoogle={handleGoogleData}
+                    ></GoogleLoginBtn>
                   </Grid>
-                  <Grid item>
-                    <GoogleLoginBtn responseGoogle={handleGoogleData} />
-                  </Grid>
-                </Grid>
-                <Grid mt={2} container direction="column" alignItems="flex-end">
                   <Grid item xs={12}>
                     <Link variant="body2" onClick={() => navigate("/register")}>
                       테디곰과 함께 공부할래요?
