@@ -74,7 +74,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/media" element={<Lecture />} />
-          <Route path="/media/:talk_id" element={<LectureExplanation />} />
+          <Route path="/media/:talkId" element={<LectureExplanation />} />
           <Route path="findpassword" element={<FindPassword />} />
         </Routes>
       </UserStateContext.Provider>

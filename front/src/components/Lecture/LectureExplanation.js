@@ -2,35 +2,25 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserStateContext } from "../../App";
 import * as Api from "../../api";
 import "./lecture.css";
-import Icons from "./Icons";
+import DetailedIcons from "./DetailedIcons";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
+import { useParams } from "react-router-dom";
 
 function LectureExplanation() {
   const userState = useContext(UserStateContext);
+  const params = useParams();
+  const [view, setView] = useState(0);
   const [comment, setComment] = useState(() => {
     if (userState.user === null) {
-      console.log("리뷰상태");
       return true;
     } else {
       return false;
     }
   });
-  const [talkId, setTalkId] = useState(() => {
-    const data = window.location.pathname.split("/");
-    return data[data.length - 1];
-  });
+  const talkId = params.talkId;
   const [lecture, setLecture] = useState({});
-  const makeSpeaker = (speakers) => {
-    if (speakers !== undefined) {
-      if (speakers.length === 1) {
-        return speakers;
-      } else {
-        return speakers.join(", ");
-      }
-    }
-  };
 
   const customFetcher = (url) => {
     if (url !== undefined) {
@@ -46,6 +36,16 @@ function LectureExplanation() {
     }
   };
 
+  const makeSpeaker = (speakers) => {
+    if (speakers !== undefined) {
+      if (speakers.length === 1) {
+        return speakers;
+      } else {
+        return speakers.join(", ");
+      }
+    }
+  };
+
   const handleWatch = () => {
     const data = {
       user_id: userState.user.id,
@@ -53,17 +53,19 @@ function LectureExplanation() {
     };
     Api.post("viewhistory/create", data).then((res) => console.log(res.data));
     window.open(lecture.url, "_blank");
+    setView((cur) => cur + 1);
   };
 
   useEffect(() => {
-    function fetchTalks() {
-      Api.get(`talks`, `${talkId}`).then((res) => {
-        setLecture(res.data);
-      });
-    }
+    const fetchTalks = async () => {
+      const res = await Api.get(`talks`, `${talkId}`);
+      console.log("데이터 가져오기 렌더링!");
+      setLecture(res.data);
+      customFetcher(res.data.url);
+      setView(res.data.teddy_view_count);
+    };
     fetchTalks();
-    customFetcher(lecture.url);
-  }, [talkId, lecture.url]);
+  }, [talkId]);
 
   return (
     <div className="infobox">
@@ -77,7 +79,7 @@ function LectureExplanation() {
         className="buttoncontent lecturebox"
         style={{ border: "2px solid orange" }}
       >
-        <Icons videoInfo={lecture}></Icons>
+        <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
         <GoButton onClick={handleWatch}>영상 시청하러 가기</GoButton>
       </div>
       <div
@@ -133,4 +135,5 @@ const GoButton = styled(Button)(({ theme }) => ({
     backgroundColor: brown[700],
   },
 }));
+
 export default LectureExplanation;

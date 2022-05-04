@@ -4,15 +4,15 @@ import * as Api from "../../api";
 const MyTalksContext = createContext(null);
 
 function MyTalksProvider({ children }) {
-  const [myLikeList, setMyLikeList] = useState([]);
-  const [myBookMarkList, setMyBookMarkList] = useState([]);
+  const [myLikeList, setMyLikeList] = useState();
+  const [myBookMarkList, setMyBookMarkList] = useState();
 
   useEffect(() => {
     Api.get("bookmarks").then((res) => {
-      setMyBookMarkList(res.data.bookmarks);
+      setMyBookMarkList(res.data.payload);
     });
+
     Api.get("likes/my").then((res) => {
-      console.log(res.data);
       setMyLikeList(res.data);
     });
   }, []);

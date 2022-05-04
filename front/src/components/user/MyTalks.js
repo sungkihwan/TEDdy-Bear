@@ -13,7 +13,7 @@ function MyTalks() {
       setRecentLecture(res.data.reverse().slice(0, 10));
     });
     Api.get(`bookmarks`).then((res) => {
-      setBookMarkList(res.data.bookmarks);
+      setBookMarkList(res.data.payload);
     });
     Api.get(`likes/my`).then((res) => {
       setLikeList(res.data);
