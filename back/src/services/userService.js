@@ -1,11 +1,11 @@
-import { User } from '../db'; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { MailTTL } from '../db';
-import bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
-import jwt from 'jsonwebtoken';
-import { OAuth2Client } from 'google-auth-library';
-import { sendMail } from '../utils/email-sender';
-import generator from 'generate-password';
+import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { MailTTL } from "../db";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
+import { sendMail } from "../utils/email-sender";
+import generator from "generate-password";
 
 class userAuthService {
   static async addUser({
@@ -238,7 +238,7 @@ class userAuthService {
           "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
         return { errorMessage };
       }
-      
+
       const password = generator.generate({
         length: 8,
         numbers: true,

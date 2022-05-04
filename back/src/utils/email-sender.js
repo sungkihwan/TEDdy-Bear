@@ -19,7 +19,6 @@ const transport = nodemailer.createTransport(
 
 const sendMail = (to, message) =>
   new Promise((resolve, reject) => {
-    console.log(to);
     const mailOptions = {
       from: mailSender,
       to: to,
@@ -33,7 +32,6 @@ const sendMail = (to, message) =>
 
     transport.sendMail(mailOptions, (err, info) => {
       if (err) {
-        console.log("err");
         reject(err);
         return;
       }
