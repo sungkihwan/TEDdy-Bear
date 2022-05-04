@@ -2,6 +2,7 @@ import is from '@sindresorhus/is';
 import { Router } from 'express';
 import { login_required } from '../middlewares/login_required';
 import { userAuthService } from '../services/userService';
+import { uploadHandler } from '../utils/multer'
 
 const userAuthRouter = Router();
 
@@ -272,7 +273,7 @@ userAuthRouter.post('/user/check/code', async function (req, res, next) {
 /**
  * @swagger
  *
- * /user/sendMail:
+ * /user/update/password:
  *  post:
  *    summary: "나의 비밀번호 변경"
  *    tags: [Users]
@@ -302,7 +303,53 @@ userAuthRouter.post(
         throw new Error(updatedUser.errorMessage);
       }
 
-      return res.status(200).send(updatedUser);
+      res.status(200).send(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ *
+ * /user/update/password:
+ *  post:
+ *    summary: "나의 비밀번호 변경"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *                  type: string
+ *              password:
+ *                  type: string
+ */
+ userAuthRouter.post(
+  '/user/img',
+  login_required,
+  uploadHandler.single('img'),
+  async function (req, res, next) {
+    try {
+      
+      if (!req.file) {
+        res.status(400).json({ message: "업로드할 이미지가 없습니다" });
+        return;
+      }
+
+      const user_id = req.currentUserId;
+      const url = req.file.path;
+      const updatedUser = await userAuthService.updateImg({ user_id, url });
+
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+
+      res.status(200).send({ url: url });
     } catch (error) {
       next(error);
     }

@@ -25,6 +25,10 @@ const UserSchema = new Schema(
       type: Array,
       required: true,
     },
+    profileUrl: {
+      type: String,
+      required: false,
+    },
     bearName: {
       type: String,
       required: true,

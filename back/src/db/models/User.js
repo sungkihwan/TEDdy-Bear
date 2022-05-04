@@ -40,6 +40,14 @@ class User {
     return await UserModel.findOneAndUpdate(filter, update, option);
   }
 
+  static async updateImg({ user_id, toUpdate }) {
+    const filter = { id: user_id };
+    const update = { $set: toUpdate };
+    const option = { returnOriginal: false };
+
+    return await UserModel.findOneAndUpdate(filter, update, option);
+  }
+
   static async updateById({ user_id, toUpdate }) {
     const filter = { id: user_id };
     const update = { $set: toUpdate };

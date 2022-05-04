@@ -275,6 +275,18 @@ class userAuthService {
     return true;
   }
 
+  static async updateImg({ user_id, url }) {
+    const toUpdate = { profileUrl : url }
+    const updatedUser = await User.updateImg({ user_id, toUpdate });
+
+    if (!updatedUser) {
+      const errorMessage = '이미지 업로드에 실패 했습니다.';
+      return { errorMessage };
+    }
+
+    return updatedUser;
+  }
+
   static async updatePassword({ user_id, password }) {
     const toUpdate = {};
     const hashedPassword = await bcrypt.hash(password, 10);
