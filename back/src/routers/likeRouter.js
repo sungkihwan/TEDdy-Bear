@@ -77,11 +77,8 @@ likeRouter.post(
  *                  $ref: '#components/schemas/Like'
  */
 // 유저가 좋아요한 동영상 리스트 가져오기
-<<<<<<< HEAD
-likeRouter.get("/talk/my", async function (req, res, next) {
-=======
-likeRouter.get('/likes/my', async function (req, res, next) {
->>>>>>> 0c5ff7574ebe853471736d182fcab0c9f44afad5
+
+likeRouter.get("/likes/my", async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const userLike = await likeService.getUserLikeList({ userId });
