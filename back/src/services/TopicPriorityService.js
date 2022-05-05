@@ -21,7 +21,8 @@ class TopicPriorityService {
   }
 
   static async getMyFavoriteTopics({ user_id }) {
-    const { priority } = await TopicPriority.findOne({ user: user_id })
+    const { priority } = await TopicPriority.findOne({ user_id })
+    
     const data = [...priority] // 배열로 형변환
     
     let total = 0
