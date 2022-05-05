@@ -1,7 +1,7 @@
-import Description1 from "./Description1";
-import Description2 from "./Description2";
-import Description3 from "./Description3";
-import Description4 from "./Description4";
+import MainContent1 from "./MainContent1";
+import MainContent2 from "./MainContent2";
+import MainContent3 from "./MainContent3";
+import MainContent4 from "./MainContent4";
 import { MainPage } from "./styles/Style";
 
 /** Main pages component
@@ -11,10 +11,10 @@ import { MainPage } from "./styles/Style";
 export default function Main() {
   return (
     <MainPage>
-      <Description1 />
-      <Description2 />
-      <Description3 />
-      <Description4 />
+      <MainContent1 />
+      <MainContent2 />
+      <MainContent3 />
+      <MainContent4 />
     </MainPage>
   );
 }

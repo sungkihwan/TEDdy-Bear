@@ -85,8 +85,8 @@ function Community() {
         ))}
       </RankCard>
       {userList.map((user, index) => (
-        <Link onClick={() => navigate(`/users/${user.id}`)}>
-          <UserCard key={index}>
+        <Link key={index} onClick={() => navigate(`/users/${user.id}`)}>
+          <UserCard>
             <p>{user.name}님</p>
             <p>{user.email}</p>
             <p>{user.description}</p>

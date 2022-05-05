@@ -32,7 +32,6 @@ function DateButton({
     // 잔디 MVP에서 dailyList가 있다면 정보를 띄워줍니다.
     setSelectedDate(stringifiedDate);
     setDailyList(null);
-    console.log(watchedDays);
     try {
       const res = await Api.get(
         `viewhistorydatelist/${user.id}/${stringifiedDate}`

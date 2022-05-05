@@ -168,3 +168,23 @@ textarea {
   width: 15px !important;
   height: 15px !important;
 }
+
+.comment {
+  width: 1040px;
+  height: 90px;
+  border-radius: 30px;
+  background-color: #d7ccc8;
+  color: #795548;
+  padding: 10px;
+  border: 2px solid red;
+
+  /* overflow: auto; */
+  text-align: left;
+}
+
+.commentbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}

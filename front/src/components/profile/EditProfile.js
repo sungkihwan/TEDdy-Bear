@@ -17,7 +17,7 @@ function EditProfile() {
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
-
+  const [modifyPassword, setModifyPassword] = useState("");
   useEffect(() => {
     try {
       const getUserData = async () => {
@@ -95,11 +95,24 @@ function EditProfile() {
   };
 
   const updateData = (e) => {
-    console.log(e.target.name, e.target.value);
     setEditUser((cur) => ({
       ...cur,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const onChangePW = (e) => {
+    setModifyPassword(e.target.value);
+  };
+
+  const handleModifyPW = () => {
+    const data = {
+      id: userState.user.id,
+      password: modifyPassword,
+    };
+    Api.post("user/update/password", data).then((res) => console.log(res.data));
+    setModifyPassword("");
+    alert("비밀번호 변경 완료");
   };
 
   return (
@@ -172,9 +185,24 @@ function EditProfile() {
         </MySelect>
       </EachEdit>
       <EachEdit>
+        <EditText>비밀번호</EditText>
+        <MyInput
+          type="password"
+          value={modifyPassword}
+          name="password"
+          onChange={onChangePW}
+        />
+      </EachEdit>
+      <EachEdit>
         <EditText>회원 탈퇴</EditText>
         <div style={{ width: "510px" }}>
           <MyButton style={{ backgroundColor: "#EA541E" }}>회원 탈퇴</MyButton>
+          <MyButton
+            onClick={handleModifyPW}
+            style={{ backgroundColor: "#1e90ff", marginLeft: "35px" }}
+          >
+            비밀번호 변경
+          </MyButton>
         </div>
       </EachEdit>
       <MyButton onClick={saveEdit}>저장</MyButton>
