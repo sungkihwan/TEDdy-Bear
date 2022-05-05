@@ -13,7 +13,7 @@ const commentRouter = Router();
  *     tags: [Comment]
  *     parameters:
  *       - in: path
- *         name: talkId   
+ *         name: talkId
  *         required: true
  *         schema:
  *           type: string
@@ -36,13 +36,13 @@ const commentRouter = Router();
  */
 commentRouter.get("/talks/:talkId/comments", async function (req, res, next) {
   try {
-    const talkId = Number(req.params.talkId)
+    const talkId = Number(req.params.talkId);
 
     const comments = await CommentService.getComments(talkId);
     if (comments.errorMessage) {
-      throw new Error(comments.errorMessage)
+      throw new Error(comments.errorMessage);
     }
-    
+
     res.status(200).send(comments);
   } catch (error) {
     next(error);
@@ -90,30 +90,39 @@ commentRouter.get("/talks/:talkId/comments", async function (req, res, next) {
  *       "500":
  *          description: 서버 에러
  */
-commentRouter.post("/comments/comment", login_required, async function (req, res, next) {
-  try {
-    const mode = req.body.mode
-    const userId = req.currentUserId
-    const talkId = Number(req.body.talkId)
-    const parentCommentId = mode === 'reply' ? req.body.parentCommentId : null
-    const comment = req.body.comment
-    
-    let result
-    if(mode === 'comment') {
-      result = await CommentService.addComment(talkId, comment, userId)
-    } else if(mode === 'reply') {
-      result = await CommentService.addReply(parentCommentId, comment, userId)
+commentRouter.post(
+  "/comments/comment",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const mode = req.body.mode;
+      const userId = req.currentUserId;
+      const talkId = Number(req.body.talkId);
+      const parentCommentId =
+        mode === "reply" ? req.body.parentCommentId : null;
+      const comment = req.body.comment;
+
+      let result;
+      if (mode === "comment") {
+        result = await CommentService.addComment(talkId, comment, userId);
+      } else if (mode === "reply") {
+        result = await CommentService.addReply(
+          parentCommentId,
+          comment,
+          userId
+        );
+      }
+
+      if (result.errorMessage) {
+        throw new Error(result.errorMessage);
+      }
+
+      res.status(201).send(result);
+    } catch (error) {
+      next(error);
     }
-    
-    if(result.errorMessage) {
-      throw new Error(result.errorMessage)
-    }
-  
-    res.status(201).send(result);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 /**
  * @swagger
@@ -124,7 +133,7 @@ commentRouter.post("/comments/comment", login_required, async function (req, res
  *     tags: [Comment, Reply]
  *     parameters:
  *       - in: path
- *         name: comment_id   
+ *         name: comment_id
  *         required: true
  *         schema:
  *           type: string
@@ -149,27 +158,30 @@ commentRouter.post("/comments/comment", login_required, async function (req, res
  *       "500":
  *          description: 서버 에러
  */
-commentRouter.delete("/comments/:comment_id", login_required, async function (req, res, next) {
-  try {
-    const mode = req.query.mode
-    const userId = req.currentUserId
-    const comment_id = req.params.comment_id
-    
-    let result
-    if(mode === 'comment') {
-      result = await CommentService.deleteComment(comment_id, userId);
-    } else if(mode === 'reply') {
-      result = await CommentService.deleteReply(comment_id, userId);
+commentRouter.delete(
+  "/comments/:comment_id",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const mode = req.body.mode;
+      const userId = req.currentUserId;
+      const comment_id = req.params.comment_id;
+      let result;
+      if (mode === "comment") {
+        result = await CommentService.deleteComment(comment_id, userId);
+      } else if (mode === "reply") {
+        result = await CommentService.deleteReply(comment_id, userId);
+      }
+
+      if (result.errorMessage) {
+        throw new Error(result.errorMessage);
+      }
+
+      res.status(200).send(result);
+    } catch (error) {
+      next(error);
     }
-    
-    if (result.errorMessage) {
-      throw new Error(result.errorMessage)
-    }
-  
-    res.status(200).send(result);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 export { commentRouter };

@@ -72,6 +72,7 @@ talkRouter.get("/talks/my", login_required, async (req, res, next) => {
     const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
     const userId = req.currentUserId;
     const talks = await TalkService.getMyTalk({ size, userId });
+
     if (talks.errorMessage) {
       throw new Error(talks.errorMessage);
     }
