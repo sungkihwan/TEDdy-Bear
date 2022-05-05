@@ -231,6 +231,7 @@ class userAuthService {
     if (toUpdate.level == null) delete toUpdate.level;
     if (toUpdate.cotton == null) delete toUpdate.cotton;
     if (toUpdate.height == null) delete toUpdate.height;
+    if (toUpdate.alert == null) delete toUpdate.alert;
     if (toUpdate.exp == null) delete toUpdate.exp;
 
     const updatedUser = await User.updateById({ user_id, toUpdate });
