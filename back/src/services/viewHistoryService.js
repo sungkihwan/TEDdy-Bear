@@ -8,6 +8,7 @@ import { Talk, ViewHistory, User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { utils } from './utils';
 import { TalkService } from './talkService';
+import { TopicPriorityService } from './TopicPriorityService';
 
 class ViewHistoryService {
   // addViewHistory()
@@ -18,6 +19,9 @@ class ViewHistoryService {
     const talk_id = talk._id;
     const newViewHistory = { user_id, id, talkId: talk_id };
 
+    //db에 저장
+    const createdNewHistory = await ViewHistory.create({ newViewHistory });
+
     // view 카운드 올리기
     if ((await TalkService.updateView(talkId)) === false) {
       console.log('조회수 업데이트 실패');
@@ -27,8 +31,10 @@ class ViewHistoryService {
     const toUpdate = { "cotton": 1 } 
     User.updateCountById({ user_id, toUpdate })
 
-    //db에 저장
-    const createdNewHistory = await ViewHistory.create({ newViewHistory });
+    // 우선도 업데이트
+    const user = await User.findById({ user_id })
+    await TopicPriorityService.plusPriorities({ user_id: user._id, topics: talk.topics, point: 1})
+    
     return createdNewHistory;
   }
 
