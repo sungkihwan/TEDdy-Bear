@@ -106,12 +106,8 @@ function LectureExplanation() {
     const num = e.target.name;
     const commentIndex = Number(num[0]);
     const replyIndex = Number(num[1]);
-    const data = {
-      mode: "reply",
-    };
-    Api.commentDelete(
-      `comments/${commentList[commentIndex].reply[replyIndex]._id}`,
-      data
+    Api.delete(
+      `comments/${commentList[commentIndex].reply[replyIndex]._id}?mode=reply`
     ).then((res) => {
       Api.get(`talks/${talkId}/comments`).then((res) => {
         setCommentList(res.data.payload);
@@ -121,10 +117,8 @@ function LectureExplanation() {
 
   const handleCommentDelete = (e) => {
     const idx = Number(e.target.name);
-    const data = {
-      mode: "comment",
-    };
-    Api.commentDelete(`comments/${commentList[idx]._id}`, data).then((res) => {
+
+    Api.delete(`comments/${commentList[idx]._id}?mode=comment`).then((res) => {
       Api.get(`talks/${talkId}/comments`).then((res) => {
         setCommentList(res.data.payload);
       });
@@ -199,7 +193,9 @@ function LectureExplanation() {
                     <div
                       style={{
                         width: "100%",
-                        height: "120px",
+                        height: `${
+                          reply.user._id === user._id ? "120px" : "70px"
+                        }`,
                         border: "2px solid black",
                         display: "flex",
                       }}
@@ -244,13 +240,15 @@ function LectureExplanation() {
                           </p>
                         </div>
                         <div style={{ textAlign: "right" }}>
-                          <GoButton
-                            name={`${index}${i}`}
-                            style={{ marginTop: "10px" }}
-                            onClick={handleReplyDelete}
-                          >
-                            삭제
-                          </GoButton>
+                          {reply.user._id === user._id && (
+                            <GoButton
+                              name={`${index}${i}`}
+                              style={{ marginTop: "10px" }}
+                              onClick={handleReplyDelete}
+                            >
+                              삭제
+                            </GoButton>
+                          )}
                         </div>
                       </div>
                     </div>
