@@ -40,13 +40,17 @@ class TalkService {
     // if (!myTopics) { return { errorMessage: "주제 조회에 실패하였습니다." } }
 
     // 추천 알고리즘 적용
-    const user = await User.findById({ userId })
-    const myTopics = await TopicPriorityService.getMyFavoriteTopics({ user_id: user._id })
+    const user = await User.findById({ userId });
+    const myTopics = await TopicPriorityService.getMyFavoriteTopics({
+      user_id: user._id,
+    });
 
     const myTalk = await Talk.findManyRandom(myTopics, size);
-    if (myTalk.length === 0) { return { errorMessage: "영상 조회에 실패하였습니다." } }
+    if (myTalk.length === 0) {
+      return { errorMessage: '영상 조회에 실패하였습니다.' };
+    }
 
-    return myTalk
+    return myTalk;
   }
 
   static async updateView(talkId) {
@@ -94,6 +98,10 @@ class TalkService {
       return true;
     }
     return false;
+  }
+
+  static async likeRanking({ size }) {
+    return await Talk.likeRanking({ size });
   }
 }
 

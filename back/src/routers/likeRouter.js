@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
-import { likeService } from "../services/likeService";
+import { Router } from 'express';
+import { login_required } from '../middlewares/login_required';
+import { likeService } from '../services/likeService';
 
 const likeRouter = Router();
 likeRouter.use(login_required);
@@ -40,16 +40,30 @@ likeRouter.use(login_required);
  *            type: object
  *            properties:
  *              talkId:
- *                  type: ObjectId
+ *                  type: number
+ *    responses:
+ *       "201":
+ *         content:
+ *           application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  payload:
+ *                    type: object
+ *                    properties:
+ *                      like_id:
+ *                        type: string
  */
-// like get, post, delete
 likeRouter.post(
-  "/talks/talk/like",
+  '/talks/talk/like',
   login_required,
   async function (req, res, next) {
     try {
       const userId = req.currentUserId;
       const talkId = Number(req.body.talkId);
+
       const newLike = await likeService.addlike({ userId, talkId });
 
       res.status(200).send(newLike);
@@ -73,11 +87,19 @@ likeRouter.post(
  *          content:
  *            application/json:
  *              schema:
- *                  $ref: '#components/schemas/Like'
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  payload:
+ *                    type: object
+ *                    properties:
+ *                      talkId :
+ *                        $ref: '#components/schemas/Talk'
  */
 // 유저가 좋아요한 동영상 리스트 가져오기
 
-likeRouter.get("/likes/my", async function (req, res, next) {
+likeRouter.get('/likes/my', async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const userLike = await likeService.getUserLikeList({ userId });
@@ -103,16 +125,24 @@ likeRouter.get("/likes/my", async function (req, res, next) {
  *        schema:
  *          type: string
  *    responses:
- *      "200":
- *        description: 유저 목록 조회 성공
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#components/schemas/Like'
+ *        "200":
+ *          description: 영상 목록 조회
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                  payload:
+ *                    type: object
+ *                    properties:
+ *                      user_id :
+ *                        $ref: '#components/schemas/User'
  */
 
 // 해당 동영상에 좋아요를 누른 유저 리스트 가져오기
-likeRouter.get("/userlist/:talkId", async function (req, res, next) {
+likeRouter.get('/userlist/:talkId', async function (req, res, next) {
   try {
     const talkId = Number(req.params.talkId);
     const talkLike = await likeService.getTalkLikeList({ talkId });
@@ -141,12 +171,15 @@ likeRouter.get("/userlist/:talkId", async function (req, res, next) {
  *        description: 좋아요 취소 성공
  *        content:
  *          application/json:
- *            schema:
- *                $ref: '#components/schemas/Like'
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
  */
 
 // 좋아요 삭제
-likeRouter.delete("/talks/talk/like/:talkId", async function (req, res, next) {
+likeRouter.delete('/talks/talk/like/:talkId', async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     const talkId = Number(req.params.talkId);
