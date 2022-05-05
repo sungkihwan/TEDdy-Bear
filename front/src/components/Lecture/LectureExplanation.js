@@ -7,12 +7,14 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
-
+import ReplyEdit from "./ReplyEdit";
 function LectureExplanation() {
   const userState = useContext(UserStateContext);
   const params = useParams();
   const [commentList, setCommentList] = useState([]);
   const [view, setView] = useState(0);
+  const [openReply, setOpenReply] = useState(false);
+  console.log(commentList);
   const [comment, setComment] = useState(() => {
     if (userState.user === null) {
       return true;
@@ -86,6 +88,24 @@ function LectureExplanation() {
       });
     });
     setUserComment("");
+  };
+
+  const handleReplyDelete = (e) => {
+    console.log(e.target.name);
+    const num = e.target.name;
+    const commentIndex = Number(num[0]);
+    const replyIndex = Number(num[1]);
+    const data = {
+      mode: "reply",
+    };
+    Api.commentDelete(
+      `comments/${commentList[commentIndex].reply[replyIndex]._id}`,
+      data
+    ).then((res) => {
+      Api.get(`talks/${talkId}/comments`).then((res) => {
+        setCommentList(res.data.payload);
+      });
+    });
   };
 
   const handleCommentDelete = (e) => {
@@ -162,12 +182,93 @@ function LectureExplanation() {
                 <h4>{usercomment.user.name}</h4>
                 <p>{usercomment.comment}</p>
               </div>
+              {usercomment.reply.length !== 0 &&
+                usercomment.reply.map((reply, i) => (
+                  <div key={i}>
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "120px",
+                        border: "2px solid black",
+                        display: "flex",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "10%",
+                          height: "70px",
+                          border: "2px solid red",
+                          display: "flex",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "50%",
+                            height: "35px",
+                          }}
+                        ></div>
+                        <div
+                          style={{
+                            width: "50%",
+                            height: "35px",
+                            borderLeft: "2px dotted black",
+                            borderBottom: "2px dotted black",
+                          }}
+                        ></div>
+                      </div>
+                      <div
+                        style={{
+                          width: "90%",
+                          height: "70px",
+                          border: "2px solid green",
+                          textAlign: "left",
+                        }}
+                      >
+                        <div className="reply">
+                          <h4 style={{ padding: 0, margin: 0 }}>
+                            {reply.user.name}
+                          </h4>
+                          <p style={{ padding: 0, margin: 10 }}>
+                            {reply.comment}
+                          </p>
+                        </div>
+                        <div style={{ textAlign: "right" }}>
+                          <GoButton
+                            name={`${index}${i}`}
+                            style={{ marginTop: "10px" }}
+                            onClick={handleReplyDelete}
+                          >
+                            삭제
+                          </GoButton>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               <div style={{ width: "100%", textAlign: "right" }}>
+                {openReply && (
+                  <ReplyEdit
+                    setOpenReply={setOpenReply}
+                    talkId={talkId}
+                    parentCommentId={usercomment._id}
+                    setCommentList={setCommentList}
+                  ></ReplyEdit>
+                )}
+                {userState.user !== null && (
+                  <GoButton
+                    name={index}
+                    disabled={comment}
+                    onClick={() => setOpenReply(true)}
+                  >
+                    대댓글
+                  </GoButton>
+                )}
                 {userState.user._id === usercomment.user._id && (
                   <GoButton
                     name={index}
                     onClick={handleCommentDelete}
                     disabled={comment}
+                    style={{ marginLeft: "10px" }}
                   >
                     댓글 삭제
                   </GoButton>
