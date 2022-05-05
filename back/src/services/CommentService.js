@@ -82,7 +82,7 @@ class CommentService {
     // 작성자 _id 조회
     const user = await User.findById({ userId })
     if(!user) { return { errorMessage: "존재하지 않는 사용자입니다." } }
-
+    
     // 유효한 댓글 id인지 확인
     if(!mongoose.isValidObjectId(comment_id)) { return { errorMessage: "유효한 댓글 id가 아닙니다." } }
 

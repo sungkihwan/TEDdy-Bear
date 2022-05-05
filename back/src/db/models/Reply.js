@@ -16,7 +16,7 @@ class Reply {
     if(typeof(comment_id) !== "object") { comment_id = mongoose.Types.ObjectId(comment_id) }
     if(typeof(user_id) !== "object") { user_id = mongoose.Types.ObjectId(user_id) }
 
-    return ReplyModel.deleteOne({ _id: comment_id, user: user_id });
+    return ReplyModel.findOneAndDelete({ _id: comment_id, user: user_id });
   }
 
   static deleteMany({ parentCommentId, list_comment_id }) {
