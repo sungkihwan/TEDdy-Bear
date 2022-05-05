@@ -129,7 +129,7 @@ commentRouter.post(
  * paths:
  *  /comments/comment:
  *   delete:
- *     summary: 강연 댓글 삭제
+ *     summary: 강연 댓글 삭제 (?mode=comment 또는 ?mode=reply 붙여야 함)
  *     tags: [Comment, Reply]
  *     parameters:
  *       - in: path
@@ -163,9 +163,10 @@ commentRouter.delete(
   login_required,
   async function (req, res, next) {
     try {
-      const mode = req.body.mode;
+      const mode = req.query.mode;
       const userId = req.currentUserId;
       const comment_id = req.params.comment_id;
+      
       let result;
       if (mode === "comment") {
         result = await CommentService.deleteComment(comment_id, userId);
