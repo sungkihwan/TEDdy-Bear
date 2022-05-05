@@ -199,6 +199,11 @@ class userAuthService {
       message = "newbie";
     }
 
+    // 솜 추가하기
+    const cottonUpdateState = await this.updateCotton({ id: user.id });
+    user.cottonUpdateState = cottonUpdateState;
+    if (cottonUpdateState) user.cotton += 3;
+
     return { message, userInfo: user };
   }
 
