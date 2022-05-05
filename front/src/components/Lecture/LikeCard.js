@@ -31,12 +31,12 @@ function LikeCard({ lectureData, type, cname = "" }) {
     );
     const json = await response.json();
 
-    for (let i = 0; i < lectureData.length; i++) {
-      if (lectureData[i].talk_id.url === url) {
-        json.metadata.title = lectureData[i].talk_id.title + " - ";
-        for (let j = 0; j < lectureData[i].talk_id.speakers.length; j++) {
-          json.metadata.title += lectureData[i].talk_id.speakers[j];
-          if (lectureData[i].talk_id.speakers.length >= 2) {
+    for (const prop in lectureData) {
+      if (lectureData[prop].url === url) {
+        json.metadata.title = lectureData[prop].title + " - ";
+        for (let j = 0; j < lectureData[prop].speakers.length; j++) {
+          json.metadata.title += lectureData[prop].speakers[j];
+          if (lectureData[prop].speakers.length >= 2) {
             json.metadata.title += ", ";
           }
         }
@@ -51,8 +51,8 @@ function LikeCard({ lectureData, type, cname = "" }) {
   const handleOnClick = (data) => {
     const sendData = {
       user_id: userState.user.id,
-      talkId: data.talk_id.id,
-      url: data.talk_id.url,
+      talkId: data.talk.id,
+      url: data.talk.url,
     };
     Api.post("viewhistory/create", sendData);
     window.open(data.talk_id.url, "_blank");
@@ -72,14 +72,14 @@ function LikeCard({ lectureData, type, cname = "" }) {
             {type}
           </h1>
         </div>
-        {!lectureData.errorMessage ? (
+        {lectureData.length !== 0 ? (
           <Carousel itemsToShow={3}>
-            {lectureData.map((data, index) => (
+            {Object.keys(lectureData).map((data, index) => (
               <div className="cardbox" key={index}>
                 <Item onClick={() => handleOnClick(data)}>
                   <div>
                     <LinkPreview
-                      url={data.talk_id.url}
+                      url={lectureData[data].url}
                       fetcher={customFetcher}
                       width="300px"
                       height="250px"
@@ -87,7 +87,7 @@ function LikeCard({ lectureData, type, cname = "" }) {
                     />
                   </div>
                 </Item>
-                <LectureInfo videoInfo={data.talk_id}></LectureInfo>
+                <LectureInfo videoInfo={lectureData[data]}></LectureInfo>
               </div>
             ))}
           </Carousel>

@@ -2,10 +2,9 @@ import React, { useContext } from "react";
 import LectureCard from "./LectureCard";
 import { UserStateContext } from "../../App";
 
-function LectureList({ lectureData, myLectureData }) {
+function LectureList({ lectureData, myLectureData, topLikeLecture }) {
   const userState = useContext(UserStateContext);
   const isLogin = !!userState.user;
-  console.log(lectureData);
 
   return (
     <div style={{ display: "flex" }}>
@@ -43,7 +42,7 @@ function LectureList({ lectureData, myLectureData }) {
         )}
         {isLogin ? (
           <LectureCard
-            lectureData={myLectureData}
+            lectureData={topLikeLecture}
             type="인기 영상"
           ></LectureCard>
         ) : (

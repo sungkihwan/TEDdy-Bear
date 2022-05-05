@@ -13,7 +13,7 @@ function MyTalksProvider({ children }) {
     });
 
     Api.get("likes/my").then((res) => {
-      setMyLikeList(res.data);
+      setMyLikeList(res.data.payload);
     });
   }, []);
 

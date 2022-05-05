@@ -9,11 +9,12 @@ import { brown } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
 
 function LectureExplanation() {
-  const userState = useContext(UserStateContext);
+  const user = useContext(UserStateContext).user;
+  const [cotton, setCotton] = useState();
   const params = useParams();
   const [view, setView] = useState(0);
   const [comment, setComment] = useState(() => {
-    if (userState.user === null) {
+    if (user === null) {
       return true;
     } else {
       return false;
@@ -46,14 +47,19 @@ function LectureExplanation() {
     }
   };
 
-  const handleWatch = () => {
+  const handleWatch = async () => {
     const data = {
-      user_id: userState.user.id,
+      user_id: user.id,
       talkId: talkId,
     };
-    Api.post("viewhistory/create", data).then((res) => console.log(res.data));
+    setCotton((cur) => cur + 1);
+    alert("솜 한 개를 받았습니다!");
     window.open(lecture.url, "_blank");
     setView((cur) => cur + 1);
+    await Api.post("viewhistory/create", data);
+    await Api.put(`users/${user.id}`, {
+      cotton: cotton,
+    });
   };
 
   useEffect(() => {
@@ -63,8 +69,13 @@ function LectureExplanation() {
       customFetcher(res.data.url);
       setView(res.data.teddy_view_count);
     };
+    const fetchCotton = async () => {
+      const res = await Api.get(`users/${user.id}`);
+      setCotton(res.data.cotton);
+    };
     fetchTalks();
-  }, [talkId]);
+    fetchCotton();
+  }, [talkId, user.id]);
 
   return (
     <div className="infobox">

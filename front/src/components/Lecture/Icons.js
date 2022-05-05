@@ -7,14 +7,13 @@ import * as Api from "../../api";
 import { MyTalksContext } from "../common/MyTalksContext";
 
 function Icons({ videoInfo }) {
-  console.log(videoInfo);
   const userState = useContext(UserStateContext);
   const { myLikeList, myBookMarkList, setMyLikeList, setMyBookMarkList } =
     useContext(MyTalksContext);
   const [star, setStar] = useState(false);
   const [heart, setHeart] = useState(false);
 
-  const talkId = videoInfo.talkId ? videoInfo.talkId : videoInfo.id;
+  const talkId = videoInfo.id;
   const bookmarkId = videoInfo._id;
 
   const [userClick, setUserClick] = useState(() => {
@@ -32,8 +31,10 @@ function Icons({ videoInfo }) {
       setStar(false);
     }
 
-    for (let i = 0; i < myLikeList.length; i++) {
-      if (talkId === myLikeList[i].talk_id.id) setHeart(true);
+    if (myLikeList[talkId]) {
+      setHeart(true);
+    } else {
+      setHeart(false);
     }
 
     const node = loadCSS(
@@ -50,13 +51,14 @@ function Icons({ videoInfo }) {
     if (heart) {
       Api.delete(`talks/talk/like/${talkId}`);
       setMyLikeList((cur) => {
-        const newArr = [...cur];
-        return newArr.slice(0, -1);
+        const newObj = { ...cur };
+        delete newObj[talkId];
+        return newObj;
       });
       setHeart(false);
     } else {
       Api.post("talks/talk/like", { talkId: talkId });
-      setMyLikeList((cur) => [...cur, { talk_id: { id: talkId } }]);
+      setMyLikeList((cur) => ({ ...cur, [talkId]: { id: talkId } }));
       setHeart(true);
     }
   };

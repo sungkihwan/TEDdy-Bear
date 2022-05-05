@@ -5,17 +5,14 @@ import { UserStateContext } from "../../App";
 function Lecture() {
   const [lectureData, setLectureData] = useState([]);
   const [myLectureData, setMyLectureData] = useState([]);
+  const [topLikeLecture, setTopLikeLecture] = useState([]);
   const userState = useContext(UserStateContext);
   useEffect(() => {
     Api.get("talks/today", "?size=12").then((res) => setLectureData(res.data));
-    // Api.post("talks/my", { size: 12 }).then((res) =>
-    //   setMyLectureData(res.data)
-    // );
-    // if (userState.user.myTopics.length !== 0) {
-    //   Api.post("talks/my", { size: 12 }).then((res) =>
-    //     setMyLectureData(res.data)
-    //   );
-    // }
+    Api.get("talks/like/ranking", "?size=10").then((res) => {
+      console.log(res.data);
+      setTopLikeLecture(res.data);
+    });
     if (userState.user !== null) {
       if (userState.user.myTopics.length !== 0) {
         Api.get("talks/my", "?size=12").then((res) =>
@@ -31,6 +28,7 @@ function Lecture() {
         lectureData={lectureData}
         myLectureData={myLectureData}
         setLectureData={setLectureData}
+        topLikeLecture={topLikeLecture}
       ></LectureList>
     </div>
   );
