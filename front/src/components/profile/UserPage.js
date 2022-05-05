@@ -53,6 +53,8 @@ function UserPage() {
     return <Loading />;
   }
 
+  //Img 테스트
+
   return (
     <>
       <Page>
@@ -66,6 +68,7 @@ function UserPage() {
           <Bear isEditable={isEditable} user={user} />
         </UserRightPage>
       </Page>
+
       <Lawn user={user} />
     </>
   );
