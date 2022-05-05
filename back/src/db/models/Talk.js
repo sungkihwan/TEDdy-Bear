@@ -10,7 +10,7 @@ class Talk {
   }
 
   static findOneByObjectId({ _id }) {
-    return TalkModel.findOne({ _id })
+    return TalkModel.findOne({ _id });
   }
 
   static findManyRandom(topics, size) {
@@ -31,6 +31,13 @@ class Talk {
   }
   static findByOid({ _id }) {
     return TalkModel.findOne({ _id: _id });
+  }
+
+  static async likeRanking({ size }) {
+    return await TalkModel.find()
+      .sort({ teddy_like_count: -1 })
+      .limit(size)
+      .exec();
   }
 }
 

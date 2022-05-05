@@ -4,10 +4,11 @@
  * viewHistoryRouter에서 넘어온 정보들로 특정 로직을 구성하여 ViewHistory.js에서 처리 후 viewHistoryRouter로 return
  */
 
-import { Talk, ViewHistory } from '../db';
+import { Talk, ViewHistory, User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { utils } from './utils';
 import { TalkService } from './talkService';
+import { TopicPriorityService } from './TopicPriorityService';
 
 class ViewHistoryService {
   // addViewHistory()
@@ -18,13 +19,22 @@ class ViewHistoryService {
     const talk_id = talk._id;
     const newViewHistory = { user_id, id, talkId: talk_id };
 
+    //db에 저장
+    const createdNewHistory = await ViewHistory.create({ newViewHistory });
+
     // view 카운드 올리기
     if ((await TalkService.updateView(talkId)) === false) {
       console.log('조회수 업데이트 실패');
     }
 
-    //db에 저장
-    const createdNewHistory = await ViewHistory.create({ newViewHistory });
+    // 솜 + 1
+    const toUpdate = { "cotton": 1 } 
+    User.updateCountById({ user_id, toUpdate })
+
+    // 우선도 업데이트
+    const user = await User.findById({ user_id })
+    await TopicPriorityService.plusPriorities({ user_id: user._id, topics: talk.topics, point: 1})
+    
     return createdNewHistory;
   }
 

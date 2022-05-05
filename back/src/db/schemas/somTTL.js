@@ -13,7 +13,6 @@ const SomTTLSchema = new Schema(
       expires: 3600 * 24,
     },
   },
-  { _id : false }
 );
 
 const SomTTLModel = model("SomTTL", SomTTLSchema);

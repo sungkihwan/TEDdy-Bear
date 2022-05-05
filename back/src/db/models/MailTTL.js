@@ -5,8 +5,8 @@ class MailTTL {
     return await MailTTLModel.create(newItem);
   }
 
-  static async find({ code }) {
-    return MailTTLModel.find({ code });
+  static async findByCode({ code }) {
+    return MailTTLModel.findOne({ code });
   }
 }
 

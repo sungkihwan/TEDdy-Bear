@@ -44,10 +44,12 @@ class TalkService {
     const myTopics = await TopicPriorityService.getMyFavoriteTopics({
       user_id: user._id,
     });
+
     const myTalk = await Talk.findManyRandom(myTopics, size);
     if (myTalk.length === 0) {
       return { errorMessage: "영상 조회에 실패하였습니다." };
     }
+
     return myTalk;
   }
 
@@ -96,6 +98,10 @@ class TalkService {
       return true;
     }
     return false;
+  }
+
+  static async likeRanking({ size }) {
+    return await Talk.likeRanking({ size });
   }
 }
 

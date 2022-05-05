@@ -10,7 +10,7 @@ class TopicPriorityService {
         myTopicPriority.priority.get(topics[i]) + point
       );
     }
-    myTopicPriority.save();
+    await myTopicPriority.save();
     return;
   }
 
@@ -22,7 +22,7 @@ class TopicPriorityService {
         myTopicPriority.priority.get(topics[i]) - point
       );
     }
-    myTopicPriority.save();
+    await myTopicPriority.save();
     return;
   }
 

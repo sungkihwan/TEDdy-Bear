@@ -1,5 +1,4 @@
-import { TopicPriority, User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
-import { MailTTL } from "../db";
+import { TopicPriority, User, SomTTL, MailTTL } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
@@ -7,6 +6,7 @@ import { OAuth2Client } from "google-auth-library";
 import { sendMail } from "../utils/email-sender";
 import { gcsBucket } from "../utils/multer";
 import generator from "generate-password";
+import { TopicPriorityService } from "./TopicPriorityService";
 
 class userAuthService {
   static async addUser({
@@ -57,6 +57,15 @@ class userAuthService {
     // 선호도 도큐먼트 생성
     await TopicPriority.create({ user_id: createdNewUser._id });
 
+    // 관심 주제 우선도 업데이트
+    if (createdNewUser.myTopics.length > 0) {
+      await TopicPriorityService.plusPriorities({
+        user_id: createdNewUser._id,
+        topics: createdNewUser.myTopics,
+        point: 10,
+      });
+    }
+
     return createdNewUser;
   }
 
@@ -89,7 +98,42 @@ class userAuthService {
     // 반환할 loginuser 객체
     const loginUser = await this.getLoginUserInfoBy(user);
 
+    // 솜 추가하기
+    const cottonUpdateState = await this.updateCotton({ id: user.id });
+    loginUser.cottonUpdateState = cottonUpdateState;
+    if (cottonUpdateState) loginUser.cotton += 3;
+
     return loginUser;
+  }
+
+  static async updateCotton({ id }) {
+    const check24Hour = await SomTTL.findById({ id });
+    if (!check24Hour) {
+      const newItem = { id: id };
+      const toUpdate = { cotton: 3 };
+      await User.updateCountById({ user_id: id, toUpdate });
+      await SomTTL.create({ newItem });
+      return true;
+    }
+    return false;
+  }
+
+  static async updateExp({ user_id, exp }) {
+    const user = await User.findById({ user_id });
+
+    if (!user) {
+      const errorMessage = "존재하지 않는 유저 입니다. 토큰을 확인해주세요.";
+      return { errorMessage };
+    }
+
+    if (user.cotton - exp < 0) {
+      const errorMessage =
+        "현재 갖고 있는 솜 보다 많은양을 사용할 수 없습니다.";
+      return { errorMessage };
+    }
+
+    const toUpdate = { cotton: user.cotton - exp, exp: user.exp + exp };
+    return await User.updateById({ user_id, toUpdate });
   }
 
   static async getLoginUserInfoBy(user) {
@@ -169,6 +213,7 @@ class userAuthService {
       const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
+
     if (!toUpdate.name) delete toUpdate.name;
     if (!toUpdate.password || user.infoProvider !== "User")
       delete toUpdate.password;
@@ -183,7 +228,34 @@ class userAuthService {
     if (toUpdate.height == null) delete toUpdate.height;
     if (toUpdate.exp == null) delete toUpdate.exp;
 
-    return await User.updateById({ user_id, toUpdate });
+    const updatedUser = await User.updateById({ user_id, toUpdate });
+    if (!updatedUser) {
+      return { errorMessage: "사용자 업데이트 실패" };
+    }
+
+    // 관심 주제 우선도 업데이트
+    const preMyTopics = user.myTopics;
+    const postMyTopics = toUpdate.myTopics;
+
+    const topicsToAdd = postMyTopics.filter((x) => !preMyTopics.includes(x));
+    if (topicsToAdd) {
+      await TopicPriorityService.plusPriorities({
+        user_id: updatedUser._id,
+        topics: topicsToAdd,
+        point: 10,
+      });
+    }
+
+    const topicsToDelete = preMyTopics.filter((x) => !postMyTopics.includes(x));
+    if (topicsToDelete) {
+      await TopicPriorityService.minusPriorities({
+        user_id: updatedUser._id,
+        topics: topicsToDelete,
+        point: 10,
+      });
+    }
+
+    return updatedUser;
   }
 
   static async getUserInfo({ user_id }) {
@@ -270,8 +342,8 @@ class userAuthService {
   }
 
   static async checkCode({ code }) {
-    const auth = await MailTTL.find({ code });
-    if (auth.length == 0) {
+    const auth = await MailTTL.findByCode({ code });
+    if (!auth) {
       const errorMessage = "인증에 실패했습니다.";
       return { errorMessage };
     }
@@ -280,28 +352,20 @@ class userAuthService {
   }
 
   static async updateImg({ user_id, url }) {
-    const user = await User.findById({ user_id });
-
-    if (!user) {
-      const errorMessage =
-        "해당 유저가 존재하지 않습니다. 토큰을 확인해주세요.";
-      return { errorMessage };
-    }
-
-    // gcp 기존 이미지 삭제
-    if (user.profileUrl != "") {
-      const url = user.profileUrl.split(
-        `https://${process.env.GCS_BUCKET}.storage.googleapis.com/`
-      )[1];
-      gcsBucket.file(url).delete();
-    }
-
     const toUpdate = { profileUrl: url };
     const updatedUser = await User.updateImg({ user_id, toUpdate });
 
     if (!updatedUser) {
       const errorMessage = "이미지 업로드에 실패 했습니다.";
       return { errorMessage };
+    }
+
+    // gcp 기존 이미지 삭제
+    if (updatedUser.profileUrl != "") {
+      const url = updatedUser.profileUrl.split(
+        `https://${process.env.GCS_BUCKET}.storage.googleapis.com/`
+      )[1];
+      gcsBucket.file(url).delete();
     }
 
     return updatedUser;

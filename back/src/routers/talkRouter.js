@@ -120,4 +120,40 @@ talkRouter.get("/talks/:talk_id", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ *  /talks/like/ranking :
+ *  get:
+ *    summary: "teddy_like_count 순 영상 조회(size개까지) "
+ *    description: "영상 좋아요 순 조회"
+ *    tags: [Talk]
+ *    parameters:
+ *      - in: query
+ *        name: size
+ *        required: true
+ *        description: 인기 순(size 개수 return)
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Talk'
+ */
+
+talkRouter.get("/talks/like/ranking", async function (req, res, next) {
+  try {
+    const size = Number(req.query.size);
+    const likeRanking = await TalkService.likeRanking({ size });
+
+    res.status(200).send(likeRanking);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { talkRouter };

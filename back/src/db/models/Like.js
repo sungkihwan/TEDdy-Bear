@@ -21,7 +21,9 @@ class Like {
 
   // 영상 아이디로 유저 리스트 찾기
   static async findManyByTalkId({ talk_id }) {
-    return await LikeModel.find({ talk_id });
+    return await LikeModel.find({ talk_id })
+      .populate({ path: 'user_id' })
+      .lean();
   }
 
   // 영상, 유저 아이디로 좋아요 삭제
