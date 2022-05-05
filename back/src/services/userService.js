@@ -239,25 +239,27 @@ class userAuthService {
     }
 
     // 관심 주제 우선도 업데이트
-    const preMyTopics = user.myTopics;
-    const postMyTopics = toUpdate.myTopics;
+    if (toUpdate.myTopics) { 
+      const preMyTopics = user.myTopics;
+      const postMyTopics = toUpdate.myTopics;
 
-    const topicsToAdd = postMyTopics.filter((x) => !preMyTopics.includes(x));
-    if (topicsToAdd) {
-      await TopicPriorityService.plusPriorities({
-        user_id: updatedUser._id,
-        topics: topicsToAdd,
-        point: 10,
-      });
-    }
+      const topicsToAdd = postMyTopics.filter((x) => !preMyTopics.includes(x));
+      if (topicsToAdd) {
+        await TopicPriorityService.plusPriorities({
+          user_id: updatedUser._id,
+          topics: topicsToAdd,
+          point: 10,
+        });
+      }
 
-    const topicsToDelete = preMyTopics.filter((x) => !postMyTopics.includes(x));
-    if (topicsToDelete) {
-      await TopicPriorityService.minusPriorities({
-        user_id: updatedUser._id,
-        topics: topicsToDelete,
-        point: 10,
-      });
+      const topicsToDelete = preMyTopics.filter((x) => !postMyTopics.includes(x));
+      if (topicsToDelete) {
+        await TopicPriorityService.minusPriorities({
+          user_id: updatedUser._id,
+          topics: topicsToDelete,
+          point: 10,
+        });
+      }
     }
 
     return updatedUser;
