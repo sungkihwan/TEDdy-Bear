@@ -151,6 +151,8 @@ class userAuthService {
       level: user.level,
       cotton: user.cotton,
       height: user.height,
+      alert: user.alert,
+      profileUrl: user.profileUrl,
       sex: user.sex,
       age: user.age,
       occupation: user.occupation,

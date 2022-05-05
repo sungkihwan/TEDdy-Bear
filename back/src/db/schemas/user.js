@@ -28,7 +28,7 @@ const UserSchema = new Schema(
     profileUrl: {
       type: String,
       required: false,
-      default: '',
+      default: process.env.DEFAULT_IMAGE_URL,
     },
     bearName: {
       type: String,
