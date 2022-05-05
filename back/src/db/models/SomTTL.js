@@ -5,8 +5,8 @@ class SomTTL {
     return await SomTTLModel.create(newItem);
   }
 
-  static async find({ id }) {
-    return SomTTLModel.find({ id });
+  static async findById({ id }) {
+    return SomTTLModel.findOne({ id });
   }
 }
 
