@@ -40,8 +40,11 @@ function LoginForm() {
         payload: user,
       });
       console.log("로그인에 성공했습니다.\n");
+      if (res.data.cottonUpdateState) {
+        alert("솜 세 개를 받았습니다!");
+      }
       // 기본 페이지로 이동함.
-      navigate("/", { replace: true });
+      navigate(`/users/${user.id}`, { replace: true });
     } catch (err) {
       console.log("로그인에 실패하였습니다.\n", err.response);
     }
@@ -68,10 +71,16 @@ function LoginForm() {
       console.log("구글 로그인 성공");
 
       if (message === "newbie") {
+        if (userInfo.cottonUpdateState) {
+          alert("솜 세 개를 받았습니다! 회원정보를 수정해주세요!");
+        }
         navigate("/users/edit", { replace: true });
       } else {
+        if (userInfo.cottonUpdateState) {
+          alert("솜 세 개를 받았습니다!");
+        }
         // 기본 페이지로 이동함.
-        navigate("/", { replace: true });
+        navigate(`/users/${userInfo.id}`, { replace: true });
       }
     } catch (e) {
       console.log("구글 로그인 실패: ", e.response.data);

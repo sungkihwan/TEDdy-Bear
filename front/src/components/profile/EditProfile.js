@@ -17,14 +17,15 @@ function EditProfile() {
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
-  // const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(userState.user.alert);
   const [modifyPassword, setModifyPassword] = useState("");
+
   useEffect(() => {
     try {
       const getUserData = async () => {
         const res = await Api.get(`users`, userState.user.id);
         console.log(res.data);
-        // setChecked(res.data.alert === "true" ? true : false);
+        setChecked(res.data.alert);
         setEditUser(res.data);
         setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
       };
@@ -97,7 +98,7 @@ function EditProfile() {
         occupation: editUser.occupation,
         sex: editUser.sex,
         myTopics: userTopics.map((topic) => topicDict[topic]),
-        // alert: String(checked),
+        alert: String(checked),
       });
       setEditUser(res.data);
       alert("저장되었습니다!");
@@ -196,14 +197,14 @@ function EditProfile() {
           ))}
         </MySelect>
       </EachEdit>
-      {/* <EachEdit>
+      <EachEdit>
         <EditText>알람</EditText>
         <AlertSwitch
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
           inputProps={{ "aria-label": "controlled" }}
         />
-      </EachEdit> */}
+      </EachEdit>
       <EachEdit>
         <EditText>비밀번호</EditText>
         <MyInput
