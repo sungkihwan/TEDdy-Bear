@@ -72,8 +72,8 @@ const UserSchema = new Schema(
       default: [],
     },
     alert: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: "true",
     },
     infoProvider: {
       type: String,
