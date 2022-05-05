@@ -1,7 +1,8 @@
 import Styled from "styled-components";
 import { brown } from "@mui/material/colors";
-import { styled } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import Switch from "@mui/material/Switch";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
@@ -50,6 +51,19 @@ export const EditPage = Styled.div`
   margin: 0 auto;
   margin-top: 15vh;
 `;
+
+//edit page switch style
+export const AlertSwitch = styled(Switch)(({ theme }) => ({
+  "& .MuiSwitch-switchBase.Mui-checked": {
+    color: brown[600],
+    "&:hover": {
+      backgroundColor: alpha(brown[600], theme.palette.action.hoverOpacity),
+    },
+  },
+  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+    backgroundColor: brown[600],
+  },
+}));
 
 //each edit form style
 export const EachEdit = Styled.div`

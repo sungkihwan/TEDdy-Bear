@@ -14,6 +14,7 @@ function MyTalksProvider({ children }) {
 
     Api.get("likes/my").then((res) => {
       setMyLikeList(res.data.payload);
+      console.log(res.data.payload);
     });
   }, []);
 
