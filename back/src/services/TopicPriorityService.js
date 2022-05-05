@@ -7,7 +7,7 @@ class TopicPriorityService {
     for (let i = 0; i < topics.length; i++) {
       myTopicPriority.priority.set(topics[i], myTopicPriority.priority.get(topics[i]) + point);
     }
-    myTopicPriority.save();
+    await myTopicPriority.save();
     return;
   }
 
@@ -16,7 +16,7 @@ class TopicPriorityService {
     for (let i = 0; i < topics.length; i++) {
       myTopicPriority.priority.set(topics[i], myTopicPriority.priority.get(topics[i]) - point);
     }
-    myTopicPriority.save();
+    await myTopicPriority.save();
     return;
   }
 

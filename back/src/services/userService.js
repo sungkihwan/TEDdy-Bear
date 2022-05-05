@@ -7,6 +7,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { sendMail } from '../utils/email-sender';
 import { gcsBucket } from '../utils/multer'
 import generator from 'generate-password';
+import { TopicPriorityService } from "./TopicPriorityService";
 
 class userAuthService {
   static async addUser({
@@ -56,6 +57,11 @@ class userAuthService {
 
     // 선호도 도큐먼트 생성
     await TopicPriority.create({ user_id: createdNewUser._id })
+
+    // 관심 주제 우선도 업데이트
+    if(createdNewUser.myTopics.length > 0) {
+      await TopicPriorityService.plusPriorities({ user_id: createdNewUser._id, topics: createdNewUser.myTopics, point: 10})
+    }
 
     return createdNewUser;
   }
@@ -169,6 +175,7 @@ class userAuthService {
       const errorMessage = '가입 내역이 없습니다. 다시 한 번 확인해 주세요.';
       return { errorMessage };
     }
+
     if (!toUpdate.name) delete toUpdate.name;
     if (!toUpdate.password || user.infoProvider !== 'User')
       delete toUpdate.password;
@@ -183,7 +190,26 @@ class userAuthService {
     if (toUpdate.height == null) delete toUpdate.height;
     if (toUpdate.exp == null) delete toUpdate.exp;
 
-    return await User.updateById({ user_id, toUpdate });
+    const updatedUser = await User.updateById({ user_id, toUpdate });
+    if(!updatedUser) {
+      return { errorMessage: "사용자 업데이트 실패" }
+    }
+
+    // 관심 주제 우선도 업데이트
+    const preMyTopics = user.myTopics;
+    const postMyTopics = toUpdate.myTopics;
+    
+    const topicsToAdd = postMyTopics.filter(x => !preMyTopics.includes(x));
+    if(topicsToAdd) {
+      await TopicPriorityService.plusPriorities({ user_id: updatedUser._id, topics: topicsToAdd, point: 10})
+    }
+
+    const topicsToDelete = preMyTopics.filter(x => !postMyTopics.includes(x));
+    if(topicsToDelete) {
+      await TopicPriorityService.minusPriorities({ user_id: updatedUser._id, topics: topicsToDelete, point: 10})
+    }
+
+    return updatedUser
   }
 
   static async getUserInfo({ user_id }) {
