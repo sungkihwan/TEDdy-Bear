@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { EachEdit, EditPage, EditText } from "./styles/Style";
+import { AlertSwitch, EachEdit, EditPage, EditText } from "./styles/Style";
 import { UserStateContext } from "../../App";
 import { MySelect } from "../common/MySelect";
 import { MyInput } from "../common/MyInput";
@@ -17,11 +17,15 @@ function EditProfile() {
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
+  const [checked, setChecked] = useState(userState.user.alert);
   const [modifyPassword, setModifyPassword] = useState("");
+
   useEffect(() => {
     try {
       const getUserData = async () => {
         const res = await Api.get(`users`, userState.user.id);
+        console.log(res.data);
+        setChecked(res.data.alert);
         setEditUser(res.data);
         setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
       };
@@ -29,7 +33,7 @@ function EditProfile() {
     } catch (err) {
       console.log("Error: award list get request fail", err);
     }
-  }, []);
+  }, [userState.user.id]);
 
   const topTopics = [
     "기술",
@@ -43,7 +47,15 @@ function EditProfile() {
     "애니메이션",
     "건강",
   ];
-  const ages = ["10대", "20대", "30대", "40대", "50대", "60대"];
+  const ages = [
+    "나이를 선택해주세요",
+    "10대",
+    "20대",
+    "30대",
+    "40대",
+    "50대",
+    "60대",
+  ];
 
   const topicDict = {
     기술: "technology",
@@ -82,10 +94,11 @@ function EditProfile() {
         name: editUser.name,
         bearName: editUser.bearName,
         description: editUser.description,
-        age: editUser.age,
+        age: editUser.age !== "나이를 선택해주세요" && editUser.age,
         occupation: editUser.occupation,
         sex: editUser.sex,
         myTopics: userTopics.map((topic) => topicDict[topic]),
+        alert: String(checked),
       });
       setEditUser(res.data);
       alert("저장되었습니다!");
@@ -183,6 +196,14 @@ function EditProfile() {
             </option>
           ))}
         </MySelect>
+      </EachEdit>
+      <EachEdit>
+        <EditText>알람</EditText>
+        <AlertSwitch
+          checked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
+          inputProps={{ "aria-label": "controlled" }}
+        />
       </EachEdit>
       <EachEdit>
         <EditText>비밀번호</EditText>

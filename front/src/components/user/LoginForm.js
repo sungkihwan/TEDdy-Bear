@@ -8,10 +8,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { brown } from "@mui/material/colors";
+
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
 import Account from "./Account";
-import TeddyImage from "./TeddyImage";
+import LoginImage from "./LoginImage";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 
 function LoginForm() {
@@ -37,9 +39,12 @@ function LoginForm() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-      console.log("로그인에 성공했씁니다.\n");
+      console.log("로그인에 성공했습니다.\n");
+      if (res.data.cottonUpdateState) {
+        alert("솜 세 개를 받았습니다!");
+      }
       // 기본 페이지로 이동함.
-      navigate("/", { replace: true });
+      navigate(`/users/${user.id}`, { replace: true });
     } catch (err) {
       console.log("로그인에 실패하였습니다.\n", err.response);
     }
@@ -66,10 +71,16 @@ function LoginForm() {
       console.log("구글 로그인 성공");
 
       if (message === "newbie") {
+        if (userInfo.cottonUpdateState) {
+          alert("솜 세 개를 받았습니다! 회원정보를 수정해주세요!");
+        }
         navigate("/users/edit", { replace: true });
       } else {
+        if (userInfo.cottonUpdateState) {
+          alert("솜 세 개를 받았습니다!");
+        }
         // 기본 페이지로 이동함.
-        navigate("/", { replace: true });
+        navigate(`/users/${userInfo.id}`, { replace: true });
       }
     } catch (e) {
       console.log("구글 로그인 실패: ", e.response.data);
@@ -89,6 +100,7 @@ function LoginForm() {
     }
     return false;
   };
+
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
@@ -103,10 +115,11 @@ function LoginForm() {
         spacing={2}
         sx={{ marginTop: 12 }}
       >
-        <TeddyImage />
-        <Card>
+        <Card sx={{ display: "flex", borderRadius: 5 }}>
+          <LoginImage />
           <Container component="main" maxWidth="xs">
             <Box
+              justifyContent="center"
               sx={{
                 marginTop: 4,
                 display: "flex",
@@ -114,9 +127,12 @@ function LoginForm() {
                 alignItems: "center",
               }}
             >
-              <Typography component="h1" variant="h5">
-                오늘도 와주셨군요!
-              </Typography>
+              <Grid item>
+                <Typography component="h1" variant="h5" mt={3}>
+                  오늘도 와주셨군요!
+                </Typography>
+              </Grid>
+
               <Box
                 component="form"
                 noValidate
@@ -153,13 +169,18 @@ function LoginForm() {
                     ></GoogleLoginBtn>
                   </Grid>
                   <Grid item xs={12}>
-                    <Link variant="body2" onClick={() => navigate("/register")}>
+                    <Link
+                      variant="body2"
+                      color={brown[900]}
+                      onClick={() => navigate("/register")}
+                    >
                       테디곰과 함께 공부할래요?
                     </Link>
                   </Grid>
                   <Grid item xs={12}>
                     <Link
                       variant="body2"
+                      color={brown[900]}
                       onClick={() => navigate("/findpassword")}
                     >
                       비밀번호 찾기

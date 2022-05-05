@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -6,12 +7,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import { useState, useEffect } from "react";
+import { brown } from "@mui/material/colors";
 import Chip from "@mui/material/Chip";
-import { useNavigate } from "react-router-dom";
+
 import * as Api from "../../api";
 import Account from "./Account";
-import TeddyImage from "./TeddyImage";
+import RegisterImage from "./RegisterImage";
 import UserTopics from "./UserTopics";
 import Name from "./Name";
 import Buttons from "./Buttons";
@@ -73,6 +74,7 @@ function RegisterForm() {
     }
     return false;
   };
+
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
@@ -93,8 +95,8 @@ function RegisterForm() {
         sx={{ marginTop: 12 }}
         alignItems="stretch"
       >
-        <TeddyImage />
-        <Card>
+        <Card sx={{ display: "flex", borderRadius: 5 }}>
+          <RegisterImage />
           <Container component="main" maxWidth="xs">
             <Box
               sx={{
@@ -163,13 +165,14 @@ function RegisterForm() {
                   />
                   <Grid container justifyContent="center">
                     <Grid item>
-                      <Chip label={`${viewPage} / 4`} color="primary" />
+                      <Chip label={`${viewPage} / 4`} />
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="flex-end">
                     <Link
                       item
                       variant="body2"
+                      color={brown[900]}
                       onClick={() => navigate("/Login")}
                     >
                       이미 계정이 있나요?
