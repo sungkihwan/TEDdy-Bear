@@ -23,6 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function BookmarkCard({ lectureData, type, cname = "" }) {
   const userState = useContext(UserStateContext);
+  console.log(lectureData);
 
   const customFetcher = async (url) => {
     const response = await fetch(

@@ -23,6 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function LikeCard({ lectureData, type, cname = "" }) {
   const userState = useContext(UserStateContext);
+  console.log(lectureData);
 
   const customFetcher = async (url) => {
     const response = await fetch(
@@ -71,7 +72,7 @@ function LikeCard({ lectureData, type, cname = "" }) {
             {type}
           </h1>
         </div>
-        {lectureData.length !== 0 ? (
+        {lectureData !== undefined ? (
           <Carousel itemsToShow={3}>
             {Object.keys(lectureData).map((data, index) => (
               <div className="cardbox" key={index}>
