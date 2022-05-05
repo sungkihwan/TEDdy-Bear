@@ -166,13 +166,21 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 //community page style
 export const CommunityPage = Styled.div`
-  width: 97vw;
+  width: 90vw;
   margin: 10vh auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
   position: relative;
   justify-content: center;
+`;
+
+//community user list style
+export const UserList = Styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  
 `;
 
 //community user card style
@@ -201,7 +209,7 @@ export const ProfileCard = styled(Box)(() => ({
 
 //ranking card style
 export const RankCard = styled(Box)(() => ({
-  width: "85%",
+  width: "100%",
   display: "flex",
   minHeight: 300,
   margin: 10,
@@ -221,4 +229,5 @@ export const RankImg = Styled.img`
 //Link style
 export const Link = Styled.div`
   cursor: pointer;
+  height: 250px;
 `;

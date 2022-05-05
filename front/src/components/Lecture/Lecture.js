@@ -17,10 +17,10 @@ function Lecture() {
           setMyLectureData(res.data)
         );
       }
-      Api.get("talks/like/ranking", "?size=12").then((res) => {
-        setTopLikeLecture(res.data);
-      });
     }
+    Api.get("talks/like/ranking", "?size=12").then((res) => {
+      setTopLikeLecture(res.data);
+    });
   }, [userState.user]);
 
   return (

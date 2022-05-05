@@ -174,7 +174,7 @@ function LectureExplanation() {
                 <p>{usercomment.comment}</p>
               </div>
               <div style={{ width: "100%", textAlign: "right" }}>
-                {userState.user._id === usercomment.user._id && (
+                {user._id === usercomment.user._id && (
                   <GoButton
                     name={index}
                     onClick={handleCommentDelete}

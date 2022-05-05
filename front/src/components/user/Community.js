@@ -10,6 +10,7 @@ import {
   RankImg,
   UserPageText,
   Top5Text,
+  UserList,
 } from "../profile/styles/Style";
 
 /** community page component
@@ -84,21 +85,23 @@ function Community() {
           </div>
         ))}
       </RankCard>
-      {userList.map((user, index) => (
-        <Link key={index} onClick={() => navigate(`/users/${user.id}`)}>
-          <UserCard>
-            <p>{user.name}님</p>
-            <p>{user.email}</p>
-            <p>{user.description}</p>
-            <p>
-              {user.bearName}의 키 : {user.height}cm
-            </p>
-            {user.myTopics.map((topic, index) => (
-              <span key={index}>{topicDict[topic]} </span>
-            ))}
+      <UserList>
+        {userList.map((user, index) => (
+          <UserCard key={index}>
+            <Link onClick={() => navigate(`/users/${user.id}`)}>
+              <p>{user.name}님</p>
+              <p>{user.email}</p>
+              <p>{user.description}</p>
+              <p>
+                {user.bearName}의 키 : {user.height}cm
+              </p>
+              {user.myTopics.map((topic, index) => (
+                <span key={index}>{topicDict[topic]} </span>
+              ))}
+            </Link>
           </UserCard>
-        </Link>
-      ))}
+        ))}
+      </UserList>
     </CommunityPage>
   );
 }
