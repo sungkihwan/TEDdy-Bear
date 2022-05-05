@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import React, { useState, useContext, useEffect } from "react";
+import { brown } from "@mui/material/colors";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
 
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
@@ -17,11 +17,6 @@ import GoogleLoginBtn from "./GoogleLoginBtn";
 import { MyButton } from "../common/MyButton";
 
 function LoginForm() {
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  useEffect(() => {
-    setIsAccordionOpen(false);
-  }, []);
-
   const navigate = useNavigate();
   const dispatch = useContext(DispatchContext);
   const handleSubmit = async (e) => {
@@ -124,7 +119,7 @@ function LoginForm() {
               }}
             >
               <Grid item>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" mt={3}>
                   오늘도 와주셨군요!
                 </Typography>
               </Grid>
@@ -166,13 +161,18 @@ function LoginForm() {
                 </Grid>
                 <Grid mt={2} container direction="column" alignItems="flex-end">
                   <Grid item xs={12}>
-                    <Link variant="body2" onClick={() => navigate("/register")}>
+                    <Link
+                      variant="body2"
+                      color={brown[900]}
+                      onClick={() => navigate("/register")}
+                    >
                       테디곰과 함께 공부할래요?
                     </Link>
                   </Grid>
                   <Grid item xs={12}>
                     <Link
                       variant="body2"
+                      color={brown[900]}
                       onClick={() => navigate("/findpassword")}
                     >
                       비밀번호 찾기

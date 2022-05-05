@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
+import { brown } from "@mui/material/colors";
 
 import * as Api from "../../api";
 import Account from "./Account";
@@ -73,10 +74,12 @@ function RegisterForm() {
     }
     return false;
   };
+
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;
   const isFormValid = isEmailValid && isPasswordValid;
   const isNameValid = name.length >= 0 && tName.length >= 0;
+
   if (isFormValid !== buttonAct && viewPage === 1) {
     setButtonAct(!buttonAct);
   }
@@ -167,6 +170,7 @@ function RegisterForm() {
                     <Link
                       item
                       variant="body2"
+                      color={brown[900]}
                       onClick={() => navigate("/Login")}
                     >
                       이미 계정이 있나요?

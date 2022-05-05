@@ -12,7 +12,7 @@ function Account({
   isPasswordValid,
 }) {
   return (
-    <Grid container spacing={2} sx={{ alignItems: "center" }}>
+    <Grid container spacing={2} sx={{ alignItems: "center" }} pl={2} pr={2}>
       <Grid item xs={12}>
         <MyAccountInput
           required
