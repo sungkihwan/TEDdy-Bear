@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
-import { TalkService } from "../services/TalkService";
+import { Router } from 'express';
+import { login_required } from '../middlewares/login_required';
+import { TalkService } from '../services/TalkService';
 
 const talkRouter = Router();
 
@@ -28,16 +28,16 @@ const talkRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.get("/talks/today", async (req, res, next) => {
+talkRouter.get('/talks/today', async (req, res, next) => {
   try {
-    const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size)
-    
-    const talks = await TalkService.getTodayTalk({ size })
+    const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
+
+    const talks = await TalkService.getTodayTalk({ size });
     if (talks.errorMessage) {
-      throw new Error(talks.errorMessage)
+      throw new Error(talks.errorMessage);
     }
 
-    res.status(200).send(talks)
+    res.status(200).send(talks);
   } catch (e) {
     next(e);
   }
@@ -67,11 +67,11 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.get("/talks/my", login_required, async (req, res, next) => {
+talkRouter.get('/talks/my', login_required, async (req, res, next) => {
   try {
     const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
     const userId = req.currentUserId;
-    
+
     const talks = await TalkService.getMyTalk({ size, userId });
     if (talks.errorMessage) {
       throw new Error(talks.errorMessage);
@@ -106,7 +106,7 @@ talkRouter.get("/talks/my", login_required, async (req, res, next) => {
  *             schema:
  *               $ref: '#components/schemas/Talk'
  */
-talkRouter.get("/talks/:talk_id", async (req, res, next) => {
+talkRouter.get('/talks/:talk_id', async (req, res, next) => {
   try {
     const id = Number(req.params.talk_id);
 
@@ -118,6 +118,42 @@ talkRouter.get("/talks/:talk_id", async (req, res, next) => {
     res.status(200).send(talk);
   } catch (e) {
     next(e);
+  }
+});
+
+/**
+ * @swagger
+ *  /talks/like/ranking :
+ *  get:
+ *    summary: "teddy_like_count 순 영상 조회(size개까지) "
+ *    description: "영상 좋아요 순 조회"
+ *    tags: [Talk]
+ *    parameters:
+ *      - in: query
+ *        name: size
+ *        required: true
+ *        description: 인기 순(size 개수 return)
+ *        schema:
+ *          type: integer
+ *    responses:
+ *      "200":
+ *        description: 시청기록 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#components/schemas/Talk'
+ */
+
+talkRouter.get('/talks/like/ranking', async function (req, res, next) {
+  try {
+    const size = Number(req.query.size);
+    const likeRanking = await TalkService.likeRanking({ size });
+
+    res.status(200).send(likeRanking);
+  } catch (error) {
+    next(error);
   }
 });
 
