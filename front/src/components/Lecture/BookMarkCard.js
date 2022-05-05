@@ -21,9 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
   marginTop: 20,
 }));
 
-function LectureCard({ lectureData, type, cname = "" }) {
-  let lectureInfo = [...lectureData];
-
+function BookmarkCard({ lectureData, type, cname = "" }) {
   const userState = useContext(UserStateContext);
 
   const customFetcher = async (url) => {
@@ -32,16 +30,15 @@ function LectureCard({ lectureData, type, cname = "" }) {
     );
     const json = await response.json();
 
-    for (let i = 0; i < lectureData.length; i++) {
-      if (lectureData[i].url === url) {
-        json.metadata.title = lectureData[i].title + " - ";
-        for (let j = 0; j < lectureData[i].speakers.length; j++) {
-          json.metadata.title += lectureData[i].speakers[j];
-          if (lectureData[i].speakers.length >= 2) {
+    for (const prop in lectureData) {
+      if (lectureData[prop].url === url) {
+        json.metadata.title = lectureData[prop].title + " - ";
+        for (let j = 0; j < lectureData[prop].speakers.length; j++) {
+          json.metadata.title += lectureData[prop].speakers[j];
+          if (lectureData[prop].speakers.length >= 2) {
             json.metadata.title += ", ";
           }
         }
-        lectureInfo[i]["videoimg"] = json.metadata.image;
         break;
       }
     }
@@ -53,12 +50,10 @@ function LectureCard({ lectureData, type, cname = "" }) {
   const handleOnClick = (data) => {
     const sendData = {
       user_id: userState.user.id,
-      talkId: data.talkId ? data.talkId : data.id,
-      url: data.url,
+      talkId: data.talk.id,
+      url: data.talk.url,
     };
-    Api.post("viewhistory/create", sendData).then((res) =>
-      console.log(res.data)
-    );
+    Api.post("viewhistory/create", sendData);
     window.open(data.url, "_blank");
   };
 
@@ -78,12 +73,12 @@ function LectureCard({ lectureData, type, cname = "" }) {
         </div>
         {lectureData.length !== 0 ? (
           <Carousel itemsToShow={3}>
-            {lectureData.map((data, index) => (
+            {Object.keys(lectureData).map((data, index) => (
               <div className="cardbox" key={index}>
                 <Item onClick={() => handleOnClick(data)}>
                   <div>
                     <LinkPreview
-                      url={data.url ? data.url : data._id}
+                      url={lectureData[data].url}
                       fetcher={customFetcher}
                       width="300px"
                       height="250px"
@@ -91,7 +86,7 @@ function LectureCard({ lectureData, type, cname = "" }) {
                     />
                   </div>
                 </Item>
-                <LectureInfo videoInfo={lectureInfo[index]}></LectureInfo>
+                <LectureInfo videoInfo={lectureData[data]}></LectureInfo>
               </div>
             ))}
           </Carousel>
@@ -112,4 +107,4 @@ function LectureCard({ lectureData, type, cname = "" }) {
   );
 }
 
-export default LectureCard;
+export default BookmarkCard;

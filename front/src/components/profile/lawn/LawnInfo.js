@@ -5,7 +5,6 @@ import { BearFootIcon, LawnStyledPage, LawnText } from "../styles/Style";
 import LawnCard from "./LawnCard";
 
 function LawnInfo({ dailyList, selectedDate }) {
-  console.log(dailyList);
   return (
     <LawnStyledPage item mt={3} mb={3}>
       <Grid item container justifyContent="center" mb={3}>

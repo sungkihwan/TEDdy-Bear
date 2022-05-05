@@ -31,7 +31,7 @@ function UserPage() {
     const ownerData = res.data;
     setUser(ownerData);
     setIsFetchCompleted(true);
-    console.log(user);
+    console.log(ownerData);
   };
 
   useEffect(() => {

@@ -11,6 +11,7 @@ import { MyButton } from "../../common/MyButton";
  */
 function MyBear({ user }) {
   const [bear, setBear] = useState({});
+  console.log(user);
   let maxExp = bear.level * 10;
   const [progress, setProgress] = useState(bear.exp / maxExp);
 
@@ -36,10 +37,13 @@ function MyBear({ user }) {
   //if exp full, execute a function
   useEffect(() => {
     if (bear.exp === maxExp) {
-      setBear((cur) => ({ ...cur, exp: 0 }));
       setProgress(0);
-      setBear((cur) => ({ ...cur, level: cur.level + 1 }));
-      setBear((cur) => ({ ...cur, height: cur.height + 10 }));
+      setBear((cur) => ({
+        ...cur,
+        level: cur.level + 1,
+        height: cur.height + 10,
+        exp: 0,
+      }));
       maxExp = bear.level * 10;
     }
     setProgress((bear.exp / maxExp) * 100);
@@ -52,8 +56,7 @@ function MyBear({ user }) {
       alert("솜이 부족합니다!");
       setBear((cur) => ({ ...cur, cotton: 0 }));
     } else {
-      setBear((cur) => ({ ...cur, exp: cur.exp + 1 }));
-      setBear((cur) => ({ ...cur, cotton: cur.cotton - 1 }));
+      setBear((cur) => ({ ...cur, exp: cur.exp + 1, cotton: cur.cotton - 1 }));
     }
     fetchBear();
     return;

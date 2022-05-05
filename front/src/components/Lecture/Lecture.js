@@ -10,13 +10,12 @@ function Lecture() {
     Api.get("talks/today", "?size=12").then((res) => setLectureData(res.data));
     if (userState.user !== null) {
       if (userState.user.myTopics.length !== 0) {
-        Api.get("talks/my", "?size=12").then((res) =>
-          setMyLectureData(res.data)
-        );
+        Api.get("talks/my", "?size=12").then((res) => {
+          setMyLectureData(res.data);
+        });
       }
     }
-  }, []);
-
+  }, [userState.user]);
   return (
     <div style={{ marginTop: 75 }}>
       <LectureList
