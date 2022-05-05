@@ -120,11 +120,15 @@ function LoginForm() {
                 marginTop: 4,
                 display: "flex",
                 flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              <Typography component="h1" variant="h5">
-                오늘도 와주셨군요!
-              </Typography>
+              <Grid item>
+                <Typography component="h1" variant="h5">
+                  오늘도 와주셨군요!
+                </Typography>
+              </Grid>
+
               <Box
                 component="form"
                 noValidate

@@ -1,8 +1,6 @@
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { MySelect } from "../common/MySelect";
 import { MyAccountInput } from "../common/MyInput";
 
 function Account({
@@ -22,7 +20,7 @@ function Account({
           id="email"
           label="이메일"
           name="email"
-          autoComplete="email"
+          autoComplete="off"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -41,7 +39,7 @@ function Account({
           value={password}
           type="password"
           id="password"
-          autoComplete="new-password"
+          autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
         />
         {!isPasswordValid && (

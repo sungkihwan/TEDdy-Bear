@@ -19,9 +19,12 @@ export const MyAccountInput = styled(TextField)(() => ({
   borderColor: brown[800],
   color: brown[900],
 
+  "& label.Mui-focused": {
+    color: brown[900],
+  },
   "& .MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: brown[900],
+      borderColor: brown[800],
     },
   },
 }));
