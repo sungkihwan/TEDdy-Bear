@@ -8,23 +8,17 @@ function Lecture() {
   const userState = useContext(UserStateContext);
   useEffect(() => {
     Api.get("talks/today", "?size=12").then((res) => setLectureData(res.data));
-    // Api.post("talks/my", { size: 12 }).then((res) =>
-    //   setMyLectureData(res.data)
-    // );
-    // if (userState.user.myTopics.length !== 0) {
-    //   Api.post("talks/my", { size: 12 }).then((res) =>
-    //     setMyLectureData(res.data)
-    //   );
-    // }
     if (userState.user !== null) {
       if (userState.user.myTopics.length !== 0) {
-        Api.post("talks/my", { size: 12 }).then((res) =>
-          setMyLectureData(res.data)
-        );
+        console.log("this");
+        Api.get("talks/my", "?size=12").then((res) => {
+          console.log(res.data);
+          setMyLectureData(res.data);
+        });
       }
     }
   }, []);
-
+  console.log(myLectureData);
   return (
     <div style={{ marginTop: 75 }}>
       <LectureList

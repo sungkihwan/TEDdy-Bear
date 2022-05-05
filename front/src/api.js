@@ -61,6 +61,19 @@ async function del(endpoint) {
   });
 }
 
+async function commentDelete(endpoint, data) {
+  // const bodyData = JSON.stringify(data);
+  console.log(`DELETE 요청 ${serverUrl + endpoint}`);
+  // console.log(`DELETE 요청 데이터: ${bodyData}`);
+  console.log(sessionStorage.getItem("userToken"));
+  return axios.delete(serverUrl + endpoint, {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+    },
+    data: { ...data },
+  });
+}
+
 // 아래처럼 export한 후, import * as A 방식으로 가져오면,
 // A.get, A.post 로 쓸 수 있음.
-export { get, post, put, del as delete };
+export { get, post, put, del as delete, commentDelete };

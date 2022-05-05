@@ -30,24 +30,26 @@ function DetailedIcons({ lecture, view }) {
   });
 
   useEffect(() => {
-    if (myBookMarkList[talkId]) {
-      setStar(true);
-    } else {
-      setStar(false);
-    }
+    if (myBookMarkList !== undefined) {
+      if (myBookMarkList[talkId]) {
+        setStar(true);
+      } else {
+        setStar(false);
+      }
 
-    for (let i = 0; i < myLikeList.length; i++) {
-      if (talkId === myLikeList[i].talk_id.id) setHeart(true);
-    }
+      for (let i = 0; i < myLikeList.length; i++) {
+        if (talkId === myLikeList[i].talk_id.id) setHeart(true);
+      }
 
-    const node = loadCSS(
-      "https://use.fontawesome.com/releases/v5.14.0/css/all.css",
-      // Inject before JSS
-      document.querySelector("#font-awesome-css") || document.head.firstChild
-    );
-    return () => {
-      node.parentNode.removeChild(node);
-    };
+      const node = loadCSS(
+        "https://use.fontawesome.com/releases/v5.14.0/css/all.css",
+        // Inject before JSS
+        document.querySelector("#font-awesome-css") || document.head.firstChild
+      );
+      return () => {
+        node.parentNode.removeChild(node);
+      };
+    }
   }, [myBookMarkList, myLikeList, talkId]);
 
   const handleClickHeart = async () => {

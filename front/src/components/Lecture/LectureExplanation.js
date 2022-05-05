@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 function LectureExplanation() {
   const userState = useContext(UserStateContext);
   const params = useParams();
+  const [commentList, setCommentList] = useState([]);
   const [view, setView] = useState(0);
   const [comment, setComment] = useState(() => {
     if (userState.user === null) {
@@ -19,6 +20,7 @@ function LectureExplanation() {
       return false;
     }
   });
+  const [userComment, setUserComment] = useState("");
   const talkId = params.talkId;
   const [lecture, setLecture] = useState({});
 
@@ -67,6 +69,38 @@ function LectureExplanation() {
     fetchTalks();
   }, [talkId]);
 
+  useEffect(() => {
+    Api.get(`talks/${talkId}/comments`).then((res) => {
+      setCommentList(res.data.payload);
+    });
+  }, [talkId]);
+
+  const handleCommentWrite = () => {
+    const data = {
+      mode: "comment",
+      talkId: talkId,
+      comment: userComment,
+    };
+    Api.post("comments/comment", data).then((res) => {
+      Api.get(`talks/${talkId}/comments`).then((res) => {
+        setCommentList(res.data.payload);
+      });
+    });
+    setUserComment("");
+  };
+
+  const handleCommentDelete = (e) => {
+    const idx = Number(e.target.name);
+    const data = {
+      mode: "comment",
+    };
+    Api.commentDelete(`comments/${commentList[idx]._id}`, data).then((res) => {
+      Api.get(`talks/${talkId}/comments`).then((res) => {
+        setCommentList(res.data.payload);
+      });
+    });
+  };
+  console.log(commentList);
   return (
     <div className="infobox">
       <div
@@ -79,7 +113,9 @@ function LectureExplanation() {
         className="buttoncontent lecturebox"
         style={{ border: "2px solid orange" }}
       >
-        <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
+        {Object.keys(lecture).length !== 0 && (
+          <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
+        )}
         <GoButton onClick={handleWatch}>영상 시청하러 가기</GoButton>
       </div>
       <div
@@ -116,12 +152,45 @@ function LectureExplanation() {
       >
         <h1>리뷰</h1>
       </div>
-      <textarea disabled={comment} wrap="on"></textarea>
+
+      <div
+        className="commentbox lecturebox"
+        style={{ border: "2px solid blue" }}
+      >
+        {commentList.length !== 0 &&
+          commentList.map((usercomment, index) => (
+            <div key={index}>
+              <div className="comment">
+                <h4>{usercomment.user.name}</h4>
+                <p>{usercomment.comment}</p>
+              </div>
+              <div style={{ width: "100%", textAlign: "right" }}>
+                {userState.user._id === usercomment.user._id && (
+                  <GoButton
+                    name={index}
+                    onClick={handleCommentDelete}
+                    disabled={comment}
+                  >
+                    댓글 삭제
+                  </GoButton>
+                )}
+              </div>
+            </div>
+          ))}
+      </div>
+      <textarea
+        disabled={comment}
+        value={userComment}
+        onChange={(e) => setUserComment(e.target.value)}
+        wrap="on"
+      ></textarea>
       <div
         className="lecturebox"
         style={{ border: "2px solid pink", marginTop: 20, textAlign: "right" }}
       >
-        <GoButton disabled={comment}>리뷰 쓰기</GoButton>
+        <GoButton disabled={comment} onClick={handleCommentWrite}>
+          리뷰 쓰기
+        </GoButton>
       </div>
     </div>
   );
