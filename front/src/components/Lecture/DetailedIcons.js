@@ -8,12 +8,12 @@ import * as Api from "../../api";
 import { MyTalksContext } from "../common/MyTalksContext";
 
 function DetailedIcons({ lecture, view }) {
+  const userState = useContext(UserStateContext);
   const { myLikeList, myBookMarkList, setMyLikeList, setMyBookMarkList } =
     useContext(MyTalksContext);
   const [star, setStar] = useState(false);
   const [heart, setHeart] = useState(false);
-  const [like, setLike] = useState(() => lecture.teddy_like_count);
-  const userState = useContext(UserStateContext);
+  const [like, setLike] = useState(lecture.teddy_like_count);
 
   const talkId = lecture.id;
   const bookmarkId = lecture._id;
@@ -34,8 +34,10 @@ function DetailedIcons({ lecture, view }) {
         setStar(false);
       }
 
-      for (let i = 0; i < myLikeList.length; i++) {
-        if (talkId === myLikeList[i].talk_id.id) setHeart(true);
+      if (myLikeList[talkId]) {
+        setHeart(true);
+      } else {
+        setHeart(false);
       }
 
       const node = loadCSS(
@@ -49,38 +51,43 @@ function DetailedIcons({ lecture, view }) {
     }
   }, [myBookMarkList, myLikeList, talkId]);
 
-  const handleClickHeart = async () => {
+  const handleClickHeart = () => {
     if (heart) {
-      await Api.delete(`talks/talk/like/${talkId}`);
-      setMyLikeList((cur) => {
-        const newArr = [...cur];
-        return newArr.slice(0, -1);
+      Object.values(myLikeList).map((data) => {
+        if (data.id === talkId) {
+          setMyLikeList((cur) => {
+            const newObj = { ...cur };
+            delete newObj[talkId];
+            return newObj;
+          });
+          setHeart(false);
+          setLike((cur) => cur - 1);
+          Api.delete(`talks/talk/like/${talkId}`);
+        }
       });
-      setHeart(false);
-      setLike((cur) => cur - 1);
     } else {
-      await Api.post("talks/talk/like", { talkId: talkId });
-      setMyLikeList((cur) => [...cur, { talk_id: { id: talkId } }]);
+      setMyLikeList((cur) => ({ ...cur, [talkId]: { id: talkId } }));
       setHeart(true);
       setLike((cur) => cur + 1);
+      Api.post("talks/talk/like", { talkId: talkId });
     }
   };
 
-  const handleClickStar = async () => {
+  const handleClickStar = () => {
     if (star) {
       Object.values(myBookMarkList).map((data) => {
         if (data.id === talkId) {
+          setMyBookMarkList((cur) => {
+            const newObj = { ...cur };
+            delete newObj[talkId];
+            return newObj;
+          });
+          setStar(false);
           Api.delete(`bookmarks/${bookmarkId}`);
         }
-        setMyBookMarkList((cur) => {
-          const newObj = { ...cur };
-          delete newObj[talkId];
-          return newObj;
-        });
-        setStar(false);
       });
     } else {
-      await Api.post("bookmarks/bookmark", { talkId: talkId });
+      Api.post("bookmarks/bookmark", { talkId: talkId });
       setMyBookMarkList((cur) => ({ ...cur, [talkId]: { id: talkId } }));
       setStar(true);
     }

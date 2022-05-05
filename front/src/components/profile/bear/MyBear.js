@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BearImg, BearInfo, BearPage, MyPageText } from "../styles/Style";
 import ExpBar from "./ExpBar";
 import * as Api from "../../../api";
 import { MyButton } from "../../common/MyButton";
+import { UserStateContext } from "../../../App";
 
 /** my bear page component
  *
@@ -10,25 +11,35 @@ import { MyButton } from "../../common/MyButton";
  * @returns {component} my bear page
  */
 function MyBear({ user }) {
+  const userState = useContext(UserStateContext);
   const [bear, setBear] = useState({});
   console.log(user);
   let maxExp = bear.level * 10;
   const [progress, setProgress] = useState(bear.exp / maxExp);
 
   useEffect(() => {
-    setBear({
-      cotton: user.cotton,
-      height: user.height,
-      level: user.level,
-      exp: user.exp,
-    });
-  }, []);
+    if (user.id === userState.user.id) {
+      setBear({
+        cotton: user.cotton,
+        height: user.height,
+        level: user.level,
+        exp: user.exp,
+      });
+    }
+  }, [
+    user.id,
+    userState.user.id,
+    user.cotton,
+    user.height,
+    user.level,
+    user.exp,
+  ]);
 
   //server bear data update
   const fetchBear = async () => {
     await Api.put(`users/${user.id}`, {
       cotton: bear.cotton,
-      level: 1,
+      level: bear.level,
       height: bear.height,
       exp: bear.exp,
     });
