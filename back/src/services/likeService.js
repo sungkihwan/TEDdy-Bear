@@ -1,5 +1,6 @@
 import { Like, User, Talk } from "../db";
 import { TalkService } from "./TalkService";
+import { TopicPriorityService } from "./TopicPriorityService";
 
 // addlike,
 class likeService {
@@ -25,12 +26,13 @@ class likeService {
     });
 
     // 영상의 좋아요 수 업데이트
-    if (
-      (await TalkService.updateLike({ talkId: talkId, status: "like" })) ===
-      false
-    ) {
+    if ((await TalkService.updateLike({ talkId: talkId, status: "like" })) === false) {
       console.log("좋아요 수 업데이트 실패");
     }
+
+    // 우선도 업데이트
+    await TopicPriorityService.plusPriorities({ user_id: user._id, topics: talk.topics, point: 5})
+
     return LikeUser;
   }
 
@@ -77,12 +79,12 @@ class likeService {
     }
 
     // 영상의 좋아요 수 업데이트
-    if (
-      (await TalkService.updateLike({ talkId: talkId, status: "cancel" })) ===
-      false
-    ) {
+    if ((await TalkService.updateLike({ talkId: talkId, status: "cancel" })) === false) {
       console.log("좋아요 수 업데이트 실패");
     }
+
+    // 우선도 업데이트
+    await TopicPriorityService.minusPriorities({ user_id: user._id, topics: talk.topics, point: 5})
 
     return { status: "ok" };
   }
