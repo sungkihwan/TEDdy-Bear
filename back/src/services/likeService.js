@@ -1,6 +1,6 @@
-import { Like, User, Talk } from "../db";
-import { TalkService } from "./TalkService";
-import { TopicPriorityService } from "./TopicPriorityService";
+import { Like, User, Talk } from '../db';
+import { TalkService } from './TalkService';
+import { TopicPriorityService } from './TopicPriorityService';
 
 // addlike,
 class likeService {
@@ -25,14 +25,21 @@ class likeService {
     });
 
     // 영상의 좋아요 수 업데이트
-    if ((await TalkService.updateLike({ talkId: talkId, status: "like" })) === false) {
-      console.log("좋아요 수 업데이트 실패");
+    if (
+      (await TalkService.updateLike({ talkId: talkId, status: 'like' })) ===
+      false
+    ) {
+      console.log('좋아요 수 업데이트 실패');
     }
 
     // 우선도 업데이트
-    await TopicPriorityService.plusPriorities({ user_id: user._id, topics: talk.topics, point: 5})
+    await TopicPriorityService.plusPriorities({
+      user_id: user._id,
+      topics: talk.topics,
+      point: 5,
+    });
 
-    return LikeUser;
+    return newLike;
   }
 
   // 유저 아이디로 영상 리스트 찾기
@@ -53,6 +60,7 @@ class likeService {
         return pre;
       }, {}),
     };
+    console.log(result);
     return result;
   }
 
@@ -95,14 +103,21 @@ class likeService {
     }
 
     // 영상의 좋아요 수 업데이트
-    if ((await TalkService.updateLike({ talkId: talkId, status: "cancel" })) === false) {
-      console.log("좋아요 수 업데이트 실패");
+    if (
+      (await TalkService.updateLike({ talkId: talkId, status: 'cancel' })) ===
+      false
+    ) {
+      console.log('좋아요 수 업데이트 실패');
     }
 
     // 우선도 업데이트
-    await TopicPriorityService.minusPriorities({ user_id: user._id, topics: talk.topics, point: 5})
+    await TopicPriorityService.minusPriorities({
+      user_id: user._id,
+      topics: talk.topics,
+      point: 5,
+    });
 
-    return { status: "ok" };
+    return { status: 'ok' };
   }
 }
 
