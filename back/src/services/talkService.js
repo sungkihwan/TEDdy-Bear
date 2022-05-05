@@ -1,11 +1,11 @@
-import { Talk, Topic, User } from '../db';
-import { TopicPriorityService } from './TopicPriorityService';
+import { Talk, Topic, User } from "../db";
+import { TopicPriorityService } from "./TopicPriorityService";
 
 class TalkService {
   static async getTalk({ id }) {
-    const talk = await Talk.findOneById({ id, resultType: 'POJO' });
+    const talk = await Talk.findOneById({ id, resultType: "POJO" });
     if (!talk) {
-      const errorMessage = '영상 조회에 실패하였습니다.';
+      const errorMessage = "영상 조회에 실패하였습니다.";
       return { errorMessage };
     }
 
@@ -16,7 +16,7 @@ class TalkService {
     // 주제를 랜덤으로 선정 -> 각 주제별로 영상 1개씩 선정
     const randomTopics = await Topic.findManyRandom(size);
     if (randomTopics.length === 0) {
-      const errorMessage = '주제 조회에 실패하였습니다.';
+      const errorMessage = "주제 조회에 실패하였습니다.";
       return { errorMessage };
     }
 
@@ -27,7 +27,7 @@ class TalkService {
 
     const randomTalks = await Talk.findManyRandom(topics, size);
     if (randomTalks.length === 0) {
-      const errorMessage = '영상 조회에 실패하였습니다.';
+      const errorMessage = "영상 조회에 실패하였습니다.";
       return { errorMessage };
     }
 
@@ -40,20 +40,22 @@ class TalkService {
     // if (!myTopics) { return { errorMessage: "주제 조회에 실패하였습니다." } }
 
     // 추천 알고리즘 적용
-    const user = await User.findById({ userId })
-    const myTopics = await TopicPriorityService.getMyFavoriteTopics({ user_id: user._id })
-
+    const user = await User.findById({ userId });
+    const myTopics = await TopicPriorityService.getMyFavoriteTopics({
+      user_id: user._id,
+    });
     const myTalk = await Talk.findManyRandom(myTopics, size);
-    if (myTalk.length === 0) { return { errorMessage: "영상 조회에 실패하였습니다." } }
-
-    return myTalk
+    if (myTalk.length === 0) {
+      return { errorMessage: "영상 조회에 실패하였습니다." };
+    }
+    return myTalk;
   }
 
   static async updateView(talkId) {
     // 기존 조회수
     const preTalk = await Talk.findOneById({
       id: talkId,
-      resultType: 'document',
+      resultType: "document",
     });
     const preViewCount = preTalk.teddy_view_count;
 
@@ -73,14 +75,14 @@ class TalkService {
     // 기존 좋아요수
     const preTalk = await Talk.findOneById({
       id: talkId,
-      resultType: 'document',
+      resultType: "document",
     });
     const preLikeCount = preTalk.teddy_like_count;
 
     // 좋아요 수 업데이트
-    if (status === 'cancel') {
+    if (status === "cancel") {
       preTalk.teddy_like_count--;
-    } else if (status === 'like') {
+    } else if (status === "like") {
       preTalk.teddy_like_count++;
     }
 
