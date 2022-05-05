@@ -26,6 +26,8 @@ const userAuthRouter = Router();
  *          type: string
  *        name:
  *          type: string
+ *        profileUrl:
+ *          type: string
  *        description:
  *          type: string
  *        password:
@@ -50,6 +52,8 @@ const userAuthRouter = Router();
  *          type: array
  *          items:
  *            type: string
+ *        alert:
+ *          type: boolean
  *        infoProvider:
  *          type: string
  *
@@ -135,6 +139,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
  * /user/login:
  *  post:
  *    summary: "유저 로그인"
+ *    description: "data.cottonUpdateState로 솜 3개 주기 true/false 반환"
  *    tags: [Users]
  *    requestBody:
  *      required: true
@@ -147,6 +152,15 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
  *                  type: string
  *              password:
  *                  type: string
+ *    responses:
+ *        "200":
+ *          description: 유저정보 반환
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                items:
+ *                  $ref: '#components/schemas/User'
  */
 
 // 로그인
@@ -313,6 +327,37 @@ userAuthRouter.post(
 /**
  * @swagger
  *
+ * /user/cotton/:exp:
+ *  post:
+ *    summary: "cotton 사용해서 exp 올리기"
+ *    tags: [Users]
+ *    description: login required
+ */
+ userAuthRouter.post(
+  '/user/cotton/:exp',
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId
+      const exp = Number(req.params.exp)
+      const updatedUser = await userAuthService.updateExp({
+        user_id,
+        exp,
+      })
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+
+      res.status(200).send(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ *
  * /user/img:
  *  post:
  *    summary: "프로파일 이미지 업로드"
@@ -461,6 +506,7 @@ userAuthRouter.put(
       const occupation = req.body.occupation ?? null;
       const description = req.body.description ?? null;
       const exp = req.body.exp ?? null;
+      const alert = req.body.alert || null;
 
       const toUpdate = {
         name,
@@ -475,6 +521,7 @@ userAuthRouter.put(
         occupation,
         description,
         exp,
+        alert
       };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함

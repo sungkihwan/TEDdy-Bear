@@ -71,6 +71,10 @@ const UserSchema = new Schema(
       type: Array,
       default: [],
     },
+    alert: {
+      type: Boolean,
+      default: true,
+    },
     infoProvider: {
       type: String,
       enum: {

@@ -4,7 +4,7 @@
  * viewHistoryRouter에서 넘어온 정보들로 특정 로직을 구성하여 ViewHistory.js에서 처리 후 viewHistoryRouter로 return
  */
 
-import { Talk, ViewHistory } from '../db';
+import { Talk, ViewHistory, User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { utils } from './utils';
 import { TalkService } from './talkService';
@@ -22,6 +22,10 @@ class ViewHistoryService {
     if ((await TalkService.updateView(talkId)) === false) {
       console.log('조회수 업데이트 실패');
     }
+
+    // 솜 + 1
+    const toUpdate = { "cotton": 1 } 
+    User.updateCountById({ user_id, toUpdate })
 
     //db에 저장
     const createdNewHistory = await ViewHistory.create({ newViewHistory });

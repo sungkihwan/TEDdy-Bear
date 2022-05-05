@@ -32,6 +32,7 @@ class User {
     return user;
   }
 
+  // 패스워드 변경기능
   static async updatePassword({ user_id, toUpdate }) {
     const filter = { id: user_id };
     const update = { $set: toUpdate };
@@ -40,7 +41,18 @@ class User {
     return await UserModel.findOneAndUpdate(filter, update, option);
   }
 
+  // 프로파일 이미지 업데이트를 위해서 사용
   static async updateImg({ user_id, toUpdate }) {
+    const filter = { id: user_id };
+    const update = { $set: toUpdate };
+    // 기존 이미지 삭제를 위해서 Original을 리턴
+    const option = { returnOriginal: true };
+
+    return await UserModel.findOneAndUpdate(filter, update, option);
+  }
+
+  // id로 쿼리, 특정 [컬럼] 리스트 값 업데이트
+  static async updateById({ user_id, toUpdate }) {
     const filter = { id: user_id };
     const update = { $set: toUpdate };
     const option = { returnOriginal: false };
@@ -48,9 +60,10 @@ class User {
     return await UserModel.findOneAndUpdate(filter, update, option);
   }
 
-  static async updateById({ user_id, toUpdate }) {
+  // 특정 컬럼의 숫자를 증가 시키기 위함 (ex cotton)
+  static async updateCountById({ user_id, toUpdate }) {
     const filter = { id: user_id };
-    const update = { $set: toUpdate };
+    const update = { $inc: toUpdate };
     const option = { returnOriginal: false };
 
     return await UserModel.findOneAndUpdate(filter, update, option);
@@ -71,11 +84,15 @@ class User {
     return bearInfo;
   }
   static async deleteAllById({ user }) {
-    await ViewHistoryModel.deleteMany({ user_id: user.user_id });
-    await LikeModel.deleteMany({ user_id: user._id });
-    await BookmarkModel.deleteMany({ userId: user.user_id });
-    await CommentModel.deleteMany({ user: user._id });
-    await ReplyModel.deleteMany({ user: user._id });
+    Promise.allSettled([
+      ViewHistoryModel.deleteMany({ user_id: user.user_id }),
+      LikeModel.deleteMany({ user_id: user._id }),
+      BookmarkModel.deleteMany({ userId: user.user_id }),
+      CommentModel.deleteMany({ user: user._id }),
+      ReplyModel.deleteMany({ user: user._id }),
+    ]).catch(err => {
+      console.log(err)
+    })
   }
 }
 
