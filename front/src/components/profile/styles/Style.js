@@ -200,7 +200,7 @@ export const UserList = Styled.div`
 //community user card style
 export const UserCard = styled(Box)(() => ({
   minWidth: 270,
-  minHeight: 270,
+  minHeight: 400,
   margin: 10,
   borderRadius: 30,
   color: brown[50],
