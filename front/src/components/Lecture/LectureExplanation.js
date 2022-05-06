@@ -79,7 +79,7 @@ function LectureExplanation() {
     };
     fetchTalks();
     fetchCotton();
-  }, [talkId, user.id]);
+  }, [talkId]);
 
   useEffect(() => {
     Api.get(`talks/${talkId}/comments`).then((res) => {
