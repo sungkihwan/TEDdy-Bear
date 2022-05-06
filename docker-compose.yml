@@ -1,0 +1,21 @@
+version: '3'
+services:
+  frontend_server:
+    image: singahu/react_portfolio_app:0.0.1
+    restart: "always"
+    ports:
+      - 80:80
+    networks:
+      - portfolio-service
+
+  backend_server:
+    image: singahu/node_portfolio_app:0.0.1
+    restart: "always"
+    ports:
+      - 5001:5000
+    networks:
+      - portfolio-service
+
+networks:
+  portfolio-service:
+
