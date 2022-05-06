@@ -33,6 +33,7 @@ function EditProfile() {
         const res = await Api.get(`users`, userState.user.id);
         setEditUser(res.data);
         setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
+        setTempUrl(res.data.profileUrl);
       };
       getUserData();
     } catch (err) {
