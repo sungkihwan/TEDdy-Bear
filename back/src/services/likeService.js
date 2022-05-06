@@ -60,7 +60,6 @@ class likeService {
         return pre;
       }, {}),
     };
-    console.log(result);
     return result;
   }
 
