@@ -1,3 +1,5 @@
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -6,8 +8,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { brown } from "@mui/material/colors";
 
 import * as Api from "../../api";
@@ -15,6 +15,7 @@ import { DispatchContext } from "../../App";
 import Account from "./Account";
 import LoginImage from "./LoginImage";
 import GoogleLoginBtn from "./GoogleLoginBtn";
+import { MyButton } from "../common/MyButton";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -109,12 +110,7 @@ function LoginForm() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid
-        container
-        justifyContent="center"
-        spacing={2}
-        sx={{ marginTop: 12 }}
-      >
+      <Grid container justifyContent="center" sx={{ marginTop: 12 }}>
         <Card sx={{ display: "flex", borderRadius: 5 }}>
           <LoginImage />
           <Container component="main" maxWidth="xs">
@@ -132,43 +128,44 @@ function LoginForm() {
                   오늘도 와주셨군요!
                 </Typography>
               </Grid>
-
               <Box
                 component="form"
                 noValidate
                 onSubmit={handleSubmit}
                 sx={{ mt: 3 }}
               >
-                <Account
-                  email={email}
-                  setEmail={setEmail}
-                  password={password}
-                  setPassword={setPassword}
-                  isEmailValid={isEmailValid}
-                  isPasswordValid={isPasswordValid}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  disabled={!isFormValid}
-                >
-                  로그인
-                </Button>
                 <Grid
                   container
-                  justifyContent="space-evenly"
+                  justifyContent="center"
                   alignItems="center"
                   direction="column"
-                  rowSpacing={3}
                 >
-                  <Grid item xs={12}>
-                    <GoogleLoginBtn
-                      responseGoogle={handleGoogleData}
-                    ></GoogleLoginBtn>
-                  </Grid>
-                  <Grid item xs={12}>
+                  <Account
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    isEmailValid={isEmailValid}
+                    isPasswordValid={isPasswordValid}
+                  />
+                  <MyButton
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 1, mb: 1 }}
+                    disabled={!isFormValid}
+                  >
+                    로그인
+                  </MyButton>
+                  <GoogleLoginBtn
+                    responseGoogle={handleGoogleData}
+                  ></GoogleLoginBtn>
+                  <Grid
+                    container
+                    item
+                    alignItems="flex-end"
+                    mt={1}
+                    direction="column"
+                  >
                     <Link
                       variant="body2"
                       color={brown[900]}
@@ -176,8 +173,6 @@ function LoginForm() {
                     >
                       테디곰과 함께 공부할래요?
                     </Link>
-                  </Grid>
-                  <Grid item xs={12}>
                     <Link
                       variant="body2"
                       color={brown[900]}

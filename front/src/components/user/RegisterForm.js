@@ -119,7 +119,7 @@ function RegisterForm() {
                     sx={{ alignItems: "center" }}
                     justifyContent="center"
                   >
-                    <Grid item sx={{ mb: 2 }}>
+                    <Grid item sx={{ mb: 3 }}>
                       <Typography component="h1" variant="h5">
                         테디 곰의 가족이 되어주세요!
                       </Typography>
