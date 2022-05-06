@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { TalkService } from "../services/TalkService";
+import { TalkService } from "../services/talkService";
 
 const talkRouter = Router();
 

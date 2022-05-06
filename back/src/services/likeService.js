@@ -1,5 +1,5 @@
 import { Like, User, Talk } from '../db';
-import { TalkService } from './TalkService';
+import { TalkService } from './talkService';
 import { TopicPriorityService } from './TopicPriorityService';
 
 // addlike,

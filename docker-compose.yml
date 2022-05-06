@@ -6,7 +6,7 @@ services:
     ports:
       - 80:80
     networks:
-      - dataproject
+      - data-service
 
   backend_server:
     image: singahu/dataproject-back-nodejs:0.0.1
@@ -14,8 +14,8 @@ services:
     ports:
       - 5001:5001
     networks:
-      - dataproject
+      - data-service
 
 networks:
-  dataproject:
+  data-service:
 
