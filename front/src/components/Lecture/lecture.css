@@ -110,7 +110,6 @@
 } */
 .infobox {
   display: flex;
-  border: 2px solid red;
   text-align: center;
   justify-content: center;
   flex-direction: column;
@@ -149,6 +148,7 @@ textarea {
   color: #795548;
   padding: 10px;
   font-size: 20px;
+  margin-top: 5px;
 }
 
 .reviewbotton {
@@ -176,7 +176,6 @@ textarea {
   background-color: #d7ccc8;
   color: #795548;
   padding: 10px;
-  border: 2px solid red;
 
   /* overflow: auto; */
   text-align: left;
@@ -200,7 +199,6 @@ textarea {
   border-radius: 30px;
   background-color: #d7ccc8;
   padding: 10px;
-  border: 2px solid gold;
 }
 
 .commentbox {

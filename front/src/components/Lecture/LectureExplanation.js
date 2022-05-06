@@ -10,12 +10,13 @@ import { useParams } from "react-router-dom";
 import ReplyEdit from "./ReplyEdit";
 function LectureExplanation() {
   const user = useContext(UserStateContext).user;
+  const userState = useContext(UserStateContext);
   const [cotton, setCotton] = useState();
   const params = useParams();
   const [commentList, setCommentList] = useState([]);
   const [view, setView] = useState(0);
   const [openReply, setOpenReply] = useState(false);
-  console.log(commentList);
+
   const [comment, setComment] = useState(() => {
     if (user === null) {
       return true;
@@ -126,60 +127,36 @@ function LectureExplanation() {
   };
   return (
     <div className="infobox">
-      <div
-        className="lecturebox"
-        style={{ border: "2px solid black", marginTop: 100 }}
-      >
+      <div className="lecturebox" style={{ marginTop: 100 }}>
         <img className="lectureimg" src={lecture.image} alt="lecture img" />
       </div>
-      <div
-        className="buttoncontent lecturebox"
-        style={{ border: "2px solid orange" }}
-      >
+      <div className="buttoncontent lecturebox">
         {Object.keys(lecture).length !== 0 && (
           <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
         )}
         <GoButton onClick={handleWatch}>영상 시청하러 가기</GoButton>
       </div>
-      <div
-        className="descriptionbox lecturebox"
-        style={{ border: "2px solid blue" }}
-      >
+      <div className="descriptionbox lecturebox">
         <h1>제목</h1>
         <h2>{lecture.title}</h2>
       </div>
-      <div
-        className="descriptionbox lecturebox"
-        style={{ border: "2px solid gray" }}
-      >
+      <div className="descriptionbox lecturebox">
         <h1>강연자</h1>
         <h2>{makeSpeaker(lecture.speakers)}</h2>
       </div>
-      <div
-        className="descriptionbox lecturebox"
-        style={{ border: "2px solid purple" }}
-      >
+      <div className="descriptionbox lecturebox">
         <h1>요약</h1>
         <h2>{lecture.description}</h2>
       </div>
-      <div
-        className="descriptionbox lecturebox"
-        style={{ border: "2px solid brown" }}
-      >
+      <div className="descriptionbox lecturebox">
         <h1>주제</h1>
         <h2>{makeSpeaker(lecture.topics)}</h2>
       </div>
-      <div
-        className="descriptionbox lecturebox"
-        style={{ border: "2px solid brown" }}
-      >
+      <div className="descriptionbox lecturebox">
         <h1>리뷰</h1>
       </div>
 
-      <div
-        className="commentbox lecturebox"
-        style={{ border: "2px solid blue" }}
-      >
+      <div className="commentbox lecturebox">
         {commentList.length !== 0 &&
           commentList.map((usercomment, index) => (
             <div key={index}>
@@ -196,15 +173,14 @@ function LectureExplanation() {
                         height: `${
                           reply.user._id === user._id ? "120px" : "70px"
                         }`,
-                        border: "2px solid black",
                         display: "flex",
+                        marginTop: "5px",
                       }}
                     >
                       <div
                         style={{
                           width: "10%",
                           height: "70px",
-                          border: "2px solid red",
                           display: "flex",
                         }}
                       >
@@ -227,7 +203,6 @@ function LectureExplanation() {
                         style={{
                           width: "90%",
                           height: "70px",
-                          border: "2px solid green",
                           textAlign: "left",
                         }}
                       >
@@ -292,10 +267,7 @@ function LectureExplanation() {
         onChange={(e) => setUserComment(e.target.value)}
         wrap="on"
       ></textarea>
-      <div
-        className="lecturebox"
-        style={{ border: "2px solid pink", marginTop: 20, textAlign: "right" }}
-      >
+      <div className="lecturebox" style={{ marginTop: 20, textAlign: "right" }}>
         <GoButton disabled={comment} onClick={handleCommentWrite}>
           리뷰 쓰기
         </GoButton>

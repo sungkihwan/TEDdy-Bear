@@ -8,12 +8,14 @@ import TextField from "@mui/material/TextField";
 import { brown } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
 import * as Api from "../../api";
+import { DispatchContext } from "../../App";
 
 /** edit profile component
  *
  * @returns {component} edit profile page
  */
 function EditProfile() {
+  const dispatch = useContext(DispatchContext);
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
@@ -101,6 +103,10 @@ function EditProfile() {
         alert: String(checked),
       });
       setEditUser(res.data);
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: res.data,
+      });
       alert("저장되었습니다!");
     } catch (err) {
       console.log("Error: user data put request fail", err);
