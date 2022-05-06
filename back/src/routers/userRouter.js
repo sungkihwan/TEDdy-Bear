@@ -1,7 +1,8 @@
-import is from '@sindresorhus/is';
-import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
-import { userAuthService } from '../services/userService';
+import is from "@sindresorhus/is";
+import { Router } from "express";
+import { login_required } from "../middlewares/login_required";
+import { userAuthService } from "../services/userService";
+import { uploadHandler } from "../utils/multer";
 
 const userAuthRouter = Router();
 
@@ -25,8 +26,37 @@ const userAuthRouter = Router();
  *          type: string
  *        name:
  *          type: string
+ *        profileUrl:
+ *          type: string
+ *        description:
+ *          type: string
  *        password:
  *          type: string
+ *        bearName:
+ *          type: string
+ *        level:
+ *          type: number
+ *        cotton:
+ *          type: number
+ *        height:
+ *          type: number
+ *        exp:
+ *          type: number
+ *        sex:
+ *          type: string
+ *        age:
+ *          type: number
+ *        occupation:
+ *          type: string
+ *        myTopics:
+ *          type: array
+ *          items:
+ *            type: string
+ *        alert:
+ *          type: boolean
+ *        infoProvider:
+ *          type: string
+ *
  */
 
 /**
@@ -59,21 +89,14 @@ const userAuthRouter = Router();
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            properties:
- *              email:
- *                  type: string
- *              name:
- *                  type: string
- *              password:
- *                  type: string
+ *            $ref: '#components/schemas/User'
  */
 
-userAuthRouter.post('/user/register', async function (req, res, next) {
+userAuthRouter.post("/user/register", async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
-        'headers의 Content-Type을 application/json으로 설정해주세요'
+        "headers의 Content-Type을 application/json으로 설정해주세요"
       );
     }
 
@@ -81,12 +104,23 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+    const myTopics = req.body.myTopics;
+    const bearName = req.body.bearName;
+    const sex = req.body.sex;
+    const age = req.body.age;
+    const occupation = req.body.occupation;
 
     // 위 데이터를 유저 db에 추가하기
     const newUser = await userAuthService.addUser({
       name,
       email,
       password,
+      myTopics,
+      bearName,
+      sex,
+      age,
+      occupation,
+      infoProvider: "User",
     });
 
     if (newUser.errorMessage) {
@@ -105,6 +139,7 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
  * /user/login:
  *  post:
  *    summary: "유저 로그인"
+ *    description: "data.cottonUpdateState로 솜 3개 주기 true/false 반환"
  *    tags: [Users]
  *    requestBody:
  *      required: true
@@ -115,14 +150,21 @@ userAuthRouter.post('/user/register', async function (req, res, next) {
  *            properties:
  *              email:
  *                  type: string
- *              name:
- *                  type: string
  *              password:
  *                  type: string
+ *    responses:
+ *        "200":
+ *          description: 유저정보 반환
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                items:
+ *                  $ref: '#components/schemas/User'
  */
 
 // 로그인
-userAuthRouter.post('/user/login', async function (req, res, next) {
+userAuthRouter.post("/user/login", async function (req, res, next) {
   try {
     // req (request) 에서 데이터 가져오기
     const email = req.body.email;
@@ -140,6 +182,221 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
     next(error);
   }
 });
+
+/**
+ * @swagger
+ *
+ * /user/google-login:
+ *  post:
+ *    summary: "유저 구글로그인"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              token:
+ *                  type: string
+ */
+userAuthRouter.post("/user/google-login", async function (req, res, next) {
+  try {
+    const { token } = req.body;
+
+    const user = await userAuthService.socialLoginBy(token);
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
+    }
+
+    return res.status(200).send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ *
+ * /user/mail:
+ *  post:
+ *    summary: "메일 전송하기"
+ *    tags: [Users]
+ *    requestBody:
+ *      description: email이 비어있으면 임시비밀번호 발급, email이 있으면 인증 code 발급 (10분 ttl)
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                  type: string
+ *              id:
+ *                  type: string
+ */
+
+userAuthRouter.post("/user/mail", async function (req, res, next) {
+  try {
+    const { email, type } = req.body;
+    const user = await userAuthService.sendMail({ email, type });
+
+    if (user.errorMessage) {
+      throw new Error(user.errorMessage);
+    }
+
+    res.status(200).send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ *
+ * /user/check/code:
+ *  post:
+ *    summary: "email로 받은 인증 code check 로직"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              code:
+ *                  type: string
+ */
+
+userAuthRouter.post("/user/check/code", async function (req, res, next) {
+  try {
+    const { code } = req.body;
+    const auth = await userAuthService.checkCode({ code });
+
+    if (auth.errorMessage) {
+      throw new Error(auth.errorMessage);
+    }
+
+    res.status(200).send(true);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ *
+ * /user/update/password:
+ *  post:
+ *    summary: "나의 비밀번호 변경"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *                  type: string
+ *              password:
+ *                  type: string
+ */
+userAuthRouter.post(
+  "/user/update/password",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { id, password } = req.body;
+      const updatedUser = await userAuthService.updatePassword({
+        user_id: id,
+        password,
+      });
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+
+      res.status(200).send(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ *
+ * /user/cotton/:exp:
+ *  post:
+ *    summary: "cotton 사용해서 exp 올리기"
+ *    tags: [Users]
+ *    description: login required
+ */
+userAuthRouter.post(
+  "/user/cotton/:exp",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId;
+      const exp = Number(req.params.exp);
+      const updatedUser = await userAuthService.updateExp({
+        user_id,
+        exp,
+      });
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+
+      res.status(200).send(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * @swagger
+ *
+ * /user/img:
+ *  post:
+ *    summary: "프로파일 이미지 업로드"
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              img:
+ *                  type: image
+ */
+userAuthRouter.post(
+  "/user/img",
+  login_required,
+  uploadHandler.single("img"),
+  async function (req, res, next) {
+    try {
+      if (!req.file) {
+        res.status(400).json({ message: "업로드할 이미지가 없습니다" });
+        return;
+      }
+
+      const user_id = req.currentUserId;
+      const url = req.file.path;
+      const updatedUser = await userAuthService.updateImg({ user_id, url });
+
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+
+      res.status(200).send({ url: url });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 /**
  * @swagger
@@ -162,7 +419,7 @@ userAuthRouter.post('/user/login', async function (req, res, next) {
 
 //userlist 반환
 userAuthRouter.get(
-  '/userlist',
+  "/userlist",
   login_required,
   async function (req, res, next) {
     try {
@@ -177,7 +434,7 @@ userAuthRouter.get(
 
 //사용자 정보 반환
 userAuthRouter.get(
-  '/user/current',
+  "/user/current",
   login_required,
   async function (req, res, next) {
     try {
@@ -217,14 +474,7 @@ userAuthRouter.get(
  *      content:
  *        application/json:
  *          schema:
- *            type: object
- *            properties:
- *              email:
- *                  type: string
- *              name:
- *                  type: string
- *              password:
- *                  type: string
+ *            $ref: '#components/schemas/User'
  *    responses:
  *      "200":
  *        description: user 수정 성공
@@ -236,21 +486,48 @@ userAuthRouter.get(
 
 //user 정보 수정
 userAuthRouter.put(
-  '/users/:id',
+  "/users/:id",
   login_required,
   async function (req, res, next) {
     try {
       // URI로부터 사용자 id를 추출함.
-      const user_id = req.params.id;
+      const user_id = req.currentUserId;
       // body data 로부터 업데이트할 사용자 정보를 추출함.
       const name = req.body.name ?? null;
-      const email = req.body.email ?? null;
       const password = req.body.password ?? null;
+      const myTopics = req.body.myTopics ?? null;
+      const bearName = req.body.bearName ?? null;
+      const level = req.body.level ?? null;
+      const cotton = req.body.cotton ?? null;
+      const height = req.body.height ?? null;
+      const sex = req.body.sex ?? null;
+      const age = req.body.age ?? null;
+      const occupation = req.body.occupation ?? null;
+      const description = req.body.description ?? null;
+      const exp = req.body.exp ?? null;
+      const alert = req.body.alert || null;
 
-      const toUpdate = { name, email, password };
+      const toUpdate = {
+        name,
+        password,
+        myTopics,
+        bearName,
+        level,
+        cotton,
+        height,
+        sex,
+        age,
+        occupation,
+        description,
+        exp,
+        alert,
+      };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
-      const updatedUser = await userAuthService.setUser({ user_id, toUpdate });
+      const updatedUser = await userAuthService.setUser({
+        user_id,
+        toUpdate,
+      });
 
       if (updatedUser.errorMessage) {
         throw new Error(updatedUser.errorMessage);
@@ -288,7 +565,7 @@ userAuthRouter.put(
 
 //user 정보 반환
 userAuthRouter.get(
-  '/users/:id',
+  "/users/:id",
   login_required,
   async function (req, res, next) {
     try {
@@ -319,7 +596,7 @@ userAuthRouter.get(
  *        schema:
  *          type: string
  *    requestBody:
- *      description: 유저 수정
+ *      description: 유저 삭제
  *      required: true
  *      content:
  *        application/json:
@@ -336,11 +613,13 @@ userAuthRouter.get(
 
 //user 삭제 컴포넌트
 userAuthRouter.delete(
-  '/users/:id',
-  //login_required,
+  "/users/user",
+  login_required,
   async function (req, res, next) {
     try {
-      const user_id = req.params.id;
+      const user_id = req.currentUserId;
+      // 전체 정보 삭제
+      await userAuthService.deleteUserAllInfo({ user_id });
       //유저 삭제하는 메소드 호출
       await userAuthService.deleteUser({ user_id });
 
@@ -351,13 +630,55 @@ userAuthRouter.delete(
   }
 );
 
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get('/afterlogin', login_required, function (req, res, next) {
-  res
-    .status(200)
-    .send(
-      `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
+/**
+ * @swagger
+ * /bear/{id}:
+ *  get:
+ *    summary: "특정 유저 bear 정보 조회 Path 방식"
+ *    description: "요청 경로에 값을 담아 서버에 보낸다."
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: 유저 아이디
+ *        schema:
+ *          type: string
+ *    responses:
+ *      "200":
+ *        description: 유저 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                bearName:
+ *                  type: string
+ *                level:
+ *                  type: Number
+ *                cotton:
+ *                  type: Number
+ *                height:
+ *                  type: Number
+ *                exp:
+ *                  type: Number
+ */
+
+// 곰 정보 찾기
+userAuthRouter.get(
+  "/bear/:id",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const user_id = req.currentUserId;
+      const bearInfo = await userAuthService.getBearInfo({ user_id });
+      if (bearInfo.errorMessage) {
+        throw new Error(bearInfo.errorMessage);
+      }
+      res.status(200).send(bearInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export { userAuthRouter };

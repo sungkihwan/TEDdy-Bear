@@ -6,7 +6,12 @@ class dataService {
     }
 
     static async findAll() {
-        return await Data.findAll()
+        const objdata = {}
+        const listdata = await Data.findAll()
+        listdata.forEach(row => {
+          objdata[row['id']] = row['data']
+        })
+        return objdata
     }
 }
   
