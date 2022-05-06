@@ -23,7 +23,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function LikeCard({ lectureData, type, cname = "" }) {
   const userState = useContext(UserStateContext);
-  console.log(lectureData);
 
   const customFetcher = async (url) => {
     const response = await fetch(
@@ -49,13 +48,14 @@ function LikeCard({ lectureData, type, cname = "" }) {
   };
 
   const handleOnClick = (data) => {
+    if (userState.user.alert) {
+      alert("솜 하나를 받았습니다!");
+    }
     const sendData = {
       user_id: userState.user.id,
-      talkId: data.talk.id,
-      url: data.talk.url,
+      talkId: data.id,
     };
     Api.post("viewhistory/create", sendData);
-    window.open(data.talk_id.url, "_blank");
   };
 
   return (
@@ -76,7 +76,7 @@ function LikeCard({ lectureData, type, cname = "" }) {
           <Carousel itemsToShow={3}>
             {Object.keys(lectureData).map((data, index) => (
               <div className="cardbox" key={index}>
-                <Item onClick={() => handleOnClick(data)}>
+                <Item onClick={() => handleOnClick(lectureData[data])}>
                   <div>
                     <LinkPreview
                       url={lectureData[data].url}

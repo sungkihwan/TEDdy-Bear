@@ -51,15 +51,14 @@ function LectureCard({ lectureData, user, type, cname = "" }) {
   };
 
   const handleOnClick = (data) => {
+    if (user.alert) {
+      alert("솜 하나를 받았습니다!");
+    }
     const sendData = {
       user_id: userState.user.id,
       talkId: data.talkId ? data.talkId : data.id,
       url: data.url,
     };
-    if (user.alert) {
-      alert("솜 하나를 받았습니다!");
-    }
-    window.open(data.url, "_blank");
     Api.post("viewhistory/create", sendData);
   };
 

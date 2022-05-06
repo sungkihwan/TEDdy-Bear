@@ -48,16 +48,13 @@ function BookmarkCard({ lectureData, type, cname = "" }) {
   };
 
   const handleOnClick = (data) => {
-    console.log(data);
-    const sendData = {
-      user_id: userState.user.id,
-      talkId: data.id,
-      url: data.url,
-    };
     if (userState.user.alert) {
       alert("솜 하나를 받았습니다!");
     }
-    window.open(data.url, "_blank");
+    const sendData = {
+      user_id: userState.user.id,
+      talkId: data.id,
+    };
     Api.post("viewhistory/create", sendData);
   };
 
