@@ -7,11 +7,11 @@ import { MainText, Page } from "./styles/Style";
 function Description3() {
   return (
     <Page>
-      <div>대충 잔디밭 이미지</div>
+      <img src="/Lawn.PNG" alt="lawn" />
       <MainText>
         <p>나는 얼마나 부지런할까?</p>
         <p>
-          <span style={{ color: "#ad1a10" }}>잔디밭 관리</span>로 확인해봐요
+          <span style={{ color: "#ad1a10" }}>달력에 도장</span>을 찍어봐요!
         </p>
       </MainText>
     </Page>

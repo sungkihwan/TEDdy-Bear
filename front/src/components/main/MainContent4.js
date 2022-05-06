@@ -22,7 +22,7 @@ function Description4() {
         </MainText>
         <MyButton onClick={() => navigate("/media")}>영상 보러가기</MyButton>
       </div>
-      <div>대충 동영상 페이지 이미지</div>
+      <img src="/talks.png" alt="talks" />
     </Page>
   );
 }
