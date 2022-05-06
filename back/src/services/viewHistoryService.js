@@ -28,13 +28,17 @@ class ViewHistoryService {
     }
 
     // 솜 + 1
-    const toUpdate = { "cotton": 1 } 
-    User.updateCountById({ user_id, toUpdate })
+    const toUpdate = { cotton: 1 };
+    User.updateCountById({ user_id, toUpdate });
 
     // 우선도 업데이트
-    const user = await User.findById({ user_id })
-    await TopicPriorityService.plusPriorities({ user_id: user._id, topics: talk.topics, point: 1})
-    
+    const user = await User.findById({ user_id });
+    await TopicPriorityService.plusPriorities({
+      user_id: user._id,
+      topics: talk.topics,
+      point: 1,
+    });
+
     return createdNewHistory;
   }
 
@@ -79,7 +83,13 @@ class ViewHistoryService {
         viewhistoryDatelist.push(viewhistorylist[i]);
       }
     }
-    return viewhistoryDatelist;
+
+    const unique = viewhistoryDatelist.filter(
+      (arr, index, callback) =>
+        index === callback.findIndex((t) => t.talkId === arr.talkId)
+    );
+
+    return unique;
   }
 
   static async getViewHistoryUntilToday({ user_id, size }) {
