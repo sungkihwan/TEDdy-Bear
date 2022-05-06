@@ -144,6 +144,7 @@ class userAuthService {
     // 반환할 loginuser 객체
     return {
       token,
+      _id: user._id,
       id: user.id,
       email: user.email,
       name: user.name,
