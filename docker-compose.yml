@@ -2,7 +2,7 @@ version: '3'
 services:
   frontend_server:
     image: singahu/dataproject-front-react:0.0.1
-    restart: "always"
+    restart: "on-failure"
     ports:
       - 80:80
     networks:
@@ -10,7 +10,7 @@ services:
 
   backend_server:
     image: singahu/dataproject-back-nodejs:0.0.1
-    restart: "always"
+    restart: "on-failure"
     ports:
       - 5001:5001
     networks:
