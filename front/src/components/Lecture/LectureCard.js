@@ -1,6 +1,6 @@
 import Carousel from "react-elastic-carousel";
 import { LinkPreview } from "@dhaiwat10/react-link-preview";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserStateContext } from "../../App";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
@@ -21,7 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
   marginTop: 20,
 }));
 
-function LectureCard({ lectureData, type, cname = "" }) {
+function LectureCard({ lectureData, user, type, cname = "" }) {
   let lectureInfo = [...lectureData];
 
   const userState = useContext(UserStateContext);
@@ -56,10 +56,11 @@ function LectureCard({ lectureData, type, cname = "" }) {
       talkId: data.talkId ? data.talkId : data.id,
       url: data.url,
     };
-    Api.post("viewhistory/create", sendData).then((res) =>
-      console.log(res.data)
-    );
+    if (user.alert) {
+      alert("솜 하나를 받았습니다!");
+    }
     window.open(data.url, "_blank");
+    Api.post("viewhistory/create", sendData);
   };
 
   return (

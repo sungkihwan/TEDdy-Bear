@@ -8,6 +8,7 @@ function Lecture() {
   const [myLectureData, setMyLectureData] = useState([]);
   const [topLikeLecture, setTopLikeLecture] = useState([]);
   const userState = useContext(UserStateContext);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     Api.get("talks/today", "?size=12").then((res) => setLectureData(res.data));
@@ -21,6 +22,10 @@ function Lecture() {
     Api.get("talks/like/ranking", "?size=12").then((res) => {
       setTopLikeLecture(res.data);
     });
+
+    if (userState.user !== null) {
+      Api.get(`users/${userState.user.id}`).then((res) => setUser(res.data));
+    }
   }, [userState.user]);
 
   return (
@@ -30,6 +35,7 @@ function Lecture() {
         myLectureData={myLectureData}
         setLectureData={setLectureData}
         topLikeLecture={topLikeLecture}
+        user={user}
       ></LectureList>
     </div>
   );

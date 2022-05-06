@@ -24,7 +24,6 @@ function EditProfile() {
     try {
       const getUserData = async () => {
         const res = await Api.get(`users`, userState.user.id);
-        console.log(res.data);
         setChecked(res.data.alert);
         setEditUser(res.data);
         setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
