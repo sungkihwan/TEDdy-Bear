@@ -8,13 +8,16 @@ function MyTalksProvider({ children }) {
   const [myBookMarkList, setMyBookMarkList] = useState();
 
   useEffect(() => {
-    Api.get("bookmarks").then((res) => {
-      setMyBookMarkList(res.data.payload);
-    });
+    Api.get("bookmarks")
+      .then((res) => {
+        setMyBookMarkList(res.data.payload);
+      })
+      .catch((err) => {
+        console.log("북마크 리스트가 없습니다!");
+      });
 
     Api.get("likes/my").then((res) => {
       setMyLikeList(res.data.payload);
-      console.log(res.data.payload);
     });
   }, []);
 

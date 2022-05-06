@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import * as Api from "../../api";
 import { useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
+import * as Api from "../../api";
 import Loading from "../common/Loading";
 import {
   CommunityPage,
@@ -87,17 +89,28 @@ function Community() {
       </RankCard>
       <UserList>
         {userList.map((user, index) => (
-          <UserCard key={index}>
+          <UserCard key={index} xs="auto">
             <Link onClick={() => navigate(`/users/${user.id}`)}>
-              <p>{user.name}님</p>
-              <p>{user.email}</p>
-              <p>{user.description}</p>
-              <p>
-                {user.bearName}의 키 : {user.height}cm
-              </p>
-              {user.myTopics.map((topic, index) => (
-                <span key={index}>{topicDict[topic]} </span>
-              ))}
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                direction="column"
+              >
+                <Avatar
+                  src={user.profileUrl}
+                  sx={{ width: 100, height: 100 }}
+                />
+                <p>{user.name}님</p>
+                <p>{user.email}</p>
+                <p>{user.description}</p>
+                <p>
+                  {user.bearName}의 키 : {user.height}cm
+                </p>
+                {user.myTopics.map((topic, index) => (
+                  <span key={index}>{topicDict[topic]} </span>
+                ))}
+              </Grid>
             </Link>
           </UserCard>
         ))}

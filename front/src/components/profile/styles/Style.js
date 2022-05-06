@@ -194,13 +194,13 @@ export const UserList = Styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  
+  justify-content: center;
 `;
 
 //community user card style
 export const UserCard = styled(Box)(() => ({
-  minWidth: 270,
-  minHeight: 270,
+  minWidth: 240,
+  minHeight: 360,
   margin: 10,
   borderRadius: 30,
   color: brown[50],

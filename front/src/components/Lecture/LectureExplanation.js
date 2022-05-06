@@ -58,7 +58,9 @@ function LectureExplanation() {
       talkId: talkId,
     };
     setCotton((cur) => cur + 1);
-    alert("솜 한 개를 받았습니다!");
+    if (user.alert) {
+      alert("솜 하나를 받았습니다!");
+    }
     window.open(lecture.url, "_blank");
     setView((cur) => cur + 1);
     await Api.post("viewhistory/create", data);
@@ -80,7 +82,7 @@ function LectureExplanation() {
     };
     fetchTalks();
     fetchCotton();
-  }, [talkId, user.id]);
+  }, [talkId]);
 
   useEffect(() => {
     Api.get(`talks/${talkId}/comments`).then((res) => {
@@ -103,7 +105,6 @@ function LectureExplanation() {
   };
 
   const handleReplyDelete = (e) => {
-    console.log(e.target.name);
     const num = e.target.name;
     const commentIndex = Number(num[0]);
     const replyIndex = Number(num[1]);

@@ -1,12 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AlertSwitch, EachEdit, EditPage, EditText } from "./styles/Style";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import { brown } from "@mui/material/colors";
+import Autocomplete from "@mui/material/Autocomplete";
+import Avatar from "@mui/material/Avatar";
+import { EachEdit, EditPage, EditText } from "./styles/Style";
 import { UserStateContext } from "../../App";
 import { MySelect } from "../common/MySelect";
 import { MyInput } from "../common/MyInput";
 import { MyButton } from "../common/MyButton";
-import TextField from "@mui/material/TextField";
-import { brown } from "@mui/material/colors";
-import Autocomplete from "@mui/material/Autocomplete";
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
 
@@ -16,26 +18,46 @@ import { DispatchContext } from "../../App";
  */
 function EditProfile() {
   const dispatch = useContext(DispatchContext);
+  const navigate = useNavigate();
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
   const [checked, setChecked] = useState(userState.user.alert);
   const [modifyPassword, setModifyPassword] = useState("");
+  const [file, setFile] = useState(null);
+  const [tempUrl, setTempUrl] = useState(
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+  );
 
   useEffect(() => {
     try {
       const getUserData = async () => {
         const res = await Api.get(`users`, userState.user.id);
-        console.log(res.data);
         setChecked(res.data.alert);
         setEditUser(res.data);
         setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
+        setTempUrl(res.data.profileUrl);
       };
       getUserData();
     } catch (err) {
       console.log("Error: award list get request fail", err);
     }
   }, [userState.user.id]);
+
+  const fileInput = useRef(null);
+
+  const handleUpload = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setTempUrl(URL.createObjectURL(e.target.files[0]));
+    } else {
+      //업로드 취소할 시
+      setTempUrl(
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+      );
+      return;
+    }
+  };
 
   const topTopics = [
     "기술",
@@ -91,6 +113,16 @@ function EditProfile() {
   const saveEdit = async (e) => {
     e.preventDefault();
     //Put request to update edited user data
+    const formD = new FormData();
+    formD.append("img", file);
+
+    try {
+      await Api.postImg("user/img", formD);
+      console.log("이미지 전송에 성공했습니다.");
+    } catch (err) {
+      console.log("이미지 전송에 실패했습니다.", err);
+    }
+
     try {
       const res = await Api.put(`users/${editUser.id}`, {
         name: editUser.name,
@@ -108,6 +140,7 @@ function EditProfile() {
         payload: res.data,
       });
       alert("저장되었습니다!");
+      navigate(`/users/${editUser.id}`);
     } catch (err) {
       console.log("Error: user data put request fail", err);
     }
@@ -136,103 +169,117 @@ function EditProfile() {
 
   return (
     <EditPage>
-      <EachEdit>
-        <EditText>이름</EditText>
-        <MyInput value={editUser.name} name="name" onChange={updateData} />
-      </EachEdit>
-      <EachEdit>
-        <EditText>곰 이름</EditText>
-        <MyInput
-          value={editUser.bearName}
-          name="bearName"
-          onChange={updateData}
-        />
-      </EachEdit>
-      <EachEdit>
-        <EditText>자기소개</EditText>
-        <MyInput
-          value={editUser.description}
-          name="description"
-          onChange={updateData}
-        />
-      </EachEdit>
-      <EachEdit>
-        <EditText>관심 주제</EditText>
-        <Autocomplete
-          multiple
-          sx={{
-            backgroundColor: brown[100],
-            width: "500px",
-          }}
-          id="tags-outlined"
-          options={topTopics}
-          value={userTopics}
-          onChange={(e, newValue) => {
-            setUserTopics(newValue);
-          }}
-          renderInput={(params) => (
-            <TextField sx={{ backgroundColor: brown[100] }} {...params} />
-          )}
-        />
-      </EachEdit>
-      <EachEdit>
-        <EditText>나이</EditText>
-        <MySelect name="age" value={editUser.age} onChange={updateData}>
-          {ages.map((age, index) => (
-            <option key={index} value={age}>
-              {age}
-            </option>
-          ))}
-        </MySelect>
-      </EachEdit>
-      <EachEdit>
-        <EditText>직업</EditText>
-        <MyInput
-          value={editUser.occupation}
-          name="occupation"
-          onChange={updateData}
-        />
-      </EachEdit>
-      <EachEdit>
-        <EditText>성별</EditText>
-        <MySelect name="sex" value={editUser.sex} onChange={updateData}>
-          {sexs.map((sex, index) => (
-            <option key={index} value={sex}>
-              {sex}
-            </option>
-          ))}
-        </MySelect>
-      </EachEdit>
-      <EachEdit>
-        <EditText>알람</EditText>
-        <AlertSwitch
-          checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-      </EachEdit>
-      <EachEdit>
-        <EditText>비밀번호</EditText>
-        <MyInput
-          type="password"
-          value={modifyPassword}
-          name="password"
-          onChange={onChangePW}
-        />
-      </EachEdit>
-      <EachEdit>
-        <EditText>회원 탈퇴</EditText>
-        <div style={{ width: "510px" }}>
-          <MyButton style={{ backgroundColor: "#EA541E" }}>회원 탈퇴</MyButton>
-          <MyButton
-            onClick={handleModifyPW}
-            style={{ backgroundColor: "#1e90ff", marginLeft: "35px" }}
-          >
-            비밀번호 변경
-          </MyButton>
-        </div>
-      </EachEdit>
-      <MyButton onClick={saveEdit}>저장</MyButton>
+      <form name="PFPform" encType="multipart/form-data">
+        <EachEdit>
+          <EditText>프로필 사진</EditText>
+          <Avatar
+            src={tempUrl}
+            sx={{ width: 200, height: 200 }}
+            onClick={() => {
+              fileInput.current.click();
+            }}
+          />
+          <input
+            type="file"
+            style={{ display: "none" }}
+            accept="image/jpg,impge/png,image/jpeg"
+            name="profile_img"
+            onChange={handleUpload}
+            ref={fileInput}
+          />
+        </EachEdit>
+        <EachEdit>
+          <EditText>이름</EditText>
+          <MyInput value={editUser.name} name="name" onChange={updateData} />
+        </EachEdit>
+        <EachEdit>
+          <EditText>곰 이름</EditText>
+          <MyInput
+            value={editUser.bearName}
+            name="bearName"
+            onChange={updateData}
+          />
+        </EachEdit>
+        <EachEdit>
+          <EditText>자기소개</EditText>
+          <MyInput
+            value={editUser.description}
+            name="description"
+            onChange={updateData}
+          />
+        </EachEdit>
+        <EachEdit>
+          <EditText>관심 주제</EditText>
+          <Autocomplete
+            multiple
+            sx={{
+              backgroundColor: brown[100],
+              width: "500px",
+            }}
+            id="tags-outlined"
+            options={topTopics}
+            value={userTopics}
+            onChange={(e, newValue) => {
+              setUserTopics(newValue);
+            }}
+            renderInput={(params) => (
+              <TextField sx={{ backgroundColor: brown[100] }} {...params} />
+            )}
+          />
+        </EachEdit>
+        <EachEdit>
+          <EditText>나이</EditText>
+          <MySelect name="age" value={editUser.age} onChange={updateData}>
+            {ages.map((age, index) => (
+              <option key={index} value={age}>
+                {age}
+              </option>
+            ))}
+          </MySelect>
+        </EachEdit>
+        <EachEdit>
+          <EditText>직업</EditText>
+          <MyInput
+            value={editUser.occupation}
+            name="occupation"
+            onChange={updateData}
+          />
+        </EachEdit>
+        <EachEdit>
+          <EditText>성별</EditText>
+          <MySelect name="sex" value={editUser.sex} onChange={updateData}>
+            {sexs.map((sex, index) => (
+              <option key={index} value={sex}>
+                {sex}
+              </option>
+            ))}
+          </MySelect>
+        </EachEdit>
+        <EachEdit>
+          <EditText>비밀번호</EditText>
+          <MyInput
+            type="password"
+            value={modifyPassword}
+            name="password"
+            onChange={onChangePW}
+          />
+        </EachEdit>
+        <EachEdit>
+          <EditText>회원 탈퇴</EditText>
+          <div style={{ width: "510px" }}>
+            <MyButton style={{ backgroundColor: "#EA541E" }}>
+              회원 탈퇴
+            </MyButton>
+            <MyButton
+              onClick={handleModifyPW}
+              style={{ backgroundColor: "#1e90ff", marginLeft: "35px" }}
+            >
+              비밀번호 변경
+            </MyButton>
+          </div>
+        </EachEdit>
+        <MyButton onClick={saveEdit}>저장</MyButton>
+      </form>
     </EditPage>
   );
 }
