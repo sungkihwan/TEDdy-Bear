@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
-import * as Api from "../../api";
-import Loading from "../common/Loading";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Grid from '@mui/material/Grid';
+import * as Api from '../../api';
+import Loading from '../common/Loading';
 import {
   CommunityPage,
   UserCard,
@@ -13,7 +13,7 @@ import {
   UserPageText,
   Top5Text,
   UserList,
-} from "../profile/styles/Style";
+} from '../profile/styles/Style';
 
 /** community page component
  *
@@ -26,27 +26,27 @@ function Community() {
   const navigate = useNavigate();
 
   const topicDict = {
-    technology: "기술",
-    science: "과학",
-    culture: "문화",
-    globalissues: "글로벌이슈",
-    society: "사회",
-    design: "디자인",
-    socialchange: "사회변화",
-    business: "비즈니스",
-    animation: "애니메이션",
-    health: "건강",
+    technology: '기술',
+    science: '과학',
+    culture: '문화',
+    globalissues: '글로벌이슈',
+    society: '사회',
+    design: '디자인',
+    socialchange: '사회변화',
+    business: '비즈니스',
+    animation: '애니메이션',
+    health: '건강',
   };
 
   const fetchUserList = async () => {
     try {
       // 이전에 발급받은 토큰이 있다면, 이를 가지고 유저 정보를 받아옴.
-      const res = await Api.get("userlist");
+      const res = await Api.get('userlist');
       const ranking = getRanking(res.data);
       setUserList(res.data);
       setRank(ranking);
     } catch {
-      console.log("유저리스트를 받을 수 없습니다.");
+      console.log('유저리스트를 받을 수 없습니다.');
     }
     // fetchUserList 과정이 끝났으므로, isFetchCompleted 상태를 true로 바꿔줌
     setIsFetchCompleted(true);
@@ -71,7 +71,7 @@ function Community() {
   return (
     <CommunityPage>
       <RankCard>
-        <Top5Text style={{ width: "100%" }}>오늘의 TOP5👑</Top5Text>
+        <Top5Text style={{ width: '100%' }}>오늘의 TOP5👑</Top5Text>
         {Rank.map((lank, index) => (
           <div key={index}>
             <UserPageText>{lank.name}님</UserPageText>

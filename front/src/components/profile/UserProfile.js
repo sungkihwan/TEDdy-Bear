@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
-import { MyButton } from "../common/MyButton";
-import { ProfileCard, ProfileText, UserInfo } from "./styles/Style";
+import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Grid from '@mui/material/Grid';
+import { MyButton } from '../common/MyButton';
+import { ProfileCard, ProfileText, UserInfo } from './styles/Style';
 
 /** user profile component
  *
@@ -14,16 +14,16 @@ function UserProfile({ user, isEditable }) {
   const navigate = useNavigate();
 
   const topicDict = {
-    technology: "기술",
-    science: "과학",
-    culture: "문화",
-    globalissues: "글로벌이슈",
-    society: "사회",
-    design: "디자인",
-    socialchange: "사회변화",
-    business: "비즈니스",
-    animation: "애니메이션",
-    health: "건강",
+    technology: '기술',
+    science: '과학',
+    culture: '문화',
+    globalissues: '글로벌이슈',
+    society: '사회',
+    design: '디자인',
+    socialchange: '사회변화',
+    business: '비즈니스',
+    animation: '애니메이션',
+    health: '건강',
   };
 
   return (
@@ -49,8 +49,8 @@ function UserProfile({ user, isEditable }) {
           <ProfileText>{user.sex}</ProfileText>
           {isEditable && (
             <MyButton
-              style={{ width: "100%" }}
-              onClick={() => navigate("/users/edit")}
+              style={{ width: '100%' }}
+              onClick={() => navigate('/users/edit')}
             >
               내 정보 편집
             </MyButton>

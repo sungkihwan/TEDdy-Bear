@@ -1,16 +1,16 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import TextField from "@mui/material/TextField";
-import { brown } from "@mui/material/colors";
-import Autocomplete from "@mui/material/Autocomplete";
-import Avatar from "@mui/material/Avatar";
+import React, { useState, useContext, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import { brown } from '@mui/material/colors';
+import Autocomplete from '@mui/material/Autocomplete';
+import Avatar from '@mui/material/Avatar';
 
-import { EachEdit, EditPage, EditText } from "./styles/Style";
-import { UserStateContext } from "../../App";
-import { MySelect } from "../common/MySelect";
-import { MyInput } from "../common/MyInput";
-import { MyButton } from "../common/MyButton";
-import * as Api from "../../api";
+import { EachEdit, EditPage, EditText } from './styles/Style';
+import { UserStateContext } from '../../App';
+import { MySelect } from '../common/MySelect';
+import { MyInput } from '../common/MyInput';
+import { MyButton } from '../common/MyButton';
+import * as Api from '../../api';
 
 /** edit profile component
  *
@@ -21,10 +21,10 @@ function EditProfile() {
   const userState = useContext(UserStateContext);
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
-  const [modifyPassword, setModifyPassword] = useState("");
+  const [modifyPassword, setModifyPassword] = useState('');
   const [file, setFile] = useState(null);
   const [tempUrl, setTempUrl] = useState(
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
   );
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function EditProfile() {
       };
       getUserData();
     } catch (err) {
-      console.log("Error: award list get request fail", err);
+      console.log('Error: award list get request fail', err);
     }
   }, []);
 
@@ -50,66 +50,66 @@ function EditProfile() {
     } else {
       //업로드 취소할 시
       setTempUrl(
-        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
       );
       return;
     }
   };
 
   const topTopics = [
-    "기술",
-    "과학",
-    "문화",
-    "글로벌이슈",
-    "사회",
-    "디자인",
-    "사회변화",
-    "비즈니스",
-    "애니메이션",
-    "건강",
+    '기술',
+    '과학',
+    '문화',
+    '글로벌이슈',
+    '사회',
+    '디자인',
+    '사회변화',
+    '비즈니스',
+    '애니메이션',
+    '건강',
   ];
-  const ages = ["10대", "20대", "30대", "40대", "50대", "60대"];
+  const ages = ['10대', '20대', '30대', '40대', '50대', '60대'];
 
   const topicDict = {
-    기술: "technology",
-    과학: "science",
-    문화: "culture",
-    글로벌이슈: "globalissues",
-    사회: "society",
-    디자인: "design",
-    사회변화: "socialchange",
-    비즈니스: "business",
-    애니메이션: "animation",
-    건강: "health",
+    기술: 'technology',
+    과학: 'science',
+    문화: 'culture',
+    글로벌이슈: 'globalissues',
+    사회: 'society',
+    디자인: 'design',
+    사회변화: 'socialchange',
+    비즈니스: 'business',
+    애니메이션: 'animation',
+    건강: 'health',
   };
 
   const topicDict2 = {
-    technology: "기술",
-    science: "과학",
-    culture: "문화",
-    globalissues: "글로벌이슈",
-    society: "사회",
-    design: "디자인",
-    socialchange: "사회변화",
-    business: "비즈니스",
-    animation: "애니메이션",
-    health: "건강",
+    technology: '기술',
+    science: '과학',
+    culture: '문화',
+    globalissues: '글로벌이슈',
+    society: '사회',
+    design: '디자인',
+    socialchange: '사회변화',
+    business: '비즈니스',
+    animation: '애니메이션',
+    health: '건강',
   };
 
-  const sexs = ["남자", "여자"];
+  const sexs = ['남자', '여자'];
 
   //Click OK button, edit user data
   const saveEdit = async (e) => {
     e.preventDefault();
     //Put request to update edited user data
     const formD = new FormData();
-    formD.append("img", file);
+    formD.append('img', file);
 
     try {
-      await Api.postImg("user/img", formD);
-      console.log("이미지 전송에 성공했습니다.");
+      await Api.postImg('user/img', formD);
+      console.log('이미지 전송에 성공했습니다.');
     } catch (err) {
-      console.log("이미지 전송에 실패했습니다.", err);
+      console.log('이미지 전송에 실패했습니다.', err);
     }
 
     try {
@@ -123,10 +123,10 @@ function EditProfile() {
         myTopics: userTopics.map((topic) => topicDict[topic]),
       });
       setEditUser(res.data);
-      alert("저장되었습니다!");
+      alert('저장되었습니다!');
       navigate(`/users/${editUser.id}`);
     } catch (err) {
-      console.log("Error: user data put request fail", err);
+      console.log('Error: user data put request fail', err);
     }
   };
 
@@ -146,9 +146,9 @@ function EditProfile() {
       id: userState.user.id,
       password: modifyPassword,
     };
-    Api.post("user/update/password", data).then((res) => console.log(res.data));
-    setModifyPassword("");
-    alert("비밀번호 변경 완료");
+    Api.post('user/update/password', data).then((res) => console.log(res.data));
+    setModifyPassword('');
+    alert('비밀번호 변경 완료');
   };
 
   return (
@@ -164,7 +164,7 @@ function EditProfile() {
         />
         <input
           type="file"
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           accept="image/jpg,impge/png,image/jpeg"
           name="profile_img"
           onChange={handleUpload}
@@ -197,7 +197,7 @@ function EditProfile() {
           multiple
           sx={{
             backgroundColor: brown[100],
-            width: "500px",
+            width: '500px',
           }}
           id="tags-outlined"
           options={topTopics}
@@ -249,11 +249,11 @@ function EditProfile() {
       </EachEdit>
       <EachEdit>
         <EditText>회원 탈퇴</EditText>
-        <div style={{ width: "510px" }}>
-          <MyButton style={{ backgroundColor: "#EA541E" }}>회원 탈퇴</MyButton>
+        <div style={{ width: '510px' }}>
+          <MyButton style={{ backgroundColor: '#EA541E' }}>회원 탈퇴</MyButton>
           <MyButton
             onClick={handleModifyPW}
-            style={{ backgroundColor: "#1e90ff", marginLeft: "35px" }}
+            style={{ backgroundColor: '#1e90ff', marginLeft: '35px' }}
           >
             비밀번호 변경
           </MyButton>
