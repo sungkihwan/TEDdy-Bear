@@ -1,21 +1,21 @@
 version: '3'
 services:
   frontend_server:
-    image: singahu/react_portfolio_app:0.0.1
+    image: singahu/dataproject-front-react:0.0.1
     restart: "always"
     ports:
       - 80:80
     networks:
-      - portfolio-service
+      - dataproject
 
   backend_server:
-    image: singahu/node_portfolio_app:0.0.1
+    image: singahu/dataproject-back-nodejs:0.0.1
     restart: "always"
     ports:
-      - 5001:5000
+      - 5001:5001
     networks:
-      - portfolio-service
+      - dataproject
 
 networks:
-  portfolio-service:
+  dataproject:
 

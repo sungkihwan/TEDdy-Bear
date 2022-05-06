@@ -1,13 +1,9 @@
-FROM node:16.14.0-alpine
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
+FROM node:16.14.2-bullseye-slim
+WORKDIR /app 
+COPY package*.json /app
+RUN yarn
+COPY . /app
 EXPOSE 5001
+CMD [ "yarn", "start" ]
 
-CMD [ "npm", "run", "start" ]
+
