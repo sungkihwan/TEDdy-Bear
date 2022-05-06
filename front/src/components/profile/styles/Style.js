@@ -194,7 +194,7 @@ export const UserList = Styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  
+  justify-content: center;
 `;
 
 //community user card style

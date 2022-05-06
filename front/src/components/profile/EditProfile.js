@@ -1,15 +1,16 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AlertSwitch, EachEdit, EditPage, EditText } from "./styles/Style";
-import { UserStateContext } from "../../App";
-import { MySelect } from "../common/MySelect";
-import { MyInput } from "../common/MyInput";
-import { MyButton } from "../common/MyButton";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { brown } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
+import Avatar from "@mui/material/Avatar";
+
+import { AlertSwitch, EachEdit, EditPage, EditText } from "./styles/Style";
+import { DispatchContext, UserStateContext } from "../../App";
+import { MySelect } from "../common/MySelect";
+import { MyInput } from "../common/MyInput";
+import { MyButton } from "../common/MyButton";
 import * as Api from "../../api";
-import { DispatchContext } from "../../App";
-import { useNavigate } from "react-router-dom";
 
 /** edit profile component
  *
@@ -23,6 +24,10 @@ function EditProfile() {
   const [userTopics, setUserTopics] = useState([]);
   const [checked, setChecked] = useState(userState.user.alert);
   const [modifyPassword, setModifyPassword] = useState("");
+  const [file, setFile] = useState(null);
+  const [tempUrl, setTempUrl] = useState(
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+  );
 
   useEffect(() => {
     try {
@@ -31,12 +36,28 @@ function EditProfile() {
         setChecked(res.data.alert);
         setEditUser(res.data);
         setUserTopics(res.data.myTopics.map((topic) => topicDict2[topic]));
+        setTempUrl(res.data.profileUrl);
       };
       getUserData();
     } catch (err) {
       console.log("Error: award list get request fail", err);
     }
   }, [userState.user.id]);
+
+  const fileInput = useRef(null);
+
+  const handleUpload = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setTempUrl(URL.createObjectURL(e.target.files[0]));
+    } else {
+      //업로드 취소할 시
+      setTempUrl(
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+      );
+      return;
+    }
+  };
 
   const topTopics = [
     "기술",
@@ -92,6 +113,16 @@ function EditProfile() {
   const saveEdit = async (e) => {
     e.preventDefault();
     //Put request to update edited user data
+    const formD = new FormData();
+    formD.append("img", file);
+
+    try {
+      await Api.postImg("user/img", formD);
+      console.log("이미지 전송에 성공했습니다.");
+    } catch (err) {
+      console.log("이미지 전송에 실패했습니다.", err);
+    }
+
     try {
       const res = await Api.put(`users/${editUser.id}`, {
         name: editUser.name,
@@ -138,6 +169,24 @@ function EditProfile() {
 
   return (
     <EditPage>
+      <EachEdit>
+        <EditText>프로필 사진</EditText>
+        <Avatar
+          src={tempUrl}
+          sx={{ width: 200, height: 200 }}
+          onClick={() => {
+            fileInput.current.click();
+          }}
+        />
+        <input
+          type="file"
+          style={{ display: "none" }}
+          accept="image/jpg,impge/png,image/jpeg"
+          name="profile_img"
+          onChange={handleUpload}
+          ref={fileInput}
+        />
+      </EachEdit>
       <EachEdit>
         <EditText>이름</EditText>
         <MyInput value={editUser.name} name="name" onChange={updateData} />
