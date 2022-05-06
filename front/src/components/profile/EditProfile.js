@@ -9,6 +9,7 @@ import { brown } from "@mui/material/colors";
 import Autocomplete from "@mui/material/Autocomplete";
 import * as Api from "../../api";
 import { DispatchContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 /** edit profile component
  *
@@ -17,6 +18,7 @@ import { DispatchContext } from "../../App";
 function EditProfile() {
   const dispatch = useContext(DispatchContext);
   const userState = useContext(UserStateContext);
+  const navigate = useNavigate();
   const [editUser, setEditUser] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
   const [checked, setChecked] = useState(userState.user.alert);
@@ -107,6 +109,7 @@ function EditProfile() {
         payload: res.data,
       });
       alert("저장되었습니다!");
+      navigate(`/users/${userState.user.id}`);
     } catch (err) {
       console.log("Error: user data put request fail", err);
     }
@@ -204,11 +207,13 @@ function EditProfile() {
       </EachEdit>
       <EachEdit>
         <EditText>알람</EditText>
-        <AlertSwitch
-          checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
-          inputProps={{ "aria-label": "controlled" }}
-        />
+        <div style={{ width: "540px" }}>
+          <AlertSwitch
+            checked={checked}
+            onChange={(e) => setChecked(e.target.checked)}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+        </div>
       </EachEdit>
       <EachEdit>
         <EditText>비밀번호</EditText>
