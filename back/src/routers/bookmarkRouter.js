@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
-import { BookmarkService } from "../services/BookmarkService";
+import { loginRequired } from "../middlewares/loginRequired";
+import { BookmarkService } from "../services/bookmarkService";
 
 const bookmarkRouter = Router();
 
@@ -39,7 +39,7 @@ const bookmarkRouter = Router();
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next) {
+bookmarkRouter.get("/bookmarks", loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId
 
@@ -90,7 +90,7 @@ bookmarkRouter.get("/bookmarks", login_required, async function (req, res, next)
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.post("/bookmarks/bookmark", login_required, async function (req, res, next) {
+bookmarkRouter.post("/bookmarks/bookmark", loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId
     const talkId = Number(req.body.talkId)
@@ -134,7 +134,7 @@ bookmarkRouter.post("/bookmarks/bookmark", login_required, async function (req, 
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.delete("/bookmarks/:talk_id", login_required, async function (req, res, next) {
+bookmarkRouter.delete("/bookmarks/:talk_id", loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId
     const talk_id = req.params.talk_id
