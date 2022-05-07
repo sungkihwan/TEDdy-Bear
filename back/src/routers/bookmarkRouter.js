@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { BookmarkService } from "../services/BookmarkService";
+import { BookmarkService } from "../services/bookmarkService";
 
 const bookmarkRouter = Router();
 

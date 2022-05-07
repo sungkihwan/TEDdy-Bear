@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { CommentService } from "../services/CommentService";
+import { CommentService } from "../services/commentService";
 
 const commentRouter = Router();
 
