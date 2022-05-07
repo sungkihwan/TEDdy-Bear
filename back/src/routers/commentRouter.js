@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
+import { loginRequired } from "../middlewares/loginRequired";
 import { CommentService } from "../services/commentService";
 
 const commentRouter = Router();
@@ -92,7 +92,7 @@ commentRouter.get("/talks/:talkId/comments", async function (req, res, next) {
  */
 commentRouter.post(
   "/comments/comment",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const mode = req.body.mode;
@@ -160,7 +160,7 @@ commentRouter.post(
  */
 commentRouter.delete(
   "/comments/:comment_id",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const mode = req.query.mode;

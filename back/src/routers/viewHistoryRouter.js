@@ -5,11 +5,11 @@
  */
 
 import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
+import { loginRequired } from "../middlewares/loginRequired";
 import { ViewHistoryService } from "../services/viewHistoryService";
 
 const viewHistoryRouter = Router();
-viewHistoryRouter.use(login_required);
+viewHistoryRouter.use(loginRequired);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ viewHistoryRouter.use(login_required);
  *               $ref: '#/components/schemas/ViewHistory'
  */
 
-viewHistoryRouter.use(login_required);
+viewHistoryRouter.use(loginRequired);
 
 // viewHistory를 만드는 router api (링크 클릭시 호출)
 viewHistoryRouter.post("/viewhistory/create", async function (req, res, next) {
@@ -301,7 +301,7 @@ viewHistoryRouter.get(
 
 viewHistoryRouter.get(
   "/viewhistory/latest",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const user_id = req.currentUserId;

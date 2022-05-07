@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { login_required } from '../middlewares/login_required';
+import { loginRequired } from '../middlewares/loginRequired';
 import { likeService } from '../services/likeService';
 
 const likeRouter = Router();
-likeRouter.use(login_required);
+likeRouter.use(loginRequired);
 /**
  * @swagger
  * tags:
@@ -58,7 +58,7 @@ likeRouter.use(login_required);
  */
 likeRouter.post(
   '/talks/talk/like',
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const userId = req.currentUserId;
