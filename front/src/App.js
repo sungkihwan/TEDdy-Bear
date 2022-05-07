@@ -17,6 +17,7 @@ import FindPassword from "./components/user/FindPassword";
 
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
+import "./index.css";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);

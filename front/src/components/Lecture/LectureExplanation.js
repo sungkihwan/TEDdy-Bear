@@ -160,7 +160,7 @@ function LectureExplanation() {
       <div className="commentbox lecturebox">
         {commentList.length !== 0 &&
           commentList.map((usercomment, index) => (
-            <div key={index}>
+            <div key={index} style={{ marginTop: "10px" }}>
               <div className="comment">
                 <h4>{usercomment.user.name}</h4>
                 <p>{usercomment.comment}</p>

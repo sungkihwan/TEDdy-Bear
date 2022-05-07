@@ -26,7 +26,6 @@ function ReplyEdit({ setOpenReply, talkId, parentCommentId, setCommentList }) {
       style={{
         width: "100%",
         height: "130px",
-        border: "2px solid blue",
         display: "flex",
         flexDirection: "column",
         marginBottom: "10px",
