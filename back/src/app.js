@@ -1,5 +1,5 @@
 import express from 'express';
-import { swaggerUi, specs } from './modules/swagger';
+import { swaggerUi, specs } from './utils/swagger';
 import cors from 'cors';
 import { userAuthRouter } from './routers/userRouter';
 import { dataRouter } from './routers/dataRouter';
