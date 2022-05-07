@@ -7,15 +7,14 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
-import ReplyEdit from "./ReplyEdit";
+import Reply from "./Reply";
+
 function LectureExplanation() {
   const user = useContext(UserStateContext).user;
-  const userState = useContext(UserStateContext);
   const [cotton, setCotton] = useState();
   const params = useParams();
   const [commentList, setCommentList] = useState([]);
   const [view, setView] = useState(0);
-  const [openReply, setOpenReply] = useState(false);
 
   const [comment, setComment] = useState(() => {
     if (user === null) {
@@ -117,15 +116,6 @@ function LectureExplanation() {
     });
   };
 
-  const handleCommentDelete = (e) => {
-    const idx = Number(e.target.name);
-
-    Api.delete(`comments/${commentList[idx]._id}?mode=comment`).then((res) => {
-      Api.get(`talks/${talkId}/comments`).then((res) => {
-        setCommentList(res.data.payload);
-      });
-    });
-  };
   return (
     <div className="infobox">
       <div className="lecturebox" style={{ marginTop: 100 }}>
@@ -231,33 +221,15 @@ function LectureExplanation() {
                   </div>
                 ))}
               <div style={{ width: "100%", textAlign: "right" }}>
-                {openReply && (
-                  <ReplyEdit
-                    setOpenReply={setOpenReply}
-                    talkId={talkId}
-                    parentCommentId={usercomment._id}
-                    setCommentList={setCommentList}
-                  ></ReplyEdit>
-                )}
-                {user !== null && (
-                  <GoButton
-                    name={index}
-                    disabled={comment}
-                    onClick={() => setOpenReply(true)}
-                  >
-                    대댓글
-                  </GoButton>
-                )}
-                {user._id === usercomment.user._id && (
-                  <GoButton
-                    name={index}
-                    onClick={handleCommentDelete}
-                    disabled={comment}
-                    style={{ marginLeft: "10px" }}
-                  >
-                    댓글 삭제
-                  </GoButton>
-                )}
+                <Reply
+                  talkId={talkId}
+                  parentCommentId={usercomment._id}
+                  setCommentList={setCommentList}
+                  index={index}
+                  comment={comment}
+                  commentList={commentList}
+                  usercomment_id={usercomment.user._id}
+                ></Reply>
               </div>
             </div>
           ))}
@@ -287,3 +259,31 @@ const GoButton = styled(Button)(({ theme }) => ({
 }));
 
 export default LectureExplanation;
+
+// {openReply && (
+//   <ReplyEdit
+//     setOpenReply={setOpenReply}
+//     talkId={talkId}
+//     parentCommentId={usercomment._id}
+//     setCommentList={setCommentList}
+//   ></ReplyEdit>
+// )}
+// {user !== null && (
+//   <GoButton
+//     name={index}
+//     disabled={comment}
+//     onClick={() => setOpenReply(true)}
+//   >
+//     대댓글
+//   </GoButton>
+// )}
+// {user._id === usercomment.user._id && (
+//   <GoButton
+//     name={index}
+//     onClick={handleCommentDelete}
+//     disabled={comment}
+//     style={{ marginLeft: "10px" }}
+//   >
+//     댓글 삭제
+//   </GoButton>
+// )}
