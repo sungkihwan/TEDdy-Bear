@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserStateContext } from "../../App";
 import * as Api from "../../api";
-import "./lecture.css";
+import "./styles/lecture.css";
 import DetailedIcons from "./DetailedIcons";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
 import ReplyEdit from "./ReplyEdit";
+import {
+  DescriptionText,
+  TitleText,
+  UserCommentText,
+  UserNameText,
+} from "./styles/Style";
+
 function LectureExplanation() {
   const user = useContext(UserStateContext).user;
   const userState = useContext(UserStateContext);
@@ -128,33 +135,33 @@ function LectureExplanation() {
   };
   return (
     <div className="infobox">
-      <div className="lecturebox" style={{ marginTop: 100 }}>
+      <div className="lecturebox" style={{ marginTop: 100, marginBottom: 30 }}>
         <img className="lectureimg" src={lecture.image} alt="lecture img" />
       </div>
-      <div className="buttoncontent lecturebox">
+      <div className="buttoncontent lecturebox" style={{ marginBottom: 30 }}>
         {Object.keys(lecture).length !== 0 && (
           <DetailedIcons lecture={lecture} view={view}></DetailedIcons>
         )}
         <GoButton onClick={handleWatch}>영상 시청하러 가기</GoButton>
       </div>
       <div className="descriptionbox lecturebox">
-        <h1>제목</h1>
-        <h2>{lecture.title}</h2>
+        <TitleText>제목</TitleText>
+        <DescriptionText>{lecture.title}</DescriptionText>
       </div>
       <div className="descriptionbox lecturebox">
-        <h1>강연자</h1>
-        <h2>{makeSpeaker(lecture.speakers)}</h2>
+        <TitleText>강연자</TitleText>
+        <DescriptionText>{makeSpeaker(lecture.speakers)}</DescriptionText>
       </div>
       <div className="descriptionbox lecturebox">
-        <h1>요약</h1>
-        <h2>{lecture.description}</h2>
+        <TitleText>요약</TitleText>
+        <DescriptionText>{lecture.description}</DescriptionText>
       </div>
       <div className="descriptionbox lecturebox">
-        <h1>주제</h1>
-        <h2>{makeSpeaker(lecture.topics)}</h2>
+        <TitleText>주제</TitleText>
+        <DescriptionText>{makeSpeaker(lecture.topics)}</DescriptionText>
       </div>
       <div className="descriptionbox lecturebox">
-        <h1>리뷰</h1>
+        <TitleText>리뷰</TitleText>
       </div>
 
       <div className="commentbox lecturebox">
@@ -162,8 +169,37 @@ function LectureExplanation() {
           commentList.map((usercomment, index) => (
             <div key={index}>
               <div className="comment">
-                <h4>{usercomment.user.name}</h4>
-                <p>{usercomment.comment}</p>
+                <UserNameText>{usercomment.user.name}</UserNameText>
+                <UserCommentText>{usercomment.comment}</UserCommentText>
+                <div style={{ textAlign: "right", marginRight: 15 }}>
+                  {user !== null && (
+                    <GoButton
+                      name={index}
+                      disabled={comment}
+                      onClick={() => setOpenReply(true)}
+                    >
+                      대댓글
+                    </GoButton>
+                  )}
+                  {user._id === usercomment.user._id && (
+                    <GoButton
+                      name={index}
+                      onClick={handleCommentDelete}
+                      disabled={comment}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      댓글 삭제
+                    </GoButton>
+                  )}
+                </div>
+                {openReply && (
+                  <ReplyEdit
+                    setOpenReply={setOpenReply}
+                    talkId={talkId}
+                    parentCommentId={usercomment._id}
+                    setCommentList={setCommentList}
+                  ></ReplyEdit>
+                )}
               </div>
               {usercomment.reply.length !== 0 &&
                 usercomment.reply.map((reply, i) => (
@@ -171,7 +207,7 @@ function LectureExplanation() {
                     <div
                       style={{
                         width: "100%",
-                        height: `${
+                        minHeight: `${
                           reply.user._id === user._id ? "120px" : "70px"
                         }`,
                         display: "flex",
@@ -200,26 +236,14 @@ function LectureExplanation() {
                           }}
                         ></div>
                       </div>
-                      <div
-                        style={{
-                          width: "90%",
-                          height: "70px",
-                          textAlign: "left",
-                        }}
-                      >
-                        <div className="reply">
-                          <h4 style={{ padding: 0, margin: 0 }}>
-                            {reply.user.name}
-                          </h4>
-                          <p style={{ padding: 0, margin: 10 }}>
-                            {reply.comment}
-                          </p>
-                        </div>
+                      <div className="reply">
+                        <UserNameText>{reply.user.name}</UserNameText>
+                        <DescriptionText>{reply.comment}</DescriptionText>
                         <div style={{ textAlign: "right" }}>
                           {reply.user._id === user._id && (
                             <GoButton
                               name={`${index}${i}`}
-                              style={{ marginTop: "10px" }}
+                              style={{ marginRight: "10px" }}
                               onClick={handleReplyDelete}
                             >
                               삭제
@@ -230,35 +254,6 @@ function LectureExplanation() {
                     </div>
                   </div>
                 ))}
-              <div style={{ width: "100%", textAlign: "right" }}>
-                {openReply && (
-                  <ReplyEdit
-                    setOpenReply={setOpenReply}
-                    talkId={talkId}
-                    parentCommentId={usercomment._id}
-                    setCommentList={setCommentList}
-                  ></ReplyEdit>
-                )}
-                {user !== null && (
-                  <GoButton
-                    name={index}
-                    disabled={comment}
-                    onClick={() => setOpenReply(true)}
-                  >
-                    대댓글
-                  </GoButton>
-                )}
-                {user._id === usercomment.user._id && (
-                  <GoButton
-                    name={index}
-                    onClick={handleCommentDelete}
-                    disabled={comment}
-                    style={{ marginLeft: "10px" }}
-                  >
-                    댓글 삭제
-                  </GoButton>
-                )}
-              </div>
             </div>
           ))}
       </div>

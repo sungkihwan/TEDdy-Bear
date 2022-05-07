@@ -1,4 +1,4 @@
-import "./lecture.css";
+import "./styles/lecture.css";
 import { MyButton } from "../common/MyButton";
 import React, { useState } from "react";
 import * as Api from "../../api";
@@ -24,12 +24,13 @@ function ReplyEdit({ setOpenReply, talkId, parentCommentId, setCommentList }) {
   return (
     <div
       style={{
-        width: "100%",
+        width: "98%",
         height: "130px",
-        border: "2px solid blue",
         display: "flex",
         flexDirection: "column",
         marginBottom: "10px",
+        textAlign: "right",
+        marginTop: 10,
       }}
     >
       <textarea
