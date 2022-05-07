@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
+import { loginRequired } from "../middlewares/loginRequired";
 import { TalkService } from "../services/talkService";
 
 const talkRouter = Router();
@@ -67,7 +67,7 @@ talkRouter.get("/talks/today", async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.get("/talks/my", login_required, async (req, res, next) => {
+talkRouter.get("/talks/my", loginRequired, async (req, res, next) => {
   try {
     const size = Number(req.query.size) < 1 ? 1 : Number(req.query.size);
     const userId = req.currentUserId;

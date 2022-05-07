@@ -1,5 +1,5 @@
 import { Talk, Topic, User } from "../db";
-import { TopicPriorityService } from "./TopicPriorityService";
+import { TopicPriorityService } from "./topicPriorityService";
 
 class TalkService {
   static async getTalk({ id }) {

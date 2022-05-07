@@ -8,7 +8,7 @@ import { Talk, ViewHistory, User } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { utils } from './utils';
 import { TalkService } from './talkService';
-import { TopicPriorityService } from './TopicPriorityService';
+import { TopicPriorityService } from './topicPriorityService';
 
 class ViewHistoryService {
   // addViewHistory()

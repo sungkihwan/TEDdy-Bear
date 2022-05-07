@@ -6,7 +6,7 @@ import { OAuth2Client } from "google-auth-library";
 import { sendMail } from "../utils/email-sender";
 import { gcsBucket } from "../utils/multer";
 import generator from "generate-password";
-import { TopicPriorityService } from "./TopicPriorityService";
+import { TopicPriorityService } from "./topicPriorityService";
 
 class userAuthService {
   static async addUser({

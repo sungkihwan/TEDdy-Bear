@@ -1,5 +1,4 @@
 import { TopicPriority } from "../db";
-import { TOPICS } from "../db/schemas/constants";
 
 class TopicPriorityService {
   static async plusPriorities({ user_id, topics, point }) {

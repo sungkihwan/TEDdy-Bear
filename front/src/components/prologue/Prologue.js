@@ -1,9 +1,9 @@
 import React from "react";
-import SpeakerChart from './SpeakerChart';
-import TopicChart from './TopicChart';
-import TopicLikeChart from './TopicLikeChart';
-import StudentScore from './StudentScore';
-import TopicChange from './TopicChange';
+import SpeakerChart from "./SpeakerChart";
+import TopicChart from "./TopicChart";
+import TopicLikeChart from "./TopicLikeChart";
+import StudentScore from "./StudentScore";
+import TopicChange from "./TopicChange";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
@@ -13,14 +13,29 @@ function Prologue() {
   const navigate = useNavigate();
 
   return (
-    <div style={{width:'100%', height:'100%', marginTop: 100}}>
-      <StudentScore></StudentScore>
-      <TopicChange></TopicChange>
-      <SpeakerChart></SpeakerChart>
-      <TopicChart></TopicChart>
-      <TopicLikeChart></TopicLikeChart>
-      <div style={{width: '100%', textAlign: 'center', marginTop:50}}>
-        <GoButton onClick={() => navigate("/media")}>영상 추천받으러 가기</GoButton>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "70%",
+          height: "100%",
+          marginTop: 100,
+        }}
+      >
+        <StudentScore></StudentScore>
+        <TopicChange></TopicChange>
+        <TopicChart></TopicChart>
+        <TopicLikeChart></TopicLikeChart>
+        <SpeakerChart></SpeakerChart>
+        <div style={{ width: "100%", textAlign: "center", marginTop: 50 }}>
+          <GoButton onClick={() => navigate("/media")}>
+            영상 추천받으러 가기
+          </GoButton>
+        </div>
       </div>
     </div>
   );

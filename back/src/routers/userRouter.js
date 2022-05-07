@@ -1,6 +1,6 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
-import { login_required } from "../middlewares/login_required";
+import { loginRequired } from "../middlewares/loginRequired";
 import { userAuthService } from "../services/userService";
 import { uploadHandler } from "../utils/multer";
 
@@ -305,7 +305,7 @@ userAuthRouter.post("/user/check/code", async function (req, res, next) {
  */
 userAuthRouter.post(
   "/user/update/password",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const { id, password } = req.body;
@@ -335,7 +335,7 @@ userAuthRouter.post(
  */
 userAuthRouter.post(
   "/user/cotton/:exp",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const user_id = req.currentUserId;
@@ -374,7 +374,7 @@ userAuthRouter.post(
  */
 userAuthRouter.post(
   "/user/img",
-  login_required,
+  loginRequired,
   uploadHandler.single("img"),
   async function (req, res, next) {
     try {
@@ -420,7 +420,7 @@ userAuthRouter.post(
 //userlist 반환
 userAuthRouter.get(
   "/userlist",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       // 전체 사용자 목록을 얻음
@@ -435,7 +435,7 @@ userAuthRouter.get(
 //사용자 정보 반환
 userAuthRouter.get(
   "/user/current",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       // jwt토큰에서 추출된 사용자 id를 가지고 db에서 사용자 정보를 찾음.
@@ -487,7 +487,7 @@ userAuthRouter.get(
 //user 정보 수정
 userAuthRouter.put(
   "/users/:id",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       // URI로부터 사용자 id를 추출함.
@@ -566,7 +566,7 @@ userAuthRouter.put(
 //user 정보 반환
 userAuthRouter.get(
   "/users/:id",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const user_id = req.params.id;
@@ -614,7 +614,7 @@ userAuthRouter.get(
 //user 삭제 컴포넌트
 userAuthRouter.delete(
   "/users/user",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const user_id = req.currentUserId;
@@ -666,7 +666,7 @@ userAuthRouter.delete(
 // 곰 정보 찾기
 userAuthRouter.get(
   "/bear/:id",
-  login_required,
+  loginRequired,
   async function (req, res, next) {
     try {
       const user_id = req.currentUserId;

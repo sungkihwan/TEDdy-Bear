@@ -1,5 +1,5 @@
 import { Bookmark, Talk, User } from "../db";
-import { TopicPriorityService } from "./TopicPriorityService";
+import { TopicPriorityService } from "./topicPriorityService";
 
 class BookmarkService {
   static async getMyBookmarks(userId) {
