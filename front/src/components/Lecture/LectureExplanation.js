@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { brown } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
 import Reply from "./Reply";
+import ReplyEdit from "./ReplyEdit";
 
 function LectureExplanation() {
   const user = useContext(UserStateContext).user;
@@ -26,7 +27,7 @@ function LectureExplanation() {
   const [userComment, setUserComment] = useState("");
   const talkId = params.talkId;
   const [lecture, setLecture] = useState({});
-
+  const [openReply, setOpenReply] = useState(false);
   const customFetcher = (url) => {
     if (url !== undefined) {
       fetch(`https://rlp-proxy.herokuapp.com/v2?url=${url}`)
@@ -103,6 +104,15 @@ function LectureExplanation() {
     setUserComment("");
   };
 
+  const handleCommentDelete = (e) => {
+    const idx = Number(e.target.name);
+
+    Api.delete(`comments/${commentList[idx]._id}?mode=comment`).then((res) => {
+      Api.get(`talks/${talkId}/comments`).then((res) => {
+        setCommentList(res.data.payload);
+      });
+    });
+  };
   const handleReplyDelete = (e) => {
     const num = e.target.name;
     const commentIndex = Number(num[0]);
@@ -221,15 +231,33 @@ function LectureExplanation() {
                   </div>
                 ))}
               <div style={{ width: "100%", textAlign: "right" }}>
-                <Reply
-                  talkId={talkId}
-                  parentCommentId={usercomment._id}
-                  setCommentList={setCommentList}
-                  index={index}
-                  comment={comment}
-                  commentList={commentList}
-                  usercomment_id={usercomment.user._id}
-                ></Reply>
+                {openReply && (
+                  <ReplyEdit
+                    setOpenReply={setOpenReply}
+                    talkId={talkId}
+                    parentCommentId={usercomment._id}
+                    setCommentList={setCommentList}
+                  ></ReplyEdit>
+                )}
+                {user !== null && (
+                  <GoButton
+                    name={index}
+                    disabled={comment}
+                    onClick={() => setOpenReply(true)}
+                  >
+                    대댓글
+                  </GoButton>
+                )}
+                {user._id === usercomment.user._id && (
+                  <GoButton
+                    name={index}
+                    onClick={handleCommentDelete}
+                    disabled={comment}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    댓글 삭제
+                  </GoButton>
+                )}
               </div>
             </div>
           ))}
@@ -259,31 +287,3 @@ const GoButton = styled(Button)(({ theme }) => ({
 }));
 
 export default LectureExplanation;
-
-// {openReply && (
-//   <ReplyEdit
-//     setOpenReply={setOpenReply}
-//     talkId={talkId}
-//     parentCommentId={usercomment._id}
-//     setCommentList={setCommentList}
-//   ></ReplyEdit>
-// )}
-// {user !== null && (
-//   <GoButton
-//     name={index}
-//     disabled={comment}
-//     onClick={() => setOpenReply(true)}
-//   >
-//     대댓글
-//   </GoButton>
-// )}
-// {user._id === usercomment.user._id && (
-//   <GoButton
-//     name={index}
-//     onClick={handleCommentDelete}
-//     disabled={comment}
-//     style={{ marginLeft: "10px" }}
-//   >
-//     댓글 삭제
-//   </GoButton>
-// )}
