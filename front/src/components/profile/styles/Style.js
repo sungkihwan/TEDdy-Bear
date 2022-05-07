@@ -181,7 +181,7 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 //community page style
 export const CommunityPage = Styled.div`
-  width: 90vw;
+  width: 80vw;
   margin: 10vh auto;
   display: flex;
   flex-direction: column;
@@ -192,10 +192,10 @@ export const CommunityPage = Styled.div`
 
 //community user list style
 export const UserList = Styled.div`
+width: 90%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
 `;
 
 //community user card style
