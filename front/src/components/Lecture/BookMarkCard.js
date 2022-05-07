@@ -5,7 +5,7 @@ import { UserStateContext } from "../../App";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import LectureInfo from "./LectureInfo";
-import "./lecture.css";
+import "./styles/lecture.css";
 import * as Api from "../../api";
 
 const Item = styled(Paper)(({ theme }) => ({

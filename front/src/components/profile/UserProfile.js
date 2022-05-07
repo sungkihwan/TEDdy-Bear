@@ -28,7 +28,7 @@ function UserProfile({ user, isEditable }) {
 
   return (
     <ProfileCard>
-      <Grid container justifyContent="center">
+      <Grid container alignItems="center" flexDirection="column">
         <Avatar src={user.profileUrl} sx={{ width: 150, height: 150 }} />
         <UserInfo>
           <ProfileText>{user.name}</ProfileText>

@@ -111,7 +111,8 @@ export const BearInfo = Styled.div`
 `;
 
 export const UserInfo = Styled.div`
-  margin-left: 1vw;
+  padding: 10px;
+  width: 80%;
 `;
 
 //profile image style
@@ -214,7 +215,7 @@ export const UserCard = styled(Box)(() => ({
 //profile user card style
 export const ProfileCard = styled(Box)(() => ({
   minWidth: 270,
-  minHeight: 270,
+  minHeight: 400,
   margin: 10,
   borderRadius: 30,
   backgroundColor: brown[100],
