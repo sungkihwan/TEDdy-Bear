@@ -28,7 +28,6 @@ function EditProfile() {
   const [tempUrl, setTempUrl] = useState(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
   );
-
   useEffect(() => {
     try {
       const getUserData = async () => {
@@ -264,25 +263,29 @@ function EditProfile() {
           />
         </div>
       </EachEdit>
-      <EachEdit>
-        <EditText>비밀번호</EditText>
-        <MyInput
-          type="password"
-          value={modifyPassword}
-          name="password"
-          onChange={onChangePW}
-        />
-      </EachEdit>
+      {userState.user.infoProvider !== "Google" && (
+        <EachEdit>
+          <EditText>비밀번호</EditText>
+          <MyInput
+            type="password"
+            value={modifyPassword}
+            name="password"
+            onChange={onChangePW}
+          />
+        </EachEdit>
+      )}
       <EachEdit>
         <EditText>회원 탈퇴</EditText>
         <div style={{ width: "510px" }}>
           <MyButton style={{ backgroundColor: "#EA541E" }}>회원 탈퇴</MyButton>
-          <MyButton
-            onClick={handleModifyPW}
-            style={{ backgroundColor: "#1e90ff", marginLeft: "35px" }}
-          >
-            비밀번호 변경
-          </MyButton>
+          {userState.user.infoProvider !== "Google" && (
+            <MyButton
+              onClick={handleModifyPW}
+              style={{ backgroundColor: "#1e90ff", marginLeft: "35px" }}
+            >
+              비밀번호 변경
+            </MyButton>
+          )}
         </div>
       </EachEdit>
       <MyButton onClick={saveEdit}>저장</MyButton>
