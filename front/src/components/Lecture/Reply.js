@@ -28,6 +28,27 @@ function Reply({
   };
   return (
     <>
+      <div style={{ textAlign: "right", marginRight: 15 }}>
+        {user !== null && (
+          <GoButton
+            name={index}
+            disabled={comment}
+            onClick={() => setOpenReply(true)}
+          >
+            대댓글
+          </GoButton>
+        )}
+        {user._id === usercomment_id && (
+          <GoButton
+            name={index}
+            onClick={handleCommentDelete}
+            disabled={comment}
+            style={{ marginLeft: "10px" }}
+          >
+            댓글 삭제
+          </GoButton>
+        )}
+      </div>
       {openReply && (
         <ReplyEdit
           setOpenReply={setOpenReply}
@@ -35,25 +56,6 @@ function Reply({
           parentCommentId={parentCommentId}
           setCommentList={setCommentList}
         ></ReplyEdit>
-      )}
-      {user !== null && (
-        <GoButton
-          name={index}
-          disabled={comment}
-          onClick={() => setOpenReply(true)}
-        >
-          대댓글
-        </GoButton>
-      )}
-      {user._id === usercomment_id && (
-        <GoButton
-          name={index}
-          onClick={handleCommentDelete}
-          disabled={comment}
-          style={{ marginLeft: "10px" }}
-        >
-          댓글 삭제
-        </GoButton>
       )}
     </>
   );
