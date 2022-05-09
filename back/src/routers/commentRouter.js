@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginRequired } from "../middlewares/loginRequired";
-import { commentsReadController, commentCreateController, commentDeleteController } from "../contoller/commentController"
+import { CommentController} from "../contoller/commentController"
 const commentRouter = Router();
 
 /**
@@ -33,7 +33,7 @@ const commentRouter = Router();
  *       "500":
  *          description: 서버 에러
  */
-commentRouter.get("/talks/:talkId/comments", commentsReadController);
+commentRouter.get("/talks/:talkId/comments", CommentController.readOneByTalkId);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ commentRouter.get("/talks/:talkId/comments", commentsReadController);
  *       "500":
  *          description: 서버 에러
  */
-commentRouter.post("/comments/comment", loginRequired, commentCreateController);
+commentRouter.post("/comments/comment", loginRequired, CommentController.create);
 
 /**
  * @swagger
@@ -112,6 +112,6 @@ commentRouter.post("/comments/comment", loginRequired, commentCreateController);
  *       "500":
  *          description: 서버 에러
  */
-commentRouter.delete("/comments/:comment_id", loginRequired, commentDeleteController);
+commentRouter.delete("/comments/:comment_id", loginRequired, CommentController.deleteMyById);
 
 export { commentRouter };

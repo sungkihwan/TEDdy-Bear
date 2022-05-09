@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginRequired } from "../middlewares/loginRequired";
-import { bookmarksReadController, bookmarkCreateController, bookmarkDeleteController } from '../contoller/bookmarkController';
+import { BookmarkController } from '../contoller/bookmarkController';
 const bookmarkRouter = Router();
 
 /**
@@ -38,7 +38,7 @@ const bookmarkRouter = Router();
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.get("/bookmarks", loginRequired, bookmarksReadController);
+bookmarkRouter.get("/bookmarks", loginRequired, BookmarkController.readMy);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ bookmarkRouter.get("/bookmarks", loginRequired, bookmarksReadController);
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.post("/bookmarks/bookmark", loginRequired, bookmarkCreateController);
+bookmarkRouter.post("/bookmarks/bookmark", loginRequired, BookmarkController.create);
 
 /**
  * @swagger
@@ -106,6 +106,6 @@ bookmarkRouter.post("/bookmarks/bookmark", loginRequired, bookmarkCreateControll
  *       "500":
  *          description: 서버 에러
  */
-bookmarkRouter.delete("/bookmarks/:talk_id", loginRequired, bookmarkDeleteController);
+bookmarkRouter.delete("/bookmarks/:talk_id", loginRequired, BookmarkController.deleteMy);
 
 export { bookmarkRouter };

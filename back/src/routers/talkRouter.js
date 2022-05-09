@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginRequired } from "../middlewares/loginRequired";
-import { talkReadTodayController, talkReadMyController, talkReadController, talkReadLikesRankingController } from "../contoller/talkController";
+import { TalkController } from "../contoller/talkController";
 
 const talkRouter = Router();
 
@@ -28,7 +28,7 @@ const talkRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.get("/talks/today", talkReadTodayController);
+talkRouter.get("/talks/today", TalkController.readToday);
 
 // 추천된 영상
 /**
@@ -54,7 +54,7 @@ talkRouter.get("/talks/today", talkReadTodayController);
  *             schema:
  *               $ref: '#/components/schemas/Talk'
  */
-talkRouter.get("/talks/my", loginRequired, talkReadMyController);
+talkRouter.get("/talks/my", loginRequired, TalkController.readMy);
 
 // 영상 상세정보 조회
 /**
@@ -79,7 +79,7 @@ talkRouter.get("/talks/my", loginRequired, talkReadMyController);
  *             schema:
  *               $ref: '#components/schemas/Talk'
  */
-talkRouter.get("/talks/:talk_id", talkReadController);
+talkRouter.get("/talks/:talk_id", TalkController.readOneById);
 
 /**
  * @swagger
@@ -106,6 +106,6 @@ talkRouter.get("/talks/:talk_id", talkReadController);
  *                $ref: '#components/schemas/Talk'
  */
 
-talkRouter.get("/talks/like/ranking", talkReadLikesRankingController);
+talkRouter.get("/talks/like/ranking", TalkController.readLikesRanking);
 
 export { talkRouter };
