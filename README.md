@@ -3,7 +3,7 @@
 - 1일 1테드로 교양지식 습관화를 돕는 서비스
   > 프로젝트 기간 : 2022. 04.19~ 2022.05.07 (3주)
 
-### 사용한 데이터 <hr>
+### 사용한 데이터
 
 - [TED 강연 데이터](https://www.kaggle.com/datasets/ashishjangra27/ted-talks)
 - [TED 강연 데이터 (한글화)](https://www.kaggle.com/datasets/miguelcorraljr/ted-ultimate-dataset)
