@@ -18,7 +18,7 @@
 
 ## 기술 스택
 
-![image](/uploads/d809016b398cf4d128cdbd4b776fe705/image.png)
+![8282-사용기술-001](https://user-images.githubusercontent.com/97578390/168267440-dabf230e-5788-4996-9b03-19d7472605a1.png)
 
 ## 프로젝트 목표
 
@@ -51,5 +51,3 @@
 | [강미선](https://github.com/KangMiSun17)   | 프론트엔드   |
 | [박보선](https://github.com/bedurgi999)    | 프론트엔드   |
 | 주강현                                     | 프론트엔드   |
-
-깃랩 연동 확인
