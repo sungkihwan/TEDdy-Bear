@@ -51,3 +51,5 @@
 | [강미선](https://github.com/KangMiSun17)   | 프론트엔드   |
 | [박보선](https://github.com/bedurgi999)    | 프론트엔드   |
 | 주강현                                     | 프론트엔드   |
+
+깃랩 연동 확인
