@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { dataService } from '../services/dataService';
+import { Router } from "express";
+import { DataController } from "../contoller/dataController";
 
 const dataRouter = Router();
 
@@ -23,15 +23,7 @@ const dataRouter = Router();
  *       "500":
  *          description: 서버 에러
  */
-dataRouter.get('/data/:id', async function (req, res, next) {
-      try {
-        const data = await dataService.findById(req.params.id);
-        res.status(200).send(data);
-      } catch (error) {
-        next(error);
-      }
-    }
-);
+dataRouter.get("/data/:id", DataController.readOneById);
 
 /**
  * @swagger
@@ -52,14 +44,6 @@ dataRouter.get('/data/:id', async function (req, res, next) {
  *       "500":
  *          description: 서버 에러
  */
-dataRouter.get('/data', async function (req, res, next) {
-    try {
-      const data = await dataService.findAll();
-      res.status(200).send(data);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+dataRouter.get("/data", DataController.readAll);
 
 export { dataRouter };

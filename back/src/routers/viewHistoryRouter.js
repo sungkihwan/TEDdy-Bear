@@ -6,7 +6,7 @@
 
 import { Router } from "express";
 import { loginRequired } from "../middlewares/loginRequired";
-import { ViewHistoryService } from "../services/viewHistoryService";
+import { ViewHistoryController } from "../contoller/viewHistoryController";
 
 const viewHistoryRouter = Router();
 viewHistoryRouter.use(loginRequired);
@@ -79,24 +79,7 @@ viewHistoryRouter.use(loginRequired);
 viewHistoryRouter.use(loginRequired);
 
 // viewHistory를 만드는 router api (링크 클릭시 호출)
-viewHistoryRouter.post("/viewhistory/create", async function (req, res, next) {
-  try {
-    const user_id = req.body.user_id;
-    const talkId = Number(req.body.talkId);
-
-    const newViewHistory = await ViewHistoryService.addViewHistory({
-      user_id,
-      talkId,
-    });
-    if (newViewHistory.errorMessage) {
-      throw new Error(newViewHistory.errorMessage);
-    }
-
-    res.status(200).json(newViewHistory);
-  } catch (error) {
-    next(error);
-  }
-});
+viewHistoryRouter.post("/viewhistory/create", ViewHistoryController.create);
 
 /**
  * @swagger
@@ -122,18 +105,7 @@ viewHistoryRouter.post("/viewhistory/create", async function (req, res, next) {
  */
 
 // 해당 viewHistoryId에 맞는 viewhistory 조회
-viewHistoryRouter.get("/viewhistories/:id", async function (req, res, next) {
-  try {
-    const viewHistoryId = req.params.id;
-    const viewHistory = await ViewHistoryService.getViewHistory({
-      viewHistoryId,
-    });
-
-    res.status(200).send(viewHistory);
-  } catch (error) {
-    next(error);
-  }
-});
+viewHistoryRouter.get("/viewhistories/:id", ViewHistoryController.readOneById);
 
 /**
  * @swagger
@@ -163,19 +135,7 @@ viewHistoryRouter.get("/viewhistories/:id", async function (req, res, next) {
 // user_id에 알맞는 사용자의 viewhistory 리스트를 조회
 viewHistoryRouter.get(
   "/viewhistorylist/:user_id",
-  async function (req, res, next) {
-    try {
-      const user_id = req.params.user_id;
-
-      //해당 user_id에 맞는 목록을 db에서 가져와 조회
-      const viewHistorylist = await ViewHistoryService.getViewHistorylist({
-        user_id,
-      });
-      res.status(200).send(viewHistorylist);
-    } catch (error) {
-      next(error);
-    }
-  }
+  ViewHistoryController.readOneByUserId
 );
 
 /**
@@ -209,21 +169,7 @@ viewHistoryRouter.get(
 
 viewHistoryRouter.get(
   "/viewhistorydatelist/:user_id/:date",
-  async function (req, res, next) {
-    try {
-      const user_id = req.params.user_id;
-      const date = req.params.date;
-
-      const viewHistoryDatelist = await ViewHistoryService.getViewHistoryDate({
-        user_id,
-        date,
-      });
-
-      res.status(200).send(viewHistoryDatelist);
-    } catch (error) {
-      next(error);
-    }
-  }
+  ViewHistoryController.readManyByDate
 );
 
 /**
@@ -257,21 +203,7 @@ viewHistoryRouter.get(
 
 viewHistoryRouter.get(
   "/viewhistorydatelist/:user_id",
-  async function (req, res, next) {
-    try {
-      const user_id = req.params.user_id;
-      const size = Number(req.query.size);
-
-      const today = await ViewHistoryService.getViewHistoryUntilToday({
-        user_id,
-        size,
-      });
-
-      res.status(200).send(today);
-    } catch (error) {
-      next(error);
-    }
-  }
+  ViewHistoryController.readManyByUserId
 );
 
 /**
@@ -302,16 +234,7 @@ viewHistoryRouter.get(
 viewHistoryRouter.get(
   "/viewhistory/latest",
   loginRequired,
-  async function (req, res, next) {
-    try {
-      const user_id = req.currentUserId;
-      const size = Number(req.query.size);
-      const latest = await ViewHistoryService.getLatest5({ user_id, size });
-      res.status(200).send(latest);
-    } catch (error) {
-      next(error);
-    }
-  }
+  ViewHistoryController.readMyRecent
 );
 /**
  * @swagger
@@ -331,15 +254,7 @@ viewHistoryRouter.get(
  */
 viewHistoryRouter.get(
   "/viewhistory/rankingBoard",
-  async function (req, res, next) {
-    try {
-      const rankingBoard = await ViewHistoryService.rankingBoard({});
-
-      res.status(200).send(rankingBoard);
-    } catch (error) {
-      next(error);
-    }
-  }
+  ViewHistoryController.readTop5
 );
 
 export { viewHistoryRouter };

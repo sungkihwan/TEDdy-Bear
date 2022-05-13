@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { loginRequired } from '../middlewares/loginRequired';
-import { likeService } from '../services/likeService';
+import { Router } from "express";
+import { loginRequired } from "../middlewares/loginRequired";
+import { LikeController } from "../contoller/likeController";
 
 const likeRouter = Router();
 likeRouter.use(loginRequired);
@@ -56,22 +56,7 @@ likeRouter.use(loginRequired);
  *                      like_id:
  *                        type: string
  */
-likeRouter.post(
-  '/talks/talk/like',
-  loginRequired,
-  async function (req, res, next) {
-    try {
-      const userId = req.currentUserId;
-      const talkId = Number(req.body.talkId);
-
-      const newLike = await likeService.addlike({ userId, talkId });
-
-      res.status(200).send(newLike);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+likeRouter.post("/talks/talk/like", loginRequired, LikeController.create);
 
 /**
  * @swagger
@@ -99,16 +84,7 @@ likeRouter.post(
  */
 // 유저가 좋아요한 동영상 리스트 가져오기
 
-likeRouter.get('/likes/my', async function (req, res, next) {
-  try {
-    const userId = req.currentUserId;
-    const userLike = await likeService.getUserLikeList({ userId });
-
-    res.status(200).send(userLike);
-  } catch (error) {
-    next(error);
-  }
-});
+likeRouter.get("/likes/my", LikeController.readMy);
 
 /**
  * @swagger
@@ -142,16 +118,7 @@ likeRouter.get('/likes/my', async function (req, res, next) {
  */
 
 // 해당 동영상에 좋아요를 누른 유저 리스트 가져오기
-likeRouter.get('/userlist/:talkId', async function (req, res, next) {
-  try {
-    const talkId = Number(req.params.talkId);
-    const talkLike = await likeService.getTalkLikeList({ talkId });
-
-    res.status(200).send(talkLike);
-  } catch (error) {
-    next(error);
-  }
-});
+likeRouter.get("/userlist/:talkId", LikeController.readUsersByTalkId);
 
 /**
  * @swagger
@@ -179,17 +146,6 @@ likeRouter.get('/userlist/:talkId', async function (req, res, next) {
  */
 
 // 좋아요 삭제
-likeRouter.delete('/talks/talk/like/:talkId', async function (req, res, next) {
-  try {
-    const userId = req.currentUserId;
-    const talkId = Number(req.params.talkId);
-
-    const result = await likeService.deleteLike({ userId, talkId });
-
-    res.status(200).send(result);
-  } catch (error) {
-    next(error);
-  }
-});
+likeRouter.delete("/talks/talk/like/:talkId", LikeController.deleteMy);
 
 export { likeRouter };
