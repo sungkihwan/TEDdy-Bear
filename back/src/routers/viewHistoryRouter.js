@@ -9,7 +9,7 @@ import { loginRequired } from "../middlewares/loginRequired";
 import { ViewHistoryController } from "../contoller/viewHistoryController";
 
 const viewHistoryRouter = Router();
-viewHistoryRouter.use(loginRequired);
+// viewHistoryRouter.use(loginRequired);
 
 /**
  * @swagger
@@ -75,8 +75,6 @@ viewHistoryRouter.use(loginRequired);
  *             schema:
  *               $ref: '#/components/schemas/ViewHistory'
  */
-
-viewHistoryRouter.use(loginRequired);
 
 // viewHistory를 만드는 router api (링크 클릭시 호출)
 viewHistoryRouter.post("/viewhistory/create", ViewHistoryController.create);
